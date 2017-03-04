@@ -35,95 +35,112 @@ public final class CinemaDAOMongo implements CinemaDAO {
     public Cinema find(final int id) {
         Cinema cinema = null;
 
-        MongoClient client = getMongoClient();
-        MongoCollection<Cinema> collection = getCinemaMongoCollection(client);
+        try (MongoClient client = getMongoClient()) {
+            MongoCollection<Cinema> collection =
+                    getCinemaMongoCollection(client);
 
-        BasicDBObject filter = new BasicDBObject();
-        filter.put("id", id);
+            BasicDBObject filter = new BasicDBObject();
+            filter.put("id", id);
 
-        try (MongoCursor<Cinema> cursor = collection.find(filter).iterator()) {
-            if (cursor.hasNext()) {
-                cinema = cursor.next();
+            try (MongoCursor<Cinema> cursor =
+                         collection.find(filter).iterator()) {
+                if (cursor.hasNext()) {
+                    cinema = cursor.next();
+                }
             }
         }
-        client.close();
+
         return cinema;
     }
 
     @Override
     public List<Cinema> find(final String name) {
         List<Cinema> cinemas = new ArrayList<>();
-        MongoClient client = getMongoClient();
-        MongoCollection<Cinema> collection = getCinemaMongoCollection(client);
 
-        BasicDBObject filter = new BasicDBObject();
-        filter.put("name", name);
+        try (MongoClient client = getMongoClient()) {
+            MongoCollection<Cinema> collection =
+                    getCinemaMongoCollection(client);
 
-        try (MongoCursor<Cinema> cursor = collection.find(filter).iterator()) {
-            while (cursor.hasNext()) {
-                cinemas.add(cursor.next());
+            BasicDBObject filter = new BasicDBObject();
+            filter.put("name", name);
+
+            try (MongoCursor<Cinema> cursor =
+                         collection.find(filter).iterator()) {
+                while (cursor.hasNext()) {
+                    cinemas.add(cursor.next());
+                }
             }
         }
-        client.close();
+
         return cinemas;
     }
 
     @Override
     public List<Cinema> findAll() {
         List<Cinema> cinemas = new ArrayList<>();
-        MongoClient client = getMongoClient();
-        MongoCollection<Cinema> collection = getCinemaMongoCollection(client);
+        try (MongoClient client = getMongoClient()) {
+            MongoCollection<Cinema> collection =
+                    getCinemaMongoCollection(client);
 
-        try (MongoCursor<Cinema> cursor = collection.find().iterator()) {
-            while (cursor.hasNext()) {
-                cinemas.add(cursor.next());
+            try (MongoCursor<Cinema> cursor =
+                         collection.find().iterator()) {
+                while (cursor.hasNext()) {
+                    cinemas.add(cursor.next());
+                }
             }
         }
+
         return cinemas;
     }
 
     @Override
     public boolean add(final Cinema cinema) {
-        MongoClient client = getMongoClient();
-        MongoCollection<Cinema> collection = getCinemaMongoCollection(client);
-        collection.insertOne(cinema);
-
-        client.close();
+        try (MongoClient client = getMongoClient()) {
+            MongoCollection<Cinema> collection =
+                    getCinemaMongoCollection(client);
+            collection.insertOne(cinema);
+        }
 
         return true;
     }
 
     @Override
     public boolean update(final Cinema cinema) {
-        MongoClient client = getMongoClient();
-        MongoCollection<Cinema> collection = getCinemaMongoCollection(client);
+        boolean result;
 
-        BasicDBObject change = new BasicDBObject();
-        change.put("name", cinema.getName());
-        change.put("location", cinema.getLocation());
+        try (MongoClient client = getMongoClient()) {
+            MongoCollection<Cinema> collection =
+                    getCinemaMongoCollection(client);
 
-        UpdateResult updateResult = collection.updateOne(
-                Filters.eq("id", cinema.getId()),
-                new Document("$set", change));
+            BasicDBObject change = new BasicDBObject();
+            change.put("name", cinema.getName());
+            change.put("location", cinema.getLocation());
 
-        client.close();
+            UpdateResult updateResult = collection.updateOne(
+                    Filters.eq("id", cinema.getId()),
+                    new Document("$set", change));
+            result = updateResult.wasAcknowledged();
+        }
 
-        return updateResult.wasAcknowledged();
+        return result;
     }
 
     @Override
     public boolean delete(final Cinema cinema) {
-        MongoClient client = getMongoClient();
-        MongoCollection<Cinema> collection = getCinemaMongoCollection(client);
+        boolean result;
 
-        BasicDBObject filter = new BasicDBObject();
-        filter.put("id", cinema.getId());
+        try (MongoClient client = getMongoClient()) {
+            MongoCollection<Cinema> collection =
+                    getCinemaMongoCollection(client);
 
-        DeleteResult deleteResult = collection.deleteOne(filter);
+            BasicDBObject filter = new BasicDBObject();
+            filter.put("id", cinema.getId());
 
-        client.close();
+            DeleteResult deleteResult = collection.deleteOne(filter);
+            result = deleteResult.wasAcknowledged();
+        }
 
-        return deleteResult.wasAcknowledged();
+        return result;
     }
 
     /**
