@@ -1,4 +1,4 @@
-package main.java.cinema;
+package cinema;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClient;

@@ -1,4 +1,4 @@
-package main.java.cinema;
+package cinema;
 
 import java.util.Objects;
 

@@ -1,4 +1,4 @@
-package main.java.cinema;
+package cinema;
 
 import org.bson.BsonInt32;
 import org.bson.BsonReader;

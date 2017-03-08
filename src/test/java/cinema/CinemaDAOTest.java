@@ -1,64 +1,69 @@
-package test.java.cinema;
+package cinema;
 
-import main.java.cinema.Cinema;
-import main.java.cinema.CinemaDAO;
-import main.java.cinema.CinemaDAODefault;
-import main.java.cinema.CinemaDAOMongo;
+import static org.junit.Assert.*;
 
 /**
  * Tests for CinemaDAODefault and CinemaDAOMongo.
  */
 public class CinemaDAOTest {
+    private final Cinema[] cinemas = { new Cinema(1, "First", "FirstLocation"),
+            new Cinema(2, "Second", "SecondLocation"),
+            new Cinema(3, "Third", "ThirdLocation"),
+            new Cinema(4, "Fourth", "FourthLocation"),
+            new Cinema(5, "Multiplex", "MultiplexLocation1"),
+            new Cinema(6, "Multiplex2", "MultiplexLocation2"),
+            new Cinema(7, "Multiplex3", "MultiplexLocation3"),
+            new Cinema(8, "Multiplex4", "MultiplexLocation4"),
+            new Cinema(9, "Multiplex5", "MultiplexLocation5")
+    };
+
     private CinemaDAO daoDefault = new CinemaDAODefault();
     private CinemaDAO daoMongo = new CinemaDAOMongo();
 
     @org.junit.Test
     public void testDefault() throws Exception {
         add(daoDefault);
-        update(daoDefault);
         find(daoDefault);
-        delete(daoDefault);
+        update(daoDefault);
         findAll(daoDefault);
+        delete(daoDefault);
     }
 
     @org.junit.Test
     public void testMongo() throws Exception {
         add(daoMongo);
-        update(daoMongo);
         find(daoMongo);
-        delete(daoMongo);
         findAll(daoMongo);
+        update(daoMongo);
+        delete(daoMongo);
     }
 
-    private void find(CinemaDAO cinemaDAO) throws Exception {
-        System.out.println(cinemaDAO.find(3));
-        System.out.println(cinemaDAO.find("Multiplex"));
+    private void find(CinemaDAO cinemaDAO) {
+        assertEquals(cinemas[2], cinemaDAO.find(3));
+        assertEquals(cinemas[4], cinemaDAO.find("Multiplex").get(0));
     }
 
-    private void findAll(CinemaDAO cinemaDAO) throws Exception {
-        System.out.println(cinemaDAO.findAll());
+    private void findAll(CinemaDAO cinemaDAO) {
+        assertEquals(cinemas.length, cinemaDAO.findAll().size());
     }
 
-    private void add(CinemaDAO cinemaDAO) throws Exception {
-        cinemaDAO.add(new Cinema(1, "First", "FirstLocation"));
-        cinemaDAO.add(new Cinema(2, "Second", "SecondLocation"));
-        cinemaDAO.add(new Cinema(3, "Third", "ThirdLocation"));
-        cinemaDAO.add(new Cinema(4, "Fourth", "FourthLocation"));
-        cinemaDAO.add(new Cinema(5, "Multiplex", "MultiplexLocation1"));
-        cinemaDAO.add(new Cinema(6, "Multiplex", "MultiplexLocation2"));
-        cinemaDAO.add(new Cinema(7, "Multiplex", "MultiplexLocation3"));
-        cinemaDAO.add(new Cinema(8, "Multiplex", "MultiplexLocation4"));
-        cinemaDAO.add(new Cinema(9, "Multiplex", "MultiplexLocation5"));
+    private void add(CinemaDAO cinemaDAO) {
+        for (Cinema cinema : cinemas) {
+            cinemaDAO.add(cinema);
+        }
     }
 
-    private void update(CinemaDAO cinemaDAO) throws Exception {
+    private void update(CinemaDAO cinemaDAO) {
         cinemaDAO.update(new Cinema(2, "SecondChanged", "SecondLocation"));
+        assertNotEquals(cinemas[1].getName(), cinemaDAO.find(2).getName());
         cinemaDAO.update(new Cinema(5, "FifthChanged", "MultiplexLocation1Changed"));
+        assertNotEquals(cinemas[4].getLocation(), cinemaDAO.find(2).getLocation());
     }
 
-    private void delete(CinemaDAO cinemaDAO) throws Exception {
-        cinemaDAO.delete(new Cinema(8, "Multiplex", "MultiplexLocation4"));
-        cinemaDAO.delete(new Cinema(9, "Multiplex", "MultiplexLocation5"));
+    private void delete(CinemaDAO cinemaDAO) {
+        for (Cinema cinema : cinemas) {
+            cinemaDAO.delete(cinema);
+        }
     }
 
 }

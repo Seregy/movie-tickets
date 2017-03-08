@@ -1,6 +1,4 @@
-package main.java.cinema;
-
-import com.mysql.jdbc.Driver;
+package cinema;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -20,14 +18,6 @@ public final class CinemaDAODefault implements CinemaDAO {
     private static final int ID_COLUMN_INDEX = 1;
     private static final int NAME_COLUMN_INDEX = 2;
     private static final int LOCATION_COLUMN_INDEX = 3;
-
-    static {
-        try {
-            DriverManager.registerDriver(new Driver());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public Cinema find(final int id) {
