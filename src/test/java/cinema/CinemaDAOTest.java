@@ -1,5 +1,7 @@
 package cinema;
 
+import core.DAO;
+
 import static org.junit.Assert.*;
 
 /**
@@ -17,8 +19,8 @@ public class CinemaDAOTest {
             new Cinema(9, "Multiplex5", "MultiplexLocation5")
     };
 
-    private CinemaDAO daoDefault = new CinemaDAODefault();
-    private CinemaDAO daoMongo = new CinemaDAOMongo();
+    private DAO<Cinema, Integer> daoDefault = new CinemaDAODefault();
+    private DAO<Cinema, Integer> daoMongo = new CinemaDAOMongo();
 
     @org.junit.Test
     public void testDefault() throws Exception {
@@ -38,31 +40,30 @@ public class CinemaDAOTest {
         delete(daoMongo);
     }
 
-    private void find(CinemaDAO cinemaDAO) {
+    private void find(DAO<Cinema, Integer> cinemaDAO) {
         assertEquals(cinemas[2], cinemaDAO.find(3));
-        assertEquals(cinemas[4], cinemaDAO.find("Multiplex").get(0));
     }
 
-    private void findAll(CinemaDAO cinemaDAO) {
+    private void findAll(DAO<Cinema, Integer> cinemaDAO) {
         assertEquals(cinemas.length, cinemaDAO.findAll().size());
     }
 
-    private void add(CinemaDAO cinemaDAO) {
+    private void add(DAO<Cinema, Integer> cinemaDAO) {
         for (Cinema cinema : cinemas) {
             cinemaDAO.add(cinema);
         }
     }
 
-    private void update(CinemaDAO cinemaDAO) {
+    private void update(DAO<Cinema, Integer> cinemaDAO) {
         cinemaDAO.update(new Cinema(2, "SecondChanged", "SecondLocation"));
         assertNotEquals(cinemas[1].getName(), cinemaDAO.find(2).getName());
         cinemaDAO.update(new Cinema(5, "FifthChanged", "MultiplexLocation1Changed"));
         assertNotEquals(cinemas[4].getLocation(), cinemaDAO.find(2).getLocation());
     }
 
-    private void delete(CinemaDAO cinemaDAO) {
+    private void delete(DAO<Cinema, Integer> cinemaDAO) {
         for (Cinema cinema : cinemas) {
-            cinemaDAO.delete(cinema);
+            cinemaDAO.delete(cinema.getId());
         }
     }
 
