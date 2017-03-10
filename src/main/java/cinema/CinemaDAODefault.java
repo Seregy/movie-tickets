@@ -10,15 +10,13 @@ import java.sql.*;
  * @author Seregy
  */
 public final class CinemaDAODefault extends AbstractDAOJDBC<Cinema, Integer> {
-    private static final int NAME_COLUMN_INDEX = 2;
-    private static final int LOCATION_COLUMN_INDEX = 3;
     private static final String TABLE_NAME = "cinema";
 
     /**
      * Constructs a new JDBC DAO for {@link Cinema}
      * with default database's url, user's name and user's password.
      */
-    protected CinemaDAODefault() {
+    public CinemaDAODefault() {
         super(AbstractDAOJDBC.DATABASE_URL,
                 AbstractDAOJDBC.DATABASE_USER,
                 AbstractDAOJDBC.DATABASE_USER_PASSWORD);
@@ -34,10 +32,10 @@ public final class CinemaDAODefault extends AbstractDAOJDBC<Cinema, Integer> {
 
             try (PreparedStatement statement
                          = connection.prepareStatement(sql)) {
-                statement.setInt(ID_COLUMN_INDEX, cinema.getId());
-                statement.setString(NAME_COLUMN_INDEX, cinema.getName());
-                statement.setString(LOCATION_COLUMN_INDEX,
-                        cinema.getLocation());
+                statement.setInt(1, cinema.getId());
+                statement.setString(2, cinema.getName());
+                //noinspection CheckStyle
+                statement.setString(3, cinema.getLocation());
                 statement.executeUpdate();
                 result = true;
             } catch (SQLException e) {
@@ -61,11 +59,12 @@ public final class CinemaDAODefault extends AbstractDAOJDBC<Cinema, Integer> {
 
             try (PreparedStatement statement
                          = connection.prepareStatement(sql)) {
-                statement.setString(AbstractDAOJDBC.ID_COLUMN_INDEX,
+                statement.setString(1,
                         cinema.getName());
-                statement.setString(NAME_COLUMN_INDEX,
+                statement.setString(2,
                         cinema.getLocation());
-                statement.setInt(LOCATION_COLUMN_INDEX,
+                //noinspection CheckStyle
+                statement.setInt(3,
                         cinema.getId());
                 statement.executeUpdate();
                 result = true;

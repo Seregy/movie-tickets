@@ -1,55 +1,39 @@
 package cinema;
 
-import org.bson.BsonInt32;
 import org.bson.BsonReader;
-import org.bson.BsonValue;
 import org.bson.BsonWriter;
-import org.bson.codecs.CollectibleCodec;
+import org.bson.codecs.Codec;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
 
 /**
- * Custom codec for {@link Cinema} for storing {@link Cinema} in MongoDB.
+ * Custom codec for storing {@link Cinema} objects in MongoDB.
  *
  * @author Seregy
  */
-final class CinemaCodec implements CollectibleCodec<Cinema> {
-    @Override
-    public Cinema generateIdIfAbsentFromDocument(final Cinema cinema) {
-        return cinema;
-    }
+final class CinemaCodec implements Codec<Cinema> {
 
     @Override
-    public boolean documentHasId(final Cinema cinema) {
-        return true;
-    }
-
-    @Override
-    public BsonValue getDocumentId(final Cinema cinema) {
-        return new BsonInt32(cinema.getId());
-    }
-
-    @Override
-    public Cinema decode(final BsonReader bsonReader,
+    public Cinema decode(final BsonReader reader,
                          final DecoderContext decoderContext) {
-        bsonReader.readStartDocument();
-        bsonReader.readObjectId("_id");
-        int id = bsonReader.readInt32("id");
-        String name = bsonReader.readString("name");
-        String location = bsonReader.readString("location");
-        bsonReader.readEndDocument();
+        reader.readStartDocument();
+        reader.readObjectId("_id");
+        int id = reader.readInt32("id");
+        String name = reader.readString("name");
+        String location = reader.readString("location");
+        reader.readEndDocument();
         return new Cinema(id, name, location);
     }
 
     @Override
-    public void encode(final BsonWriter bsonWriter,
+    public void encode(final BsonWriter writer,
                        final Cinema cinema,
                        final EncoderContext encoderContext) {
-        bsonWriter.writeStartDocument();
-        bsonWriter.writeInt32("id", cinema.getId());
-        bsonWriter.writeString("name", cinema.getName());
-        bsonWriter.writeString("location", cinema.getLocation());
-        bsonWriter.writeEndDocument();
+        writer.writeStartDocument();
+        writer.writeInt32("id", cinema.getId());
+        writer.writeString("name", cinema.getName());
+        writer.writeString("location", cinema.getLocation());
+        writer.writeEndDocument();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package core;
 
 import java.io.Serializable;
+//noinspection CheckStyle
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +16,6 @@ import java.util.List;
  */
 public abstract class AbstractDAOJDBC<T, I extends Serializable>
         implements DAO<T, I> {
-    /**
-     * Default index of the id column.
-     */
-    public static final int ID_COLUMN_INDEX = 1;
     /**
      * Default url for the database.
      */
@@ -66,7 +63,7 @@ public abstract class AbstractDAOJDBC<T, I extends Serializable>
 
             try (PreparedStatement statement =
                          connection.prepareStatement(sql)) {
-                statement.setObject(ID_COLUMN_INDEX, id);
+                statement.setObject(1, id);
                 ResultSet resultSet = statement.executeQuery();
 
                 if (resultSet.next()) {
@@ -121,7 +118,7 @@ public abstract class AbstractDAOJDBC<T, I extends Serializable>
      * {@inheritDoc}
      */
     @Override
-    public abstract boolean update(T cinema);
+    public abstract boolean update(T object);
 
     /**
      * {@inheritDoc}
@@ -135,7 +132,7 @@ public abstract class AbstractDAOJDBC<T, I extends Serializable>
 
             try (PreparedStatement statement =
                          connection.prepareStatement(sql)) {
-                statement.setObject(ID_COLUMN_INDEX, id);
+                statement.setObject(1, id);
                 statement.executeUpdate();
                 result = true;
             } catch (SQLException e) {

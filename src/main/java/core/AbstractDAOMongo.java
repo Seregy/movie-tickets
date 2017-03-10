@@ -64,7 +64,6 @@ public abstract class AbstractDAOMongo<T, I extends Serializable>
 
         try (MongoClient client = getMongoClient()) {
             MongoCollection<T> collection = getCollection();
-
             try (MongoCursor<T> cursor =
                          collection.find(Filters.eq("id", id)).iterator()) {
                 if (cursor.hasNext()) {
