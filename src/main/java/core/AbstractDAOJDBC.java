@@ -1,34 +1,32 @@
 package core;
 
-import java.io.Serializable;
-//noinspection CheckStyle
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  *  * A basic implementation of most of the methods in DAO interface for JDBC.
  *
  * @param <T> Object type used in dao
- * @param <I> Id used for searching
  * @author Seregy
  * @see DAO
  */
-public abstract class AbstractDAOJDBC<T, I extends Serializable>
-        implements DAO<T, I> {
+public abstract class AbstractDAOJDBC<T>
+        implements DAO<T> {
     /**
      * Default url for the database.
      */
-    public static final String DATABASE_URL =
+    protected static final String DATABASE_URL =
             "jdbc:mysql://localhost:3306/test";
     /**
      * Default user for the database.
      */
-    public static final String DATABASE_USER = "user";
+    protected static final String DATABASE_USER = "user";
     /**
      * Default user's password.
      */
-    public static final String DATABASE_USER_PASSWORD = "pass";
+    protected static final String DATABASE_USER_PASSWORD = "pass";
 
     private final String url;
     private final String userName;
@@ -54,7 +52,7 @@ public abstract class AbstractDAOJDBC<T, I extends Serializable>
      * {@inheritDoc}
      */
     @Override
-    public T find(final I id) {
+    public T find(final UUID id) {
         T object = null;
 
         try (Connection connection = getConnection()) {
@@ -63,7 +61,7 @@ public abstract class AbstractDAOJDBC<T, I extends Serializable>
 
             try (PreparedStatement statement =
                          connection.prepareStatement(sql)) {
-                statement.setObject(1, id);
+                statement.setString(1, id.toString());
                 ResultSet resultSet = statement.executeQuery();
 
                 if (resultSet.next()) {
@@ -124,7 +122,7 @@ public abstract class AbstractDAOJDBC<T, I extends Serializable>
      * {@inheritDoc}
      */
     @Override
-    public boolean delete(final I id) {
+    public boolean delete(final UUID id) {
         boolean result = false;
         try (Connection connection = getConnection()) {
 
@@ -132,7 +130,7 @@ public abstract class AbstractDAOJDBC<T, I extends Serializable>
 
             try (PreparedStatement statement =
                          connection.prepareStatement(sql)) {
-                statement.setObject(1, id);
+                statement.setString(1, id.toString());
                 statement.executeUpdate();
                 result = true;
             } catch (SQLException e) {
@@ -201,5 +199,5 @@ public abstract class AbstractDAOJDBC<T, I extends Serializable>
      *
      * @return name of the table
      */
-    public abstract String getTableName();
+    protected abstract String getTableName();
 }

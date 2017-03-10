@@ -3,13 +3,15 @@ package cinema;
 import core.AbstractDAOJDBC;
 
 import java.sql.*;
+import java.util.UUID;
 
 /**
  * Default data access object for {@link Cinema}, uses JDBC.
  *
  * @author Seregy
  */
-public final class CinemaDAODefault extends AbstractDAOJDBC<Cinema, Integer> {
+public final class CinemaDAODefault extends AbstractDAOJDBC<Cinema>
+        implements CinemaDAO {
     private static final String TABLE_NAME = "cinema";
 
     /**
@@ -32,7 +34,7 @@ public final class CinemaDAODefault extends AbstractDAOJDBC<Cinema, Integer> {
 
             try (PreparedStatement statement
                          = connection.prepareStatement(sql)) {
-                statement.setInt(1, cinema.getId());
+                statement.setString(1, cinema.getId().toString());
                 statement.setString(2, cinema.getName());
                 //noinspection CheckStyle
                 statement.setString(3, cinema.getLocation());
@@ -64,8 +66,8 @@ public final class CinemaDAODefault extends AbstractDAOJDBC<Cinema, Integer> {
                 statement.setString(2,
                         cinema.getLocation());
                 //noinspection CheckStyle
-                statement.setInt(3,
-                        cinema.getId());
+                statement.setString(3,
+                        cinema.getId().toString());
                 statement.executeUpdate();
                 result = true;
             } catch (SQLException e) {
@@ -82,7 +84,7 @@ public final class CinemaDAODefault extends AbstractDAOJDBC<Cinema, Integer> {
     protected Cinema getObjectFromResult(final ResultSet resultSet)
             throws SQLException {
         return new Cinema(
-                resultSet.getInt("id"),
+                UUID.fromString(resultSet.getString("id")),
                 resultSet.getString("name"),
                 resultSet.getString("location"));
     }

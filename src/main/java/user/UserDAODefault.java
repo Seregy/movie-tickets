@@ -13,7 +13,8 @@ import java.util.UUID;
  *
  * @author Seregy
  */
-public final class UserDAODefault extends AbstractDAOJDBC<User, UUID> {
+public final class UserDAODefault extends AbstractDAOJDBC<User>
+        implements UserDAO {
     private static final String TABLE_NAME = "user";
 
     /**
@@ -37,11 +38,15 @@ public final class UserDAODefault extends AbstractDAOJDBC<User, UUID> {
 
             try (PreparedStatement statement
                          = connection.prepareStatement(sql)) {
-                statement.setObject(1, user.getId());
+                statement.setString(1, user.getId().toString());
                 statement.setString(2, user.getFullName());
+                //noinspection CheckStyle
                 statement.setString(3, user.getUserName());
+                //noinspection CheckStyle
                 statement.setString(4, user.getPassword());
+                //noinspection CheckStyle
                 statement.setString(5, user.getSalt());
+                //noinspection CheckStyle
                 statement.setString(6, user.getEmail());
                 statement.executeUpdate();
                 result = true;
@@ -71,14 +76,18 @@ public final class UserDAODefault extends AbstractDAOJDBC<User, UUID> {
                         user.getFullName());
                 statement.setString(2,
                         user.getUserName());
+                //noinspection CheckStyle
                 statement.setString(3,
                         user.getPassword());
+                //noinspection CheckStyle
                 statement.setString(4,
                         user.getSalt());
+                //noinspection CheckStyle
                 statement.setString(5,
                         user.getEmail());
-                statement.setObject(6,
-                        user.getId());
+                //noinspection CheckStyle
+                statement.setString(6,
+                        user.getId().toString());
                 statement.executeUpdate();
                 result = true;
             } catch (SQLException e) {
@@ -95,7 +104,7 @@ public final class UserDAODefault extends AbstractDAOJDBC<User, UUID> {
     protected User getObjectFromResult(final ResultSet resultSet)
             throws SQLException {
         return new User(
-                resultSet.getObject("id", UUID.class),
+                UUID.fromString(resultSet.getString("id")),
                 resultSet.getString("full_name"),
                 resultSet.getString("user_name"),
                 resultSet.getString("password"),

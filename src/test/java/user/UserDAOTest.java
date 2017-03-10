@@ -1,7 +1,5 @@
 package user;
 
-import core.DAO;
-
 import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
@@ -21,8 +19,8 @@ public class UserDAOTest {
             new User(UUID.randomUUID(), "Full name 4", "Nickname 4",
                     "pass", "salt", "email")};
 
-    private DAO<User, UUID> daoDefault = new UserDAODefault();
-    private DAO<User, UUID> daoMongo = new UserDAOMongo();
+    private UserDAO daoDefault = new UserDAODefault();
+    private UserDAO daoMongo = new UserDAOMongo();
 
     @org.junit.Test
     public void testDefault() throws Exception {
@@ -39,31 +37,31 @@ public class UserDAOTest {
         find(daoMongo);
         findAll(daoMongo);
         update(daoMongo);
-        //delete(daoMongo);
+        delete(daoMongo);
     }
 
-    private void find(DAO<User, UUID> userDAO) {
+    private void find(UserDAO userDAO) {
         assertEquals(users[2], userDAO.find(users[2].getId()));
     }
 
-    private void findAll(DAO<User, UUID> userDAO) {
+    private void findAll(UserDAO userDAO) {
         assertEquals(users.length, userDAO.findAll().size());
     }
 
-    private void add(DAO<User, UUID> userDAO) {
+    private void add(UserDAO userDAO) {
         for (User user : users) {
             userDAO.add(user);
         }
     }
 
-    private void update(DAO<User, UUID> userDAO) {
+    private void update(UserDAO userDAO) {
         userDAO.update(new User(users[2].getId(), "Full name changed", "",
                 "", "", ""));
         assertNotEquals(users[2].getFullName(), userDAO.find(users[2].getId()).getFullName());
         assertNotEquals(users[2].getEmail(), userDAO.find(users[2].getId()).getEmail());
     }
 
-    private void delete(DAO<User, UUID> userDAO) {
+    private void delete(UserDAO userDAO) {
         for (User user : users) {
             userDAO.delete(user.getId());
         }

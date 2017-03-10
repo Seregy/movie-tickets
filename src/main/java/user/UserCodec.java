@@ -18,8 +18,7 @@ public final class UserCodec implements Codec<User> {
     public User decode(final BsonReader reader,
                        final DecoderContext decoderContext) {
         reader.readStartDocument();
-        reader.readObjectId("_id");
-        UUID id = UUID.fromString(reader.readString("id"));
+        UUID id = UUID.fromString(reader.readString("_id"));
         String fullName = reader.readString("full_name");
         String userName = reader.readString("user_name");
         String password = reader.readString("password");
@@ -34,7 +33,7 @@ public final class UserCodec implements Codec<User> {
                        final User user,
                        final EncoderContext encoderContext) {
         writer.writeStartDocument();
-        writer.writeString("id", user.getId().toString());
+        writer.writeString("_id", user.getId().toString());
         writer.writeString("full_name", user.getFullName());
         writer.writeString("user_name", user.getUserName());
         writer.writeString("password", user.getPassword());

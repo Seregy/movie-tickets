@@ -6,19 +6,19 @@ import org.bson.codecs.Codec;
 import org.bson.codecs.DecoderContext;
 import org.bson.codecs.EncoderContext;
 
+import java.util.UUID;
+
 /**
  * Custom codec for storing {@link Cinema} objects in MongoDB.
  *
  * @author Seregy
  */
 final class CinemaCodec implements Codec<Cinema> {
-
     @Override
     public Cinema decode(final BsonReader reader,
                          final DecoderContext decoderContext) {
         reader.readStartDocument();
-        reader.readObjectId("_id");
-        int id = reader.readInt32("id");
+        UUID id = UUID.fromString(reader.readString("_id"));
         String name = reader.readString("name");
         String location = reader.readString("location");
         reader.readEndDocument();
@@ -30,7 +30,7 @@ final class CinemaCodec implements Codec<Cinema> {
                        final Cinema cinema,
                        final EncoderContext encoderContext) {
         writer.writeStartDocument();
-        writer.writeInt32("id", cinema.getId());
+        writer.writeString("_id", cinema.getId().toString());
         writer.writeString("name", cinema.getName());
         writer.writeString("location", cinema.getLocation());
         writer.writeEndDocument();

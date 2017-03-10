@@ -1,6 +1,7 @@
 package cinema;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Model that represents cinema.
@@ -8,7 +9,7 @@ import java.util.Objects;
  * @author Seregy
  */
 public final class Cinema {
-    private int id;
+    private UUID id;
     private String name;
     private String location;
 
@@ -26,7 +27,7 @@ public final class Cinema {
      * @param name full name of the cinema
      * @param location location in format [City, street, building]
      */
-    public Cinema(final int id, final String name, final String location) {
+    public Cinema(final UUID id, final String name, final String location) {
         this.id = id;
         this.name = name;
         this.location = location;
@@ -37,7 +38,7 @@ public final class Cinema {
      *
      * @return unique identifier
      */
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -47,7 +48,7 @@ public final class Cinema {
      *
      * @param id unique identifier
      */
-    public void setId(final int id) {
+    public void setId(final UUID id) {
         this.id = id;
     }
 
@@ -96,7 +97,7 @@ public final class Cinema {
             return false;
         }
         Cinema cinema = (Cinema) o;
-        return id == cinema.id;
+        return Objects.equals(id, cinema.id);
     }
 
     @Override

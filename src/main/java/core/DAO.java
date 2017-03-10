@@ -1,24 +1,23 @@
 package core;
 
-import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Generic data access object, used for accessing objects in databases.
  *
  * @param <T> Object type used in dao
- * @param <I> Id used for searching
  * @author Seregy
  */
-public interface DAO<T, I extends Serializable> {
+public interface DAO<T> {
     /**
-     * Searches for object with specified key and returns it.
+     * Searches for object with specified {@link UUID} key and returns it.
      *
-     * @param id unique identifier of the object to be found
+     * @param id {@code UUID} of the object to be found
      * @return {@link T} object with specified id
      * or {@code null} if object wasn't found
      */
-    T find(I id);
+    T find(UUID id);
 
     /**
      * Searches for all objects and return them as a list.
@@ -47,8 +46,8 @@ public interface DAO<T, I extends Serializable> {
     /**
      * Deletes specified {@link T} object.
      *
-     * @param id unique identifier of the object to be deleted
+     * @param id {@code UUID} of the object to be deleted
      * @return true if operation was successful, false otherwise
      */
-    boolean delete(I id);
+    boolean delete(UUID id);
 }

@@ -7,20 +7,16 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.result.UpdateResult;
 import core.AbstractDAOMongo;
 import org.bson.Document;
-import org.bson.codecs.Codec;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
-import user.User;
-import user.UserCodec;
-
-import java.util.UUID;
 
 /**
  * Data access object for {@link Ticket}, uses Mongo database.
  *
  * @author Seregy
  */
-public final class TicketDAOMongo extends AbstractDAOMongo<Ticket, UUID> {
+public final class TicketDAOMongo extends AbstractDAOMongo<Ticket>
+        implements TicketDAO {
     private static final String COLLECTION = "ticket";
 
     /**
@@ -41,17 +37,12 @@ public final class TicketDAOMongo extends AbstractDAOMongo<Ticket, UUID> {
             MongoCollection<Ticket> collection = getCollection();
 
             BasicDBObject change = new BasicDBObject();
-            change.put("user_id", ticket.getUser().getId());
-            change.put("full_name", ticket.getUser().getFullName());
-            change.put("user_name", ticket.getUser().getUserName());
-            change.put("password", ticket.getUser().getPassword());
-            change.put("salt", ticket.getUser().getSalt());
-            change.put("email", ticket.getUser().getEmail());
+            change.put("user_id", ticket.getUserId().toString());
             change.put("row", ticket.getRow());
             change.put("seat", ticket.getSeat());
 
             UpdateResult updateResult = collection.updateOne(
-                    Filters.eq("id", ticket.getId()),
+                    Filters.eq("_id", ticket.getId().toString()),
                     new Document("$set", change));
             result = updateResult.wasAcknowledged();
         }
@@ -61,11 +52,7 @@ public final class TicketDAOMongo extends AbstractDAOMongo<Ticket, UUID> {
 
     @Override
     protected CodecRegistry getCustomCodecRegistry() {
-        Codec<User> userCodec = new UserCodec();
-        CodecRegistry registry = CodecRegistries.fromRegistries(
-                CodecRegistries.fromCodecs(userCodec),
-                MongoClient.getDefaultCodecRegistry());
-        return CodecRegistries.fromCodecs(new TicketCodec(registry));
+        return CodecRegistries.fromCodecs(new TicketCodec());
     }
 
     @Override

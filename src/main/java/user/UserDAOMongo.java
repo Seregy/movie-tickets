@@ -10,14 +10,13 @@ import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 
-import java.util.UUID;
-
 /**
  * Data access object for {@link User}, uses Mongo database.
  *
  * @author Seregy
  */
-public final class UserDAOMongo extends AbstractDAOMongo<User, UUID> {
+public final class UserDAOMongo extends AbstractDAOMongo<User>
+        implements UserDAO {
     private static final String COLLECTION = "user";
 
     /**
@@ -45,7 +44,7 @@ public final class UserDAOMongo extends AbstractDAOMongo<User, UUID> {
             change.put("email", user.getEmail());
 
             UpdateResult updateResult = collection.updateOne(
-                    Filters.eq("id", user.getId()),
+                    Filters.eq("_id", user.getId().toString()),
                     new Document("$set", change));
             result = updateResult.wasAcknowledged();
         }

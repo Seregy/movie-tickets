@@ -1,5 +1,6 @@
 package user;
 
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -8,7 +9,7 @@ import java.util.UUID;
  *
  * @author Seregy
  */
-public class User {
+public final class User {
     private UUID id;
     private String fullName;
     private String userName;
@@ -148,5 +149,22 @@ public class User {
      */
     public void setEmail(final String email) {
         this.email = email;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        User user = (User) o;
+        return Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

@@ -15,7 +15,8 @@ import org.bson.codecs.configuration.CodecRegistry;
  *
  * @author Seregy
  */
-public final class CinemaDAOMongo extends AbstractDAOMongo<Cinema, Integer> {
+public final class CinemaDAOMongo extends AbstractDAOMongo<Cinema>
+        implements CinemaDAO {
     private static final String COLLECTION = "cinema";
 
     /**
@@ -40,7 +41,7 @@ public final class CinemaDAOMongo extends AbstractDAOMongo<Cinema, Integer> {
             change.put("location", cinema.getLocation());
 
             UpdateResult updateResult = collection.updateOne(
-                    Filters.eq("id", cinema.getId()),
+                    Filters.eq("_id", cinema.getId().toString()),
                     new Document("$set", change));
             result = updateResult.wasAcknowledged();
         }

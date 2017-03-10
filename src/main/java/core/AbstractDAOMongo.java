@@ -10,20 +10,19 @@ import com.mongodb.client.result.DeleteResult;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * A basic implementation of most of the methods in DAO interface for MongoDB.
  *
  * @param <T> Object type used in dao
- * @param <I> Id used for searching
  * @author Seregy
  * @see DAO
  */
-public abstract class AbstractDAOMongo<T, I extends Serializable>
-        implements DAO<T, I> {
+public abstract class AbstractDAOMongo<T>
+        implements DAO<T> {
     /**
      * Default hostname for MongoDB.
      */
@@ -59,13 +58,16 @@ public abstract class AbstractDAOMongo<T, I extends Serializable>
      * {@inheritDoc}
      */
     @Override
-    public T find(final I id) {
+    public T find(final UUID id) {
         T object = null;
 
         try (MongoClient client = getMongoClient()) {
             MongoCollection<T> collection = getCollection();
             try (MongoCursor<T> cursor =
-                         collection.find(Filters.eq("id", id)).iterator()) {
+                         collection.find(
+                                 Filters.eq("_id",
+                                 id.toString())
+                         ).iterator()) {
                 if (cursor.hasNext()) {
                     object = cursor.next();
                 }
@@ -118,14 +120,14 @@ public abstract class AbstractDAOMongo<T, I extends Serializable>
      * {@inheritDoc}
      */
     @Override
-    public boolean delete(final I id) {
+    public boolean delete(final UUID id) {
         boolean result;
 
         try (MongoClient client = getMongoClient()) {
             MongoCollection<T> collection = getCollection();
 
             DeleteResult deleteResult =
-                    collection.deleteOne(Filters.eq("id", id));
+                    collection.deleteOne(Filters.eq("_id", id.toString()));
             result = deleteResult.wasAcknowledged();
         }
 

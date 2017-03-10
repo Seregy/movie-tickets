@@ -1,8 +1,6 @@
 package ticket;
 
 import core.AbstractDAOJDBC;
-import core.DAO;
-import user.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,22 +13,19 @@ import java.util.UUID;
  *
  * @author Seregy
  */
-public final class TicketDAODefault extends AbstractDAOJDBC<Ticket, UUID> {
+public final class TicketDAODefault extends AbstractDAOJDBC<Ticket>
+        implements TicketDAO {
     private static final String TABLE_NAME = "ticket";
-    private final DAO<User, UUID> userDAO;
 
     /**
      * Constructs a new JDBC DAO for {@link Ticket}
-     * with {@link User} DAO, default database's url,
+     * with default database's url,
      * user's name and user's password.
-     *
-     * @param userDAO {@code User} DAO for getting user
      */
-    public TicketDAODefault(final DAO<User, UUID> userDAO) {
+    public TicketDAODefault() {
         super(AbstractDAOJDBC.DATABASE_URL,
                 AbstractDAOJDBC.DATABASE_USER,
                 AbstractDAOJDBC.DATABASE_USER_PASSWORD);
-        this.userDAO = userDAO;
     }
 
     @Override
@@ -43,9 +38,11 @@ public final class TicketDAODefault extends AbstractDAOJDBC<Ticket, UUID> {
 
             try (PreparedStatement statement
                          = connection.prepareStatement(sql)) {
-                statement.setObject(1, ticket.getId());
-                statement.setObject(2, ticket.getUser().getId());
+                statement.setString(1, ticket.getId().toString());
+                statement.setString(2, ticket.getUserId().toString());
+                //noinspection CheckStyle
                 statement.setInt(3, ticket.getRow());
+                //noinspection CheckStyle
                 statement.setInt(4, ticket.getSeat());
                 statement.executeUpdate();
                 result = true;
@@ -70,14 +67,16 @@ public final class TicketDAODefault extends AbstractDAOJDBC<Ticket, UUID> {
 
             try (PreparedStatement statement
                          = connection.prepareStatement(sql)) {
-                statement.setObject(1,
-                        ticket.getUser().getId());
+                statement.setString(1,
+                        ticket.getUserId().toString());
                 statement.setInt(2,
                         ticket.getRow());
+                //noinspection CheckStyle
                 statement.setInt(3,
                         ticket.getSeat());
-                statement.setObject(4,
-                        ticket.getId());
+                //noinspection CheckStyle
+                statement.setString(4,
+                        ticket.getId().toString());
                 statement.executeUpdate();
                 result = true;
             } catch (SQLException e) {
@@ -93,8 +92,8 @@ public final class TicketDAODefault extends AbstractDAOJDBC<Ticket, UUID> {
     @Override
     protected Ticket getObjectFromResult(final ResultSet resultSet)
             throws SQLException {
-        return new Ticket(resultSet.getObject("id", UUID.class),
-                userDAO.find(resultSet.getObject("user_id", UUID.class)),
+        return new Ticket(UUID.fromString(resultSet.getString("id")),
+                UUID.fromString(resultSet.getString("user_id")),
                 resultSet.getInt("row"),
                 resultSet.getInt("seat"));
     }

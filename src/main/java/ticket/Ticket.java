@@ -1,7 +1,6 @@
 package ticket;
 
-import user.User;
-
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -9,9 +8,9 @@ import java.util.UUID;
  *
  * @author Seregy
  */
-public class Ticket {
+public final class Ticket {
     private UUID id;
-    private User user;
+    private UUID userId;
 
     private int row;
     private int seat;
@@ -20,14 +19,15 @@ public class Ticket {
      * Constructs new {@code Ticket} with specified id, user, row and seat.
      *
      * @param id unique identifier of the ticket
-     * @param user {@link User} associated with the ticket
+     * @param userId unique identifier of the {@link user.User},
+     *               associated with the ticket
      * @param row row number of the ticket
      * @param seat seat number of the ticket
      */
-    public Ticket(final UUID id, final User user,
+    public Ticket(final UUID id, final UUID userId,
                   final int row, final int seat) {
         this.id = id;
-        this.user = user;
+        this.userId = userId;
         this.row = row;
         this.seat = seat;
     }
@@ -51,21 +51,23 @@ public class Ticket {
     }
 
     /**
-     * Gets {@link User}, associated with the ticket.
+     * Gets unique identifier of the {@link user.User},
+     * associated with the ticket.
      *
      * @return {@code User} object
      */
-    public User getUser() {
-        return user;
+    public UUID getUserId() {
+        return userId;
     }
 
     /**
-     * Sets {@link User}, associated with the ticket.
+     * Sets unique identifier of the {@link user.User},
+     * associated with the ticket.
      *
-     * @param user {@code User} object
+     * @param userId {@code User} object
      */
-    public void setUser(final User user) {
-        this.user = user;
+    public void setUserId(final UUID userId) {
+        this.userId = userId;
     }
 
     /**
@@ -102,5 +104,22 @@ public class Ticket {
      */
     public void setSeat(final int seat) {
         this.seat = seat;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Ticket ticket = (Ticket) o;
+        return Objects.equals(id, ticket.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

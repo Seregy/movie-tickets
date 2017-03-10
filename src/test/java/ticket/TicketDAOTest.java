@@ -1,8 +1,6 @@
 package ticket;
 
-import core.DAO;
 import user.User;
-import user.UserDAODefault;
 
 import java.util.UUID;
 
@@ -23,13 +21,13 @@ public class TicketDAOTest {
             new User(UUID.randomUUID(), "Full name 4", "Nickname 4",
                     "pass", "salt", "email")};
     private final Ticket[] tickets = {
-            new Ticket(UUID.randomUUID(), users[0], 1, 3),
-            new Ticket(UUID.randomUUID(), users[1], 2, 5),
-            new Ticket(UUID.randomUUID(), users[2], 3, 7),
-            new Ticket(UUID.randomUUID(), users[3], 4, 9)};
+            new Ticket(UUID.randomUUID(), users[0].getId(), 1, 3),
+            new Ticket(UUID.randomUUID(), users[1].getId(), 2, 5),
+            new Ticket(UUID.randomUUID(), users[2].getId(), 3, 7),
+            new Ticket(UUID.randomUUID(), users[3].getId(), 4, 9)};
 
-    private DAO<Ticket, UUID> daoDefault = new TicketDAODefault(new UserDAODefault());
-    private DAO<Ticket, UUID> daoMongo = new TicketDAOMongo();
+    private TicketDAO daoDefault = new TicketDAODefault();
+    private TicketDAO daoMongo = new TicketDAOMongo();
 
     @org.junit.Test
     public void testDefault() throws Exception {
@@ -43,34 +41,34 @@ public class TicketDAOTest {
     @org.junit.Test
     public void testMongo() throws Exception {
         add(daoMongo);
-        //find(daoMongo);
+        find(daoMongo);
         findAll(daoMongo);
         update(daoMongo);
         delete(daoMongo);
     }
 
-    private void find(DAO<Ticket, UUID> ticketDAO) {
+    private void find(TicketDAO ticketDAO) {
         assertEquals(tickets[2], ticketDAO.find(tickets[2].getId()));
     }
 
-    private void findAll(DAO<Ticket, UUID> ticketDAO) {
+    private void findAll(TicketDAO ticketDAO) {
         assertEquals(tickets.length, ticketDAO.findAll().size());
     }
 
-    private void add(DAO<Ticket, UUID> ticketDAO) {
+    private void add(TicketDAO ticketDAO) {
         for (Ticket ticket : tickets) {
             ticketDAO.add(ticket);
         }
     }
 
-    private void update(DAO<Ticket, UUID> ticketDAO) {
-        ticketDAO.update(new Ticket(tickets[2].getId(), users[0], 12, 12));
+    private void update(TicketDAO ticketDAO) {
+        ticketDAO.update(new Ticket(tickets[2].getId(), users[0].getId(), 12, 12));
         assertNotEquals(tickets[2].getRow(), ticketDAO.find(tickets[2].getId()).getRow());
-        assertNotEquals(tickets[2].getUser().getFullName(),
-                ticketDAO.find(users[2].getId()).getUser().getFullName());
+        assertNotEquals(tickets[2].getUserId(),
+                ticketDAO.find(tickets[2].getId()).getUserId());
     }
 
-    private void delete(DAO<Ticket, UUID> ticketDAO) {
+    private void delete(TicketDAO ticketDAO) {
         for (Ticket ticket : tickets) {
             ticketDAO.delete(ticket.getId());
         }
