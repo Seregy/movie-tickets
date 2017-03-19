@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cinemas</title>
+    <link rel="stylesheet" href="css/main.css">
+    <script src="scripts/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Location</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<img id="loader" src="res/loader.svg">
+
+<script>
+    var $loader = $("#loader").hide();
+    $(document).ajaxStart(function () {
+        $loader.show();
+    }).ajaxStop(function () {
+        $loader.hide();
+    });
+
+    function loadTable() {
+        var tbody = $("tbody");
+        $.get("api/cinemas", undefined, function (data) {
+            tbody.html(data);
+            tbody.on('click', "button.delete", function () {
+                deleteUser($(this).attr("data-value"));
+            });
+        });
+    }
+
+    function deleteUser(id) {
+        $.post("api/cinemas",
+            {
+                "delete_id": id
+            },
+            function () {
+                loadTable();
+            })
+    }
+
+    loadTable();
+</script>
+</body>
+</html>
