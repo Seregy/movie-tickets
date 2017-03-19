@@ -18,7 +18,8 @@ public abstract class AbstractDAOJDBC<T>
      * Default url for the database.
      */
     protected static final String DATABASE_URL =
-            "jdbc:mysql://localhost:3306/test";
+            "jdbc:mysql://localhost:3306/test"
+                    + "?useLegacyDatetimeCode=false&serverTimezone=UTC";
     /**
      * Default user for the database.
      */
