@@ -1,5 +1,9 @@
 package movie;
 
+import movie.dao.MovieDAO;
+import movie.dao.MovieDAODefault;
+import movie.dao.MovieDAOMongo;
+
 import static org.junit.Assert.*;
 
 /**

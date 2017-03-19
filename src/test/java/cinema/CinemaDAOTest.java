@@ -1,5 +1,9 @@
 package cinema;
 
+import cinema.dao.CinemaDAO;
+import cinema.dao.CinemaDAODefault;
+import cinema.dao.CinemaDAOMongo;
+
 import java.util.UUID;
 
 import static org.junit.Assert.*;

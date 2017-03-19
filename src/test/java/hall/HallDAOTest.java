@@ -1,6 +1,10 @@
 package hall;
 
 
+import hall.dao.HallDAO;
+import hall.dao.HallDAODefault;
+import hall.dao.HallDAOMongo;
+
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;

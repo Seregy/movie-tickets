@@ -1,5 +1,9 @@
 package user;
 
+import user.dao.UserDAO;
+import user.dao.UserDAODefault;
+import user.dao.UserDAOMongo;
+
 import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
