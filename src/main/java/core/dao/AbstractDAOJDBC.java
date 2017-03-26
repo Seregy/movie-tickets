@@ -33,6 +33,14 @@ public abstract class AbstractDAOJDBC<T>
     private final String userName;
     private final String userPassword;
 
+    static {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Constructs a new DAO object for JDBC with specified database's url,
      * user's name and user's password.
