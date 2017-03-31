@@ -32,7 +32,7 @@ public class UserDAOTest {
         find(daoDefault);
         update(daoDefault);
         findAll(daoDefault);
-        delete(daoDefault);
+        //delete(daoDefault);
     }
 
     @org.junit.Test
@@ -41,7 +41,7 @@ public class UserDAOTest {
         find(daoMongo);
         findAll(daoMongo);
         update(daoMongo);
-        delete(daoMongo);
+        //delete(daoMongo);
     }
 
     private void find(UserDAO userDAO) {

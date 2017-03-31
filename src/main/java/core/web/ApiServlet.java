@@ -1,14 +1,17 @@
 package core.web;
 
 import cinema.dao.CinemaDAO;
-import cinema.dao.CinemaDAODefault;
 import core.dao.DAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 import ticket.dao.TicketDAO;
-import ticket.dao.TicketDAODefault;
 import user.dao.UserDAO;
-import user.dao.UserDAODefault;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +24,7 @@ import java.util.UUID;
  *
  * @author Seregy
  */
+@Controller
 public final class ApiServlet extends HttpServlet {
     private static final String USERS_REQUEST_PATH = "/users";
     private static final String TICKETS_REQUEST_PATH = "/tickets";
@@ -37,9 +41,16 @@ public final class ApiServlet extends HttpServlet {
     private static final String CINEMAS_JSP_PATH =
             "../WEB-INF/cinemas_table.jsp";
 
-    private final UserDAO userDAO = new UserDAODefault();
-    private final TicketDAO ticketDAO = new TicketDAODefault();
-    private final CinemaDAO cinemaDAO = new CinemaDAODefault();
+    private UserDAO userDAO;
+    private TicketDAO ticketDAO;
+    private CinemaDAO cinemaDAO;
+
+    @Override
+    public void init(final ServletConfig config) throws ServletException {
+        super.init(config);
+        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
+                config.getServletContext());
+    }
 
     /**
      * {@inheritDoc}
@@ -78,6 +89,7 @@ public final class ApiServlet extends HttpServlet {
     protected void doGet(final HttpServletRequest request,
                          final HttpServletResponse response)
             throws javax.servlet.ServletException, IOException {
+
         if (request.getPathInfo() == null) {
             return;
         }
@@ -137,5 +149,41 @@ public final class ApiServlet extends HttpServlet {
     private void deleteObject(final HttpServletRequest request,
                               final DAO<?> dao) {
         dao.delete(UUID.fromString(request.getParameter("delete_id")));
+    }
+
+    /**
+     * Sets {@link UserDAO} object to be used by servlet.
+     * Used by Spring for IoC
+     *
+     * @param userDAO dao object
+     */
+    @Required
+    @Autowired
+    public void setUserDAO(final UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
+
+    /**
+     * Sets {@link TicketDAO} object to be used by servlet.
+     * Used by Spring for IoC
+     *
+     * @param ticketDAO dao object
+     */
+    @Required
+    @Autowired
+    public void setTicketDAO(final TicketDAO ticketDAO) {
+        this.ticketDAO = ticketDAO;
+    }
+
+    /**
+     * Sets {@link CinemaDAO} object to be used by servlet.
+     * Used by Spring for IoC
+     *
+     * @param cinemaDAO dao object
+     */
+    @Required
+    @Autowired
+    public void setCinemaDAO(final CinemaDAO cinemaDAO) {
+        this.cinemaDAO = cinemaDAO;
     }
 }
