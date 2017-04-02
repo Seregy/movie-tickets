@@ -1,36 +1,37 @@
 package movie;
 
-import java.util.Objects;
-import java.util.UUID;
+import session.Session;
+
+import javax.persistence.*;
+import java.util.*;
 
 /**
  * Created by Incy on 06.03.2017.
  */
+@Entity
 public class Movie {
 
-private final UUID id;
-private  String name;
-private int duration;
-private String annotation;
+    @Id
+    @GeneratedValue
+    private  UUID id;
 
-    public Movie(String name, int duration, String annotation)
+    private  String name;
+
+    private int duration;
+
+    private String annotation;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "movie")
+    Set<Session> sessions = new HashSet<>();
+
+    public Movie(final String name, final int duration,final String annotation)
     {
         this.name = name;
         this.duration = duration > 0 ? duration : Math.abs(duration);
         this.annotation = annotation;
-        id =  UUID.randomUUID();
-
     }
 
-    public Movie(final UUID id, String name, int duration, String annotation)
-    {
-        this.id = id;
-        this.name = name;
-        this.duration = duration > 0 ? duration : Math.abs(duration);
-        this.annotation = annotation;
-
-    }
-    public Movie(String name)
+    public Movie(final String name)
     {
         this(name,0,"");
     }
@@ -40,7 +41,7 @@ private String annotation;
        return id;
     }
 
-    public void setName(String name)
+    public void setName(final String name)
     {
        this.name = name;
     }
@@ -50,7 +51,7 @@ private String annotation;
         return name;
     }
 
-    public void setDuration(int duration)
+    public void setDuration(final int duration)
     {
         this.duration = duration;
     }
@@ -60,7 +61,7 @@ private String annotation;
         return duration;
     }
 
-    public void setAnnotation(String annotation)
+    public void setAnnotation(final String annotation)
     {
         this.annotation = annotation;
     }
@@ -68,6 +69,23 @@ private String annotation;
     public String getAnnotation()
     {
         return annotation;
+    }
+
+    public Set<Session> getSessions()
+    {
+        return sessions;
+    }
+
+    public void addSession(final Session session)
+    {
+        sessions.add(session);
+        session.setMovie(this);
+    }
+
+    public void removeSession(final Session session)
+    {
+        if(sessions.remove(session))
+            session.setMovie(null);
     }
 
     @Override
@@ -79,21 +97,6 @@ private String annotation;
             + ", duration='" + duration + " minutes"+ '\''
             + ", annotation='" + annotation + '\''
             + '}';
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj==this)
-            return true;
-        if(obj==null||obj.getClass()!=getClass())
-            return false;
-        Movie movie = (Movie)obj;
-        return Objects.equals(id,movie.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 
 }

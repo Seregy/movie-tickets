@@ -1,17 +1,27 @@
 package cinema;
 
-import java.util.Objects;
-import java.util.UUID;
+import hall.Hall;
+
+import javax.persistence.*;
+import java.util.*;
 
 /**
  * Model that represents cinema.
  *
  * @author Seregy
  */
+@Entity
 public final class Cinema {
+    @Id
+    @GeneratedValue
     private UUID id;
+
     private String name;
+
     private String location;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "cinema")
+    Set<Hall> halls = new HashSet<>();
 
     /**
      * Constructor for serialization.
@@ -23,12 +33,10 @@ public final class Cinema {
     /**
      * Constructs new cinema with specified id, name and location.
      *
-     * @param id unique identifier of the cinema
      * @param name full name of the cinema
      * @param location location in format [City, street, building]
      */
-    public Cinema(final UUID id, final String name, final String location) {
-        this.id = id;
+    public Cinema( final String name, final String location) {
         this.name = name;
         this.location = location;
     }
@@ -88,21 +96,26 @@ public final class Cinema {
         this.location = location;
     }
 
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Cinema cinema = (Cinema) o;
-        return Objects.equals(id, cinema.id);
+
+    public Set<Hall> getHalls()
+    {
+        return halls;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setHalls(Set<Hall> halls) {
+        this.halls = halls;
+    }
+
+    public void addHall(final Hall hall)
+    {
+        halls.add(hall);
+        hall.setCinema(this);
+    }
+
+    public void removeHall(final Hall hall)
+    {
+        if(halls.remove(hall))
+            hall.setCinema(null);
     }
 
     @Override

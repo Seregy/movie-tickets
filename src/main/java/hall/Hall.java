@@ -1,30 +1,35 @@
 package hall;
 
-import java.util.Objects;
-import java.util.UUID;
+import cinema.Cinema;
+import session.Session;
+
+import javax.persistence.*;
+import java.util.*;
 
 /**
  * Created by Incy on 06.03.2017.
  */
+@Entity
 public class Hall {
 
-    private final UUID id;
+    @Id
+    @GeneratedValue
+    private UUID id;
+
     private String name;
-    private  UUID cinemaId;
 
-    public Hall(String name, final UUID cinema)
+    @ManyToOne
+    private Cinema cinema;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "hall")
+    private Set<Session> sessions = new HashSet<>();
+
+    public Hall(final String name, final Cinema cinema)
     {
         this.name = name;
-        this.cinemaId = cinema;
-        id = UUID.randomUUID();
+        this.cinema = cinema;
     }
 
-    public Hall(UUID id,String name, final UUID cinema)
-    {
-        this.id = id;
-        this.name = name;
-        this.cinemaId = cinema;
-    }
 
     public UUID getId()
     {
@@ -41,9 +46,29 @@ public class Hall {
         return name;
     }
 
-    public UUID getCinemaId()
+    public Cinema getCinema() {
+        return cinema;
+    }
+
+    public void setCinema(final Cinema cinema) {
+        this.cinema = cinema;
+    }
+
+    public Set<Session> getSessions()
     {
-        return cinemaId;
+        return sessions;
+    }
+
+    public void addSession(final Session session)
+    {
+        sessions.add(session);
+        session.setHall(this);
+    }
+
+    public void removeSession(final Session session)
+    {
+        if(sessions.remove(session))
+            session.setHall(null);
     }
 
     @Override
@@ -52,23 +77,8 @@ public class Hall {
         return "hall {"
                 + "id=" + id
                 + ", name='" + name + '\''
-                + ", cinemaId='" +cinemaId.toString()
+                + ", cinemaId='" +cinema.getId().toString()
                 + '}';
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj==this)
-            return true;
-        if(obj==null||obj.getClass()!=getClass())
-            return false;
-        Hall hall = (Hall)obj;
-        return Objects.equals(id,hall.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 
 

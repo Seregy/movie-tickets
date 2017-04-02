@@ -1,38 +1,48 @@
 package session;
 
+import hall.Hall;
+import movie.Movie;
+import ticket.Ticket;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 /**
  * Created by Incy on 06.03.2017.
  */
+@Entity
 public class Session {
 
-    private final UUID id;
+    @Id
+    @GeneratedValue
+    private  UUID id;
+
     private LocalDateTime sessionStart;
-    private UUID movieId;
-    private UUID hallId;
 
+    @ManyToOne
+    private Movie movie;
 
-    public Session(LocalDateTime sessionStart, UUID movieId, UUID hallId )
+    @ManyToOne
+    private Hall hall;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "session")
+    Set<Ticket> tickets = new HashSet<>();
+
+    public Session(final LocalDateTime sessionStart, final Movie movie, final Hall hall )
     {
         this.sessionStart = sessionStart;
-        this.movieId = movieId;
-        this.hallId = hallId;
-        id = UUID.randomUUID();
+        this.movie = movie;
+        this.hall = hall;
     }
 
-    public Session(UUID id, LocalDateTime sessionStart, UUID movieId, UUID hallId )
-    {
-        this.sessionStart = sessionStart;
-        this.movieId = movieId;
-        this.hallId = hallId;
-        this.id = id;
-    }
 
-public UUID getId()
-{return id;}
+    public UUID getId() {
+        return id;
+    }
 
     public void setSessionStart(LocalDateTime sessionStart)
     {
@@ -44,49 +54,47 @@ public UUID getId()
         return sessionStart;
     }
 
-    public void setMovieId(UUID movieId)
-    {
-        this.movieId = movieId;
+    public Movie getMovie() {
+        return movie;
     }
 
-    public UUID getMovieId()
-    {
-        return movieId;
+    public void setMovie(final Movie movie) {
+        this.movie = movie;
     }
 
-    public void setHallId(UUID hallId)
-    {
-        this.hallId = hallId;
+    public Hall getHall() {
+        return hall;
     }
 
-    public UUID getHallId()
-    {
-        return hallId;
+    public void setHall(final Hall hall) {
+        this.hall = hall;
     }
 
-  @Override
+    public Set<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void addTicket(final Ticket ticket)
+    {
+        tickets.add(ticket);
+        ticket.setSession(this);
+    }
+
+    public void removeTicket(final Ticket ticket)
+    {
+        if(tickets.remove(ticket))
+            ticket.setSession(null);
+    }
+
+    @Override
     public String toString()
   {
       return "session{"
               + "id=" + id
               + ", sessionStart='" + sessionStart.toString() + '\''
-              + ", movieId='" + movieId+ '\''
-              + ", hallId='" + hallId + '\''
+              + ", movieId='" + movie.getId().toString()+ '\''
+              + ", hallId='" + hall.getId().toString() + '\''
               + '}';
   }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj==this)
-            return true;
-        if(obj==null||obj.getClass()!=getClass())
-            return false;
-        Session session = (Session) obj;
-        return Objects.equals(id,session.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

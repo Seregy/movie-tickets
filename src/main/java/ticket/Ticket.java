@@ -1,5 +1,13 @@
 package ticket;
 
+import session.Session;
+import user.User;
+
+import javax.jws.soap.SOAPBinding;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -8,26 +16,35 @@ import java.util.UUID;
  *
  * @author Seregy
  */
+@Entity
 public final class Ticket {
+    @Id
+    @GeneratedValue
     private UUID id;
-    private UUID userId;
 
     private int row;
     private int seat;
 
+    @ManyToOne
+    private Session session;
+
+    @ManyToOne
+    private User user;
+
     /**
      * Constructs new {@code Ticket} with specified id, user, row and seat.
      *
-     * @param id unique identifier of the ticket
-     * @param userId unique identifier of the {@link user.User},
+     * @param user user {@link user.User},
+     *               associated with the ticket
+      @param session session {@link session.Session},
      *               associated with the ticket
      * @param row row number of the ticket
      * @param seat seat number of the ticket
      */
-    public Ticket(final UUID id, final UUID userId,
+    public Ticket(final User user, final Session session,
                   final int row, final int seat) {
-        this.id = id;
-        this.userId = userId;
+        this.session = session;
+        this.user = user;
         this.row = row;
         this.seat = seat;
     }
@@ -51,23 +68,23 @@ public final class Ticket {
     }
 
     /**
-     * Gets unique identifier of the {@link user.User},
+     * Gets user {@link user.User},
      * associated with the ticket.
      *
      * @return {@code User} object
      */
-    public UUID getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
     /**
-     * Sets unique identifier of the {@link user.User},
+     * Sets user {@link user.User},
      * associated with the ticket.
      *
-     * @param userId {@code User} object
+     * @param user {@code User} object
      */
-    public void setUserId(final UUID userId) {
-        this.userId = userId;
+    public void setUser(final User user) {
+        this.user = user;
     }
 
     /**
@@ -106,20 +123,11 @@ public final class Ticket {
         this.seat = seat;
     }
 
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Ticket ticket = (Ticket) o;
-        return Objects.equals(id, ticket.id);
+    public Session getSession() {
+        return session;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setSession(final Session session) {
+        this.session = session;
     }
 }
