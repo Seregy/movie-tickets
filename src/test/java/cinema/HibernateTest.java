@@ -1,5 +1,7 @@
 package cinema;
 
+import cinema.dao.CinemaDAOHibernate;
+import core.dao.AbstractDAOHibernate;
 import hall.Hall;
 import movie.Movie;
 import org.junit.Test;
@@ -16,6 +18,7 @@ import javax.persistence.Query;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import static org.junit.Assert.*;
 
@@ -52,14 +55,21 @@ public class HibernateTest {
 
 
         Cinema foundCinema = entityManager.find(Cinema.class, cinema.getId());
+
         Set<Hall> allHalls = foundCinema.getHalls();
 
         entityManager.getTransaction().commit();
         entityManager.close();
         emf.close();
 
+        CinemaDAOHibernate cinemaDAOHibernate = new CinemaDAOHibernate();
 
+        cinemaDAOHibernate.find(cinema.getId());
+        cinemaDAOHibernate.delete(UUID.randomUUID());
+        cinema.setName("NEEEEW");
+        cinemaDAOHibernate.findAll();
 
+        cinemaDAOHibernate.update(cinema);
     }
 
 }
