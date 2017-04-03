@@ -4,10 +4,7 @@ import session.Session;
 import user.User;
 
 import javax.jws.soap.SOAPBinding;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -20,6 +17,7 @@ import java.util.UUID;
 public final class Ticket {
     @Id
     @GeneratedValue
+    @Column( columnDefinition = "BINARY(16)", length = 16 )
     private UUID id;
 
     private int row;

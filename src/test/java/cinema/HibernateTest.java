@@ -46,30 +46,40 @@ public class HibernateTest {
         entityManager.persist(movie);
 
         entityManager.getTransaction().commit();
+       entityManager.close();
 
 
 
+        entityManager = emf.createEntityManager();
 
         entityManager.getTransaction().begin();
 
 
-
-        Cinema foundCinema = entityManager.find(Cinema.class, cinema.getId());
-
-        Set<Hall> allHalls = foundCinema.getHalls();
-
-        entityManager.getTransaction().commit();
-        entityManager.close();
-        emf.close();
-
         CinemaDAOHibernate cinemaDAOHibernate = new CinemaDAOHibernate();
+        Cinema foundCinema = entityManager.find(Cinema.class, cinema.getId());
+        entityManager.merge(cinema);
+        List<Cinema> cinemaList = cinemaDAOHibernate.findAll();
 
-        cinemaDAOHibernate.find(cinema.getId());
-        cinemaDAOHibernate.delete(UUID.randomUUID());
-        cinema.setName("NEEEEW");
-        cinemaDAOHibernate.findAll();
+//UUID id = cinema.getId();
+//        Cinema foundCinema = entityManager.find(Cinema.class, cinema.getId());
+//
+//        Set<Hall> allHalls = foundCinema.getHalls();
+//
+//        entityManager.getTransaction().commit();
+//        entityManager.close();
+//        emf.close();
 
-        cinemaDAOHibernate.update(cinema);
+//        CinemaDAOHibernate cinemaDAOHibernate = new CinemaDAOHibernate();
+//        Cinema cinema1 = new Cinema("TEEEST","");
+//        cinemaDAOHibernate.add(cinema1);
+//        Cinema c1 = cinemaDAOHibernate.find(cinema.getId());
+////        cinemaDAOHibernate.delete(UUID.randomUUID());
+//      cinema1.setName("NEEEEW");
+////        Cinema founfCinema = cinemaDAOHibernate.find(cinema.getId());
+////        cinemaDAOHibernate.findAll();
+////
+//    cinemaDAOHibernate.update(c1);
+
     }
 
 }

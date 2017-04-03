@@ -22,10 +22,10 @@ public abstract class AbstractDAOHibernate<T> implements DAO<T> {
     protected static final String PERSISTENCE_UNIT = "cinemaDB";
     private final String persistenceUnit;
     private final Class<T> entityBeanType;
-    ;
 
-    private EntityManager entityManager;
-    private EntityManagerFactory entityManagerFactory;
+
+    protected static EntityManager entityManager;
+    protected static EntityManagerFactory entityManagerFactory;
 
 
     @SuppressWarnings("unchecked")
@@ -33,54 +33,30 @@ public abstract class AbstractDAOHibernate<T> implements DAO<T> {
         this.persistenceUnit = persistenceUnit;
         this.entityBeanType = ((Class) ((ParameterizedType) getClass()
                 .getGenericSuperclass()).getActualTypeArguments()[0]);
+        entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnit);
+        entityManager = entityManagerFactory.createEntityManager();
     }
 
     @Override
     public T find(final UUID id) {
         T object = null;
-
-        try {
-            createFactory();
-            createManager();
-            EntityTransaction entityTransaction = entityManager.getTransaction();
-            entityTransaction.begin();
-
-            try {
-                object = entityManager.find(entityBeanType, id);
-                entityTransaction.commit();
-            } catch (NullPointerException e) {
-                e.printStackTrace();
-                entityTransaction.rollback();
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+        object = entityManager.find(entityBeanType, id);
+        entityTransaction.commit();
         return object;
     }
 
     @Override
     public boolean delete(final UUID id) {
         boolean result = false;
-        try {
-            createFactory();
-            createManager();
+        T object = find(id);
+        if (object != null) {
             EntityTransaction entityTransaction = entityManager.getTransaction();
             entityTransaction.begin();
-            T object = find(id);
-            if (object != null) {
-                try {
-                    entityManager.remove(object);
-                    entityManager.getTransaction().commit();
-                    result = true;
-                }catch (Exception e)
-                {
-                    e.printStackTrace();
-                    entityTransaction.rollback();
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            entityManager.remove(object);
+            entityTransaction.commit();
+            result = true;
         }
         return result;
     }
@@ -88,66 +64,33 @@ public abstract class AbstractDAOHibernate<T> implements DAO<T> {
     @Override
     public List<T> findAll() {
         List<T> objects = new ArrayList<>();
-        try {
-            createFactory();
-            createManager();
-            EntityTransaction entityTransaction = entityManager.getTransaction();
-            entityTransaction.begin();
-            try {
-                objects = entityManager.createQuery("from " + entityBeanType.getName(), entityBeanType).getResultList();
-                entityTransaction.commit();
-            } catch (Exception e) {
-                e.printStackTrace();
-                entityTransaction.rollback();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+        objects = entityManager.createQuery("from " + entityBeanType.getName(), entityBeanType).getResultList();
+        entityTransaction.commit();
         return objects;
     }
 
     @Override
     public boolean add(T object) {
-        boolean result = false;
-        try {
-            createFactory();
-            createManager();
-            EntityTransaction entityTransaction = entityManager.getTransaction();
-            entityTransaction.begin();
-            try {
-                entityManager.persist(object);
-                entityManager.getTransaction().commit();
-                result = true;
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-                entityTransaction.rollback();
-            }
-        }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        return result;
+
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+        entityManager.persist(object);
+        entityManager.getTransaction().commit();
+        return true;
     }
 
     @Override
     public boolean update(T object) {
-       return add(object);
+
+        EntityTransaction entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+        entityManager.merge(object);
+        entityTransaction.commit();
+        return true;
     }
 
-    private void createFactory() throws Exception {
-
-        if (entityManagerFactory == null) {
-            entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnit);
-        }
-    }
-
-    private void createManager() throws Exception
-    {
-        if(entityManager==null) {
-            entityManager = entityManagerFactory.createEntityManager();
-        }
-    }
 
     public String getPersistenceUnit() {
         return persistenceUnit;
