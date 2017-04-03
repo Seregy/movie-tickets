@@ -34,20 +34,14 @@ public final class Ticket {
     /**
      * Constructs new {@code Ticket} with specified id, user, row and seat.
      *
-     * @param user user {@link user.User},
-     *               associated with the ticket
-      @param session session {@link session.Session},
-     *               associated with the ticket
      * @param row row number of the ticket
      * @param seat seat number of the ticket
      */
-    public Ticket(final User user, final Session session,
-                  final int row, final int seat) {
-        this.session = session;
-        this.user = user;
+    public Ticket(final int row, final int seat) {
         this.row = row;
         this.seat = seat;
     }
+    protected Ticket(){}
 
     /**
      * Gets unique identifier of the ticket.

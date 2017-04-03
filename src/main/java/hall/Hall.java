@@ -24,11 +24,12 @@ public class Hall {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hall")
     private Set<Session> sessions = new HashSet<>();
 
-    public Hall(final String name, final Cinema cinema)
+    public Hall(final String name)
     {
         this.name = name;
-        this.cinema = cinema;
     }
+
+    protected Hall(){}
 
 
     public UUID getId()

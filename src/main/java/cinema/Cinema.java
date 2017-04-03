@@ -26,7 +26,7 @@ public final class Cinema {
     /**
      * Constructor for serialization.
      */
-    private Cinema() {
+    protected Cinema() {
 
     }
 

@@ -32,13 +32,11 @@ public class Session {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "session")
     Set<Ticket> tickets = new HashSet<>();
 
-    public Session(final LocalDateTime sessionStart, final Movie movie, final Hall hall )
+    public Session(final LocalDateTime sessionStart )
     {
         this.sessionStart = sessionStart;
-        this.movie = movie;
-        this.hall = hall;
     }
-
+    protected Session(){}
 
     public UUID getId() {
         return id;

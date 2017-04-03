@@ -31,6 +31,8 @@ public class Movie {
         this.annotation = annotation;
     }
 
+    protected Movie(){}
+
     public Movie(final String name)
     {
         this(name,0,"");

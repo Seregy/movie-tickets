@@ -26,28 +26,20 @@ public class HibernateTest {
     @Test
     public void addTest() throws Exception {
 
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("org.hibernate.tutorial.jpa");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("cinemaDB");
         EntityManager entityManager = emf.createEntityManager();
         entityManager.getTransaction().begin();
 
-
-
         Cinema cinema = new Cinema("Favorite","somewhere");
-        Hall hall = new Hall("black",cinema);
-        cinema.addHall(hall);
-
-
+        Hall hall = new Hall("black");
+        Session session = new Session(LocalDateTime.now());
         Movie movie = new Movie("Logan");
-        Session session = new Session(LocalDateTime.now(),movie,hall);
-       // User user = new User("","","","","");
-       // Ticket ticket = new Ticket(user,session,1,2);
 
-
-        hall.addSession(session);
-        movie.addSession(session);
-
-
+        cinema.addHall(hall);
         entityManager.persist(cinema);
+
+        movie.addSession(session);
+        hall.addSession(session);
         entityManager.persist(movie);
 
         entityManager.getTransaction().commit();

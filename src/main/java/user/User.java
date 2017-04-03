@@ -2,6 +2,7 @@ package user;
 
 import ticket.Ticket;
 
+import javax.jws.soap.SOAPBinding;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
@@ -51,6 +52,7 @@ public final class User {
         this.email = email;
     }
 
+    protected User(){}
     /**
      * Gets user's unique identifier.
      *
