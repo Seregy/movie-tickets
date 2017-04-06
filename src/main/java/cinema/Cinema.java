@@ -14,7 +14,7 @@ import java.util.*;
 public final class Cinema {
     @Id
     @GeneratedValue
-    @Column( columnDefinition = "BINARY(16)", length = 16 )
+    @Column(columnDefinition = "BINARY(16)", length = 16)
     private UUID id;
 
     private String name;
@@ -22,7 +22,7 @@ public final class Cinema {
     private String location;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cinema")
-    Set<Hall> halls = new HashSet<>();
+    private Set<Hall> halls = new HashSet<>();
 
     /**
      * Constructor for serialization.
@@ -32,12 +32,12 @@ public final class Cinema {
     }
 
     /**
-     * Constructs new cinema with specified id, name and location.
+     * Constructs new cinema with specified name and location.
      *
      * @param name full name of the cinema
      * @param location location in format [City, street, building]
      */
-    public Cinema( final String name, final String location) {
+    public Cinema(final String name, final String location) {
         this.name = name;
         this.location = location;
     }
@@ -49,16 +49,6 @@ public final class Cinema {
      */
     public UUID getId() {
         return id;
-    }
-
-
-    /**
-     * Sets unique identifier of the cinema.
-     *
-     * @param id unique identifier
-     */
-    public void setId(final UUID id) {
-        this.id = id;
     }
 
     /**
@@ -97,26 +87,37 @@ public final class Cinema {
         this.location = location;
     }
 
-
-    public Set<Hall> getHalls()
-    {
+    /**
+     * Gets the set of hall objects that belong to the cinema.
+     *
+     * @return halls {@link Hall}
+     */
+    public Set<Hall> getHalls() {
         return halls;
     }
 
-    public void setHalls(Set<Hall> halls) {
-        this.halls = halls;
-    }
-
-    public void addHall(final Hall hall)
-    {
+    /**
+     * Adds hall object to the Set of hall objects.
+     * Sets hall object's parameter 'cinema' to 'this'.
+     *
+     * @param hall {@link Hall} hall object added to the Set
+     */
+    public void addHall(final Hall hall) {
         halls.add(hall);
         hall.setCinema(this);
     }
 
-    public void removeHall(final Hall hall)
-    {
-        if(halls.remove(hall))
+
+    /**
+     * Removes hall object from the Set of hall objects.
+     * Sets hall object's parameter 'cinema' to 'null'.
+     *
+     * @param hall {@link Hall} hall object removed from the Set
+     */
+    public void removeHall(final Hall hall) {
+        if (halls.remove(hall)) {
             hall.setCinema(null);
+        }
     }
 
     @Override

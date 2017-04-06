@@ -1,7 +1,5 @@
 package cinema;
 
-import cinema.dao.CinemaDAOHibernate;
-import core.dao.AbstractDAOHibernate;
 import hall.Hall;
 import movie.Movie;
 import org.junit.Test;
@@ -26,6 +24,9 @@ import static org.junit.Assert.*;
  * Created by Shera on 31.03.2017.
  */
 public class HibernateTest {
+
+
+
     @Test
     public void addTest() throws Exception {
 
@@ -55,30 +56,17 @@ public class HibernateTest {
         entityManager.getTransaction().begin();
 
 
-        CinemaDAOHibernate cinemaDAOHibernate = new CinemaDAOHibernate();
+
+
+
         Cinema foundCinema = entityManager.find(Cinema.class, cinema.getId());
-        entityManager.merge(cinema);
-        List<Cinema> cinemaList = cinemaDAOHibernate.findAll();
 
-//UUID id = cinema.getId();
-//        Cinema foundCinema = entityManager.find(Cinema.class, cinema.getId());
-//
-//        Set<Hall> allHalls = foundCinema.getHalls();
-//
-//        entityManager.getTransaction().commit();
-//        entityManager.close();
-//        emf.close();
+        Set<Hall> allHalls = foundCinema.getHalls();
 
-//        CinemaDAOHibernate cinemaDAOHibernate = new CinemaDAOHibernate();
-//        Cinema cinema1 = new Cinema("TEEEST","");
-//        cinemaDAOHibernate.add(cinema1);
-//        Cinema c1 = cinemaDAOHibernate.find(cinema.getId());
-////        cinemaDAOHibernate.delete(UUID.randomUUID());
-//      cinema1.setName("NEEEEW");
-////        Cinema founfCinema = cinemaDAOHibernate.find(cinema.getId());
-////        cinemaDAOHibernate.findAll();
-////
-//    cinemaDAOHibernate.update(c1);
+        entityManager.getTransaction().commit();
+        entityManager.close();
+        emf.close();
+
 
     }
 

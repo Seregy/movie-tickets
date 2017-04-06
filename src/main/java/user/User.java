@@ -2,10 +2,8 @@ package user;
 
 import ticket.Ticket;
 
-import javax.jws.soap.SOAPBinding;
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -19,7 +17,7 @@ import java.util.UUID;
 public final class User {
     @Id
     @GeneratedValue
-    @Column( columnDefinition = "BINARY(16)", length = 16 )
+    @Column(columnDefinition = "BINARY(16)", length = 16)
     private UUID id;
 
     private String fullName;
@@ -29,7 +27,12 @@ public final class User {
     private String email;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    Set<Ticket> tickets = new HashSet<>();
+    private Set<Ticket> tickets = new HashSet<>();
+
+    /**
+     * Constructor for serialization.
+     */
+    protected User() { }
 
     /**
      * Constructs new {@code User} with specified id, full name, user name,
@@ -53,7 +56,6 @@ public final class User {
         this.email = email;
     }
 
-    protected User(){}
     /**
      * Gets user's unique identifier.
      *
@@ -163,21 +165,36 @@ public final class User {
         this.email = email;
     }
 
-
+    /**
+     * Gets the set of ticket objects that belong to the user.
+     *
+     * @return tickets {@link Ticket}
+     */
     public Set<Ticket> getTickets() {
         return tickets;
     }
 
-    public void addTicket(final Ticket ticket)
-    {
+    /**
+     * Adds ticket object to the Set of ticket objects.
+     * Sets ticket object's parameter 'user' to 'this'.
+     *
+     * @param ticket {@link Ticket} ticket object added to the Set
+     */
+    public void addTicket(final Ticket ticket) {
         tickets.add(ticket);
         ticket.setUser(this);
     }
 
-    public void removeTicket(final Ticket ticket)
-    {
-        if(tickets.remove(ticket))
+    /**
+     * Removes ticket object from the Set of ticket objects.
+     * Sets ticket object's parameter 'user' to 'null'.
+     *
+     * @param ticket {@link Ticket} ticket object removed from the Set
+     */
+    public void removeTicket(final Ticket ticket) {
+        if (tickets.remove(ticket)) {
             ticket.setUser(null);
+        }
     }
 
 }

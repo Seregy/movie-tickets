@@ -3,9 +3,8 @@ package ticket;
 import session.Session;
 import user.User;
 
-import javax.jws.soap.SOAPBinding;
+
 import javax.persistence.*;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -17,7 +16,7 @@ import java.util.UUID;
 public final class Ticket {
     @Id
     @GeneratedValue
-    @Column( columnDefinition = "BINARY(16)", length = 16 )
+    @Column(columnDefinition = "BINARY(16)", length = 16)
     private UUID id;
 
     private int row;
@@ -30,6 +29,11 @@ public final class Ticket {
     private User user;
 
     /**
+     * Constructor for serialization.
+     */
+    protected Ticket() { }
+
+    /**
      * Constructs new {@code Ticket} with specified id, user, row and seat.
      *
      * @param row row number of the ticket
@@ -39,7 +43,6 @@ public final class Ticket {
         this.row = row;
         this.seat = seat;
     }
-    protected Ticket(){}
 
     /**
      * Gets unique identifier of the ticket.
@@ -115,10 +118,20 @@ public final class Ticket {
         this.seat = seat;
     }
 
+    /**
+     * Gets the session object this ticket belongs to.
+     *
+     * @return session {@link Session}
+     */
     public Session getSession() {
         return session;
     }
 
+    /**
+     * Sets session object this ticket belongs to.
+     *
+     * @param session {@link Session} session this ticket belongs to
+     */
     public void setSession(final Session session) {
         this.session = session;
     }
