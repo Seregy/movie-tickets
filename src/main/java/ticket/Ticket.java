@@ -13,7 +13,7 @@ import java.util.UUID;
  * @author Seregy
  */
 @Entity
-public final class Ticket {
+public class Ticket {
     @SuppressWarnings("checkstyle:MagicNumber")
     @Id
     @GeneratedValue
@@ -135,5 +135,19 @@ public final class Ticket {
      */
     public void setSession(final Session session) {
         this.session = session;
+    }
+
+    /**
+     * Returns the string representation of ticket's id, row and seat.
+     *
+     * @return information about the ticket
+     */
+    @Override
+    public String toString() {
+        return "Ticket{"
+                + "id=" + id
+                + ", row=" + row
+                + ", seat=" + seat
+                + '}';
     }
 }

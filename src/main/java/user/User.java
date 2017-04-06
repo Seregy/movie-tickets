@@ -14,7 +14,7 @@ import java.util.UUID;
  * @author Seregy
  */
 @Entity
-public final class User {
+public class User {
     @SuppressWarnings("checkstyle:MagicNumber")
     @Id
     @GeneratedValue
@@ -198,4 +198,21 @@ public final class User {
         }
     }
 
+    /**
+     * Returns the string representation of users's id, full name,
+     * user name, password, salt and email.
+     *
+     * @return information about the user
+     */
+    @Override
+    public String toString() {
+        return "User{"
+                + "id=" + id
+                + ", fullName='" + fullName + '\''
+                + ", userName='" + userName + '\''
+                + ", password='" + password + '\''
+                + ", salt='" + salt + '\''
+                + ", email='" + email + '\''
+                + '}';
+    }
 }

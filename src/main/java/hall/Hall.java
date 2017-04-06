@@ -118,18 +118,15 @@ public class Hall {
     }
 
     /**
-     * Returns the string representation of hall's id, name and cinema's id.
+     * Returns the string representation of hall's id and name.
      *
      * @return information about the hall
      */
     @Override
     public String toString() {
-        return "hall {"
+        return "Hall{"
                 + "id=" + id
                 + ", name='" + name + '\''
-                + ", cinemaId='" + cinema.getId().toString()
                 + '}';
     }
-
-
 }

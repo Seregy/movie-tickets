@@ -11,7 +11,7 @@ import java.util.*;
  * @author Seregy
  */
 @Entity
-public final class Cinema {
+public class Cinema {
     @SuppressWarnings("checkstyle:MagicNumber")
     @Id
     @GeneratedValue
@@ -119,6 +119,11 @@ public final class Cinema {
         }
     }
 
+    /**
+     * Returns the string representation of cinema's id, name and location.
+     *
+     * @return information about the cinema
+     */
     @Override
     public String toString() {
         return "Cinema{"

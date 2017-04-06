@@ -148,18 +148,15 @@ public class Session {
 
     /**
      * Returns the string representation of session's id,
-     * starting time, movie's id and hall's id.
+     * and starting time.
      *
      * @return information about the session
      */
     @Override
     public String toString() {
-      return "session{"
-              + "id=" + id
-              + ", sessionStart='" + sessionStart.toString() + '\''
-              + ", movieId='" + movie.getId().toString() + '\''
-              + ", hallId='" + hall.getId().toString() + '\''
-              + '}';
-  }
-
+        return "Session{"
+                + "id=" + id
+                + ", sessionStart=" + sessionStart
+                + '}';
+    }
 }
