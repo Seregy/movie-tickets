@@ -14,6 +14,7 @@ import java.util.UUID;
  */
 @Entity
 public final class Ticket {
+    @SuppressWarnings("checkstyle:MagicNumber")
     @Id
     @GeneratedValue
     @Column(columnDefinition = "BINARY(16)", length = 16)
@@ -29,7 +30,7 @@ public final class Ticket {
     private User user;
 
     /**
-     * Constructor for serialization.
+     * Constructor for JPA.
      */
     protected Ticket() { }
 

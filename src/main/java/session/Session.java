@@ -11,11 +11,13 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * Created by Incy on 06.03.2017.
+ * Model that represents movie's session.
+ *
+ * @author CatReeena
  */
 @Entity
 public class Session {
-
+    @SuppressWarnings("checkstyle:MagicNumber")
     @Id
     @GeneratedValue
     @Column(columnDefinition = "BINARY(16)", length = 16)
@@ -33,7 +35,7 @@ public class Session {
     private Set<Ticket> tickets = new HashSet<>();
 
     /**
-     * Constructor for serialization.
+     * Constructor for JPA.
      */
     protected Session() { }
 
@@ -144,6 +146,12 @@ public class Session {
         }
     }
 
+    /**
+     * Returns the string representation of session's id,
+     * starting time, movie's id and hall's id.
+     *
+     * @return information about the session
+     */
     @Override
     public String toString() {
       return "session{"

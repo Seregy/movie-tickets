@@ -12,6 +12,7 @@ import java.util.*;
  */
 @Entity
 public final class Cinema {
+    @SuppressWarnings("checkstyle:MagicNumber")
     @Id
     @GeneratedValue
     @Column(columnDefinition = "BINARY(16)", length = 16)
@@ -25,11 +26,9 @@ public final class Cinema {
     private Set<Hall> halls = new HashSet<>();
 
     /**
-     * Constructor for serialization.
+     * Constructor for JPA.
      */
-    protected Cinema() {
-
-    }
+    protected Cinema() { }
 
     /**
      * Constructs new cinema with specified name and location.

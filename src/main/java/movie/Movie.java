@@ -6,11 +6,13 @@ import javax.persistence.*;
 import java.util.*;
 
 /**
- * Created by Incy on 06.03.2017.
+ * Model that represents movie.
+ *
+ * @author CatReeena
  */
 @Entity
 public class Movie {
-
+    @SuppressWarnings("CheckStyle")
     @Id
     @GeneratedValue
     @Column(columnDefinition = "BINARY(16)", length = 16)
@@ -26,7 +28,7 @@ public class Movie {
     private Set<Session> sessions = new HashSet<>();
 
     /**
-     * Constructor for serialization.
+     * Constructor for JPA.
      */
     protected Movie() { }
 
@@ -37,10 +39,14 @@ public class Movie {
      * @param duration duration of the movie in minutes
      * @param annotation annotation to the movie
      */
+    @SuppressWarnings("checkstyle:AvoidInlineConditionals")
     public Movie(final String name, final int duration,
                  final String annotation) {
         this.name = name;
-        this.duration = duration > 0 ? duration : Math.abs(duration);
+
+        this.duration = duration > 0
+                ? duration
+                : Math.abs(duration);
         this.annotation = annotation;
     }
 
@@ -148,6 +154,12 @@ public class Movie {
         }
     }
 
+    /**
+     * Returns the string representation of Movie's id, name,
+     * duration and annotation.
+     *
+     * @return information about the movie
+     */
     @Override
     public String toString() {
         return "movie{"

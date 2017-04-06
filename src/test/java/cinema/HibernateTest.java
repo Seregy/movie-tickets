@@ -21,12 +21,11 @@ import java.util.UUID;
 import static org.junit.Assert.*;
 
 /**
- * Created by Shera on 31.03.2017.
+ * Tests for Hibernate.
+ *
+ * @author CatReeena
  */
 public class HibernateTest {
-
-
-
     @Test
     public void addTest() throws Exception {
 

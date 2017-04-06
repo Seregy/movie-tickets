@@ -5,13 +5,14 @@ import session.Session;
 
 import javax.persistence.*;
 import java.util.*;
-
 /**
- * Created by Incy on 06.03.2017.
+ * Model that represents cinema's hall.
+ *
+ * @author CatReeena
  */
 @Entity
 public class Hall {
-
+    @SuppressWarnings("checkstyle:MagicNumber")
     @Id
     @GeneratedValue
     @Column(columnDefinition = "BINARY(16)", length = 16)
@@ -26,7 +27,7 @@ public class Hall {
     private Set<Session> sessions = new HashSet<>();
 
     /**
-     * Constructor for serialization.
+     * Constructor for JPA.
      */
     protected Hall() { }
 
@@ -116,6 +117,11 @@ public class Hall {
         }
     }
 
+    /**
+     * Returns the string representation of hall's id, name and cinema's id.
+     *
+     * @return information about the hall
+     */
     @Override
     public String toString() {
         return "hall {"

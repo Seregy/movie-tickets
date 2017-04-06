@@ -15,6 +15,7 @@ import java.util.UUID;
  */
 @Entity
 public final class User {
+    @SuppressWarnings("checkstyle:MagicNumber")
     @Id
     @GeneratedValue
     @Column(columnDefinition = "BINARY(16)", length = 16)
@@ -30,7 +31,7 @@ public final class User {
     private Set<Ticket> tickets = new HashSet<>();
 
     /**
-     * Constructor for serialization.
+     * Constructor for JPA.
      */
     protected User() { }
 
