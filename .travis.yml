@@ -1,7 +1,10 @@
 language: java
 jdk:
 - oraclejdk8
+script:
+- mvn clean package
 deploy:
+  skip_cleanup: true
   provider: elasticbeanstalk
   access_key_id: AKIAIB46ZGVBCYSCIOTQ
   secret_access_key:
@@ -10,6 +13,8 @@ deploy:
   app: Movie Tickets
   env: LowCost-env
   bucket_name: elasticbeanstalk-us-west-2-772281452425
+  file_glob: true
+  file: "*/target/*.war"
   on:
     repo: Seregy/movie-tickets
     branch: master
