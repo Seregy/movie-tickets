@@ -33,7 +33,7 @@ public class Movie {
     protected Movie() { }
 
     /**
-     * Constructs new movie with specified name, duration and anotation.
+     * Constructs new movie with specified name, duration and annotation.
      *
      * @param name full name of the movie
      * @param duration duration of the movie in minutes
@@ -152,6 +152,39 @@ public class Movie {
         if (sessions.remove(session)) {
             session.setMovie(null);
         }
+    }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     * This method accepts subclasses as parameters to work with Proxy
+     * objects.
+     *
+     * @param o the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj
+     *          argument; {@code false} otherwise.
+     * @see Object#equals(Object)
+     */
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Movie)) {
+            return false;
+        }
+        Movie movie = (Movie) o;
+        return duration == movie.duration
+                && Objects.equals(name, movie.name)
+                && Objects.equals(annotation, movie.annotation)
+                && Objects.equals(sessions, movie.sessions);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, duration, annotation, sessions);
     }
 
     /**

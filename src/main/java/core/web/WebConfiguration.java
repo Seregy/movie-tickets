@@ -1,105 +1,97 @@
-/*
 package core.web;
 
 import cinema.dao.CinemaDAO;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import cinema.dao.CinemaDAOHibernate;
+import org.springframework.context.annotation.*;
 import ticket.dao.TicketDAO;
+import ticket.dao.TicketDAOHibernate;
 import user.dao.UserDAO;
+import user.dao.UserDAOHibernate;
 
-*/
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import java.util.HashMap;
+import java.util.Map;
+
+
 /**
  * Configuration class for Spring's IoC.
  * Contains beans' definitions that are used
  * in the web module of the application.
  *
  * @author Seregy
- *//*
-
-
-
+ */
 @Configuration
-@ComponentScan(basePackages = {"cinema.dao", "ticket.dao", "user.dao"})
+@ComponentScan
 public class WebConfiguration {
-    */
-/**
-     * Gets an instance of {@link CinemaDAODefault} object.
+    /**
+     * Gets an instance of {@link CinemaDAOHibernate} object.
      *
-     * @return dao object
-     *//*
-
+     * @return cinema dao object
+     */
     @Primary
     @Bean
     public CinemaDAO getMySQLCinemaDAO() {
-        return new CinemaDAODefault();
+        return new CinemaDAOHibernate();
     }
 
-    */
-/**
-     * Gets an instance of {@link CinemaDAOMongo} object.
-     * It's a primary source of CinemaDAO.
+    /**
+     * Gets an instance of {@link TicketDAOHibernate} object.
      *
-     * @return dao object
-     *//*
-
-    @Bean
-    public CinemaDAO getMongoCinemaDAO() {
-        return new CinemaDAOMongo();
-    }
-
-    */
-/**
-     * Gets an instance of {@link TicketDAODefault} object.
-     *
-     * @return dao object
-     *//*
-
+     * @return ticket dao object
+     */
     @Primary
     @Bean
     public TicketDAO getMySQLTicketDAO() {
-        return new TicketDAODefault();
+        return new TicketDAOHibernate();
     }
 
-    */
-/**
-     * Gets an instance of {@link TicketDAOMongo} object.
-     * It's a primary source of TicketDAO.
+    /**
+     * Gets an instance of {@link user.dao.UserDAOHibernate} object.
      *
-     * @return dao object
-     *//*
-
-    @Bean
-    public TicketDAO getMongoTicketDAO() {
-        return new TicketDAOMongo();
-    }
-
-
-    */
-/**
-     * Gets an instance of {@link UserDAODefault} object.
-     * It's a primary source of UserDAO.
-     *
-     * @return dao object
-     *//*
-
+     * @return user dao object
+     */
     @Primary
     @Bean
     public UserDAO getMySQLUserDAO() {
-        return new UserDAODefault();
+        return new UserDAOHibernate();
     }
 
-    */
-/**
-     * Gets an instance of {@link UserDAOMongo} object.
+    /**
+     * Gets an instance of {@link EntityManagerFactory} object,
+     * created from local persistence unit.
      *
-     * @return dao object
-     *//*
-
+     * @return entity manager factory
+     */
     @Bean
-    public UserDAO getMongoDAO() {
-        return new UserDAOMongo();
+    public EntityManagerFactory getLocalEntityManagerFactory() {
+        return Persistence.createEntityManagerFactory("Local");
+    }
+
+    /**
+     * Gets an instance of {@link EntityManagerFactory} object,
+     * created either from AWS persistence
+     * unit(if system property 'RDS_HOSTNAME' is set) or
+     * from local persistence unit otherwise.
+     *
+     * @return entity manager factory
+     */
+    @Primary
+    @Bean
+    public EntityManagerFactory getEntityManagerFactory() {
+        if (System.getProperty("RDS_HOSTNAME") == null) {
+            return getLocalEntityManagerFactory();
+        }
+        Map<String, String> properties = new HashMap<>();
+        String connection = String.format("jdbc:mysql://%1$s:%2$s/%3$s",
+                System.getProperty("RDS_HOSTNAME"),
+                System.getProperty("RDS_PORT"),
+                System.getProperty("RDS_DB_NAME"));
+        properties.put("javax.persistence.jdbc.user",
+                System.getProperty("RDS_USERNAME"));
+        properties.put("javax.persistence.jdbc.password",
+                System.getProperty("RDS_PASSWORD"));
+        properties.put("javax.persistence.jdbc.url", connection);
+        return Persistence.createEntityManagerFactory("AWS", properties);
     }
 }
-*/

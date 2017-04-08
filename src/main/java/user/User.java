@@ -4,6 +4,7 @@ import ticket.Ticket;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -196,6 +197,40 @@ public class User {
         if (tickets.remove(ticket)) {
             ticket.setUser(null);
         }
+    }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     * This method accepts subclasses as parameters to work with Proxy
+     * objects.
+     *
+     * @param o the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj
+     *          argument; {@code false} otherwise.
+     * @see Object#equals(Object)
+     */
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof User)) {
+            return false;
+        }
+        User user = (User) o;
+        return Objects.equals(fullName, user.fullName)
+                && Objects.equals(userName, user.userName)
+                && Objects.equals(password, user.password)
+                && Objects.equals(salt, user.salt)
+                && Objects.equals(email, user.email);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(fullName, userName, password, salt, email);
     }
 
     /**

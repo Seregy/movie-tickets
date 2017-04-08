@@ -5,6 +5,7 @@ import user.User;
 
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -135,6 +136,39 @@ public class Ticket {
      */
     public void setSession(final Session session) {
         this.session = session;
+    }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     * This method accepts subclasses as parameters to work with Proxy
+     * objects.
+     *
+     * @param o the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj
+     *          argument; {@code false} otherwise.
+     * @see Object#equals(Object)
+     */
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Ticket)) {
+            return false;
+        }
+        Ticket ticket = (Ticket) o;
+        return row == ticket.row
+                && seat == ticket.seat
+                && Objects.equals(session, ticket.session)
+                && Objects.equals(user, ticket.user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(row, seat, session, user);
     }
 
     /**

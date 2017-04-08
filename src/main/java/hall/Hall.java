@@ -118,6 +118,38 @@ public class Hall {
     }
 
     /**
+     * Indicates whether some other object is "equal to" this one.
+     * This method accepts subclasses as parameters to work with Proxy
+     * objects.
+     *
+     * @param o the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj
+     *          argument; {@code false} otherwise.
+     * @see Object#equals(Object)
+     */
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Hall)) {
+            return false;
+        }
+        Hall hall = (Hall) o;
+        return Objects.equals(name, hall.name)
+                && Objects.equals(cinema, hall.cinema)
+                && Objects.equals(sessions, hall.sessions);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, cinema, sessions);
+    }
+
+    /**
      * Returns the string representation of hall's id and name.
      *
      * @return information about the hall

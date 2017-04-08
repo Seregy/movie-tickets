@@ -67,3 +67,15 @@ before_install:
       ADD PRIMARY KEY (id);"
   - mysql -e "ALTER TABLE test.user
       ADD PRIMARY KEY (id);"
+	  
+deploy:
+  provider: elasticbeanstalk
+  access_key_id: AKIAJSUWAIUTWQB62KWQ
+  secret_access_key:
+    secure: "oQGbTKrXfnq/dmO2WXK42y5eby9j/EU5nCrI0Yv+VhVUWL+5vJ3tcl4bqKKmT8EJBhtHM9aE3ZDmHhzemUKbZH0a38cr5+eiksXddrz1UT+rC2ZkAImdqk0p6JKRv51UyWdwDvtmfwoBaPpLZMn7d7YJbInL/IUenTdRxmvTsQrOR1+B0sUM3sBoWPBSh+sSe3kaWTFDWgpbWgdLLI+SoRiu0BzTvA3pokPYakkS//+FsqVakE4z3pqIK4wz3QPZkBYCjT6+OUJZyJqWvzNX1CzIJCkBSGLwA2D45xtMJcQUtt2ULjITy4mI/UZeCnrzQCJF3euaBNWhffBc8Ew2GGgD+xO30L9wNZxn5F3+H0SJVPlhJdCCh1xT4O3tJsLLW+pOBwv5aEXXkpNUKv0+RJg0cN/UmyXXgOBpHKV1wK5GKmcXRK8Upf5WT/VMDdo/icKSOUvlnfF+s/6OJF9rcDzuNWGOYb888GiRZwGdPIEHJyg7pF7i0rf8dipffpyPi6qb4foVmZRNnnyXlBjQL1xU9Tw9mEnkDJTvmgpKiP1tYVlBiEd5bfLJs29UxaUTz+MtYVid9MCkpb1pz1eunJbykPAELgIMsbnuKRqHbpyOKFsEeGXN/M4eCBfycrma6ryE+rTtalzhld3KONlXymYi5DUUN31WXuKGDk6hycA="
+  region: "us-west-2"  
+  app: "Movie Tickets"
+  env: "LowCost-env"
+  bucket_name: "elasticbeanstalk-us-west-2-772281452425"
+  on:
+    branch: master

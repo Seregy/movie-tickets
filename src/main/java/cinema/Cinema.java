@@ -120,6 +120,37 @@ public class Cinema {
     }
 
     /**
+     * Indicates whether some other object is "equal to" this one.
+     * This method accepts subclasses as parameters to work with Proxy
+     * objects.
+     *
+     * @param o the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj
+     *          argument; {@code false} otherwise.
+     * @see Object#equals(Object)
+     */
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Cinema)) {
+            return false;
+        }
+        Cinema cinema = (Cinema) o;
+        return Objects.equals(name, cinema.name)
+                && Objects.equals(location, cinema.location);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, location);
+    }
+
+    /**
      * Returns the string representation of cinema's id, name and location.
      *
      * @return information about the cinema

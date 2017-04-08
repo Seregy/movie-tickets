@@ -7,6 +7,7 @@ import ticket.Ticket;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 
@@ -144,6 +145,39 @@ public class Session {
         if (tickets.remove(ticket)) {
             ticket.setSession(null);
         }
+    }
+
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     * This method accepts subclasses as parameters to work with Proxy
+     * objects.
+     *
+     * @param o the reference object with which to compare.
+     * @return {@code true} if this object is the same as the obj
+     *          argument; {@code false} otherwise.
+     * @see Object#equals(Object)
+     */
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Session)) {
+            return false;
+        }
+        Session session = (Session) o;
+        return Objects.equals(sessionStart, session.sessionStart)
+                && Objects.equals(movie, session.movie)
+                && Objects.equals(hall, session.hall)
+                && Objects.equals(tickets, session.tickets);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(sessionStart, movie, hall, tickets);
     }
 
     /**

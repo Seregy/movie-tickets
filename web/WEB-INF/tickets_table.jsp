@@ -10,7 +10,6 @@
 <c:forEach items="${requestScope.tickets}" var="ticket">
     <tr>
         <td>${ticket.getId()}</td>
-        <td>${ticket.getUserId()}</td>
         <td>${ticket.getRow()}</td>
         <td>${ticket.getSeat()}</td>
         <td><button class="delete" data-value="${ticket.getId()}">Remove</button></td>
