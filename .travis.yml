@@ -1,27 +1,15 @@
 language: java
-
 jdk:
-  - oraclejdk8
-
-services:
-  - mysql
-  - mongodb
-
-addons:
-  apt:
-    sources:
-    - mongodb-3.4-precise
-    packages:
-    - mongodb-org-server
-
+- oraclejdk8
 deploy:
   provider: elasticbeanstalk
-  access_key_id: AKIAJSUWAIUTWQB62KWQ
+  access_key_id: AKIAIB46ZGVBCYSCIOTQ
   secret_access_key:
-    secure: "oQGbTKrXfnq/dmO2WXK42y5eby9j/EU5nCrI0Yv+VhVUWL+5vJ3tcl4bqKKmT8EJBhtHM9aE3ZDmHhzemUKbZH0a38cr5+eiksXddrz1UT+rC2ZkAImdqk0p6JKRv51UyWdwDvtmfwoBaPpLZMn7d7YJbInL/IUenTdRxmvTsQrOR1+B0sUM3sBoWPBSh+sSe3kaWTFDWgpbWgdLLI+SoRiu0BzTvA3pokPYakkS//+FsqVakE4z3pqIK4wz3QPZkBYCjT6+OUJZyJqWvzNX1CzIJCkBSGLwA2D45xtMJcQUtt2ULjITy4mI/UZeCnrzQCJF3euaBNWhffBc8Ew2GGgD+xO30L9wNZxn5F3+H0SJVPlhJdCCh1xT4O3tJsLLW+pOBwv5aEXXkpNUKv0+RJg0cN/UmyXXgOBpHKV1wK5GKmcXRK8Upf5WT/VMDdo/icKSOUvlnfF+s/6OJF9rcDzuNWGOYb888GiRZwGdPIEHJyg7pF7i0rf8dipffpyPi6qb4foVmZRNnnyXlBjQL1xU9Tw9mEnkDJTvmgpKiP1tYVlBiEd5bfLJs29UxaUTz+MtYVid9MCkpb1pz1eunJbykPAELgIMsbnuKRqHbpyOKFsEeGXN/M4eCBfycrma6ryE+rTtalzhld3KONlXymYi5DUUN31WXuKGDk6hycA="
-  region: "us-west-2"  
-  app: "Movie Tickets"
-  env: "LowCost-env"
-  bucket_name: "elasticbeanstalk-us-west-2-772281452425"
+    secure: lYnwiDoW5pbKkVjwL0SPCOMc9qHS5AROBXchk96EfNpfD90jYVqCtJ5rYJNE5hUfKuSuRrNGvjJ7wwdkzj1/OUVd/sBDaUs9/XWWQE0mbwhfhWcvIyInsHSqdkAsnpIAY0Ly4T7jvkalqimWv4iOZ4mfw97HiDlsBJu+IPBPsatRr7mvwJLytswUGH7B1qNuR0FEp4WS0D91D43OiigDyqULO+8PfKMRwDoh95ZN1LM/6XxE4Ud00L1J/UzSMQMHpXyAcQ+V9LoGOg3F0u8PsVFDwg5HE+C3MvOrLekVdV8O3tbOuhK9YZEmNB4Q8NpdIWsm3tTi9o8G76eMZtJQNFlQrRIDOt28WsTa1k5A6+n9OuHKsakJNs2qrIaFNwFCeBxumgUvaUCKSiQ/dvlQFoONvgemw8GBaFRypsSHTbnB3JE21HTftAvd3aGrwRT94Rc7Tu7FdKbxOpawncpm9mpCYFsrrgf3GhomSXfmMSTPRfgShLfm/ARpkta+JtyrCmlnbn4WKEO1swAKr/qhQtYx2reZS9tcDxbdt78Js95rSPv7MlBKBUrzHFtghKcFOd77arduIQUslpXCsl8HAojkeSGDqEAqzNSVx+ecsy20du4yx7f7AdY1IygKoUjOZmJnntCsIgwIxpS2e/LLv4yxn5qJO+z2bLl+itro4lU=
+  region: us-west-2
+  app: Movie Tickets
+  env: LowCost-env
+  bucket_name: elasticbeanstalk-us-west-2-772281452425
   on:
+    repo: Seregy/movie-tickets
     branch: master
