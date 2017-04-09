@@ -14,7 +14,7 @@ deploy:
   env: LowCost-env
   bucket_name: elasticbeanstalk-us-west-2-772281452425
   file_glob: true
-  file: "*/target/*.war"
+  zip_file: target/movie-tickets-web.zip
   on:
     repo: Seregy/movie-tickets
     branch: master
