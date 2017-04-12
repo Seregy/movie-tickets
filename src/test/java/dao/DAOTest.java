@@ -2,7 +2,6 @@ package dao;
 
 import cinema.Cinema;
 import cinema.dao.CinemaDAO;
-import core.web.WebConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import ticket.dao.TicketDAO;
 import user.User;
 import user.dao.UserDAO;
 
+import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,7 +27,8 @@ import static org.junit.Assert.assertTrue;
  */
 @Component
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = WebConfiguration.class)
+@ContextConfiguration(classes = core.TestConfiguration.class)
+@Transactional
 public class DAOTest {
     @Autowired
     private CinemaDAO cinemaDAO;

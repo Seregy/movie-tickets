@@ -18,7 +18,7 @@
          specified for component-scanning -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>core.web.WebConfiguration</param-value>
+        <param-value>core.AppConfiguration</param-value>
     </context-param>
 
     <!-- Bootstrap the root application context as usual using ContextLoaderListener -->

@@ -1,11 +1,7 @@
 package core.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
-
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
+import javax.persistence.PersistenceContext;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,21 +13,15 @@ import java.util.UUID;
  * @author CatReeena
  */
 public abstract class AbstractDAOHibernate<T> implements DAO<T> {
-    private EntityManagerFactory entityManagerFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     /**
      * {@inheritDoc}
      */
     @Override
     public T find(final UUID id) {
-        EntityManager entityManager =
-                entityManagerFactory.createEntityManager();
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        entityTransaction.begin();
-        T object = entityManager.find(getEntityClass(), id);
-        entityTransaction.commit();
-        entityManager.close();
-        return object;
+        return entityManager.find(getEntityClass(), id);
     }
 
     /**
@@ -40,17 +30,11 @@ public abstract class AbstractDAOHibernate<T> implements DAO<T> {
     @Override
     public boolean delete(final UUID id) {
         boolean result = false;
-        EntityManager entityManager =
-                entityManagerFactory.createEntityManager();
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        entityTransaction.begin();
         T object = entityManager.find(getEntityClass(), id);
         if (object != null) {
             result = true;
             entityManager.remove(object);
         }
-        entityTransaction.commit();
-        entityManager.close();
         return result;
     }
 
@@ -60,14 +44,8 @@ public abstract class AbstractDAOHibernate<T> implements DAO<T> {
     @Override
     public List<T> findAll() {
         List<T> objects;
-        EntityManager entityManager =
-                entityManagerFactory.createEntityManager();
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        entityTransaction.begin();
         objects = entityManager.createQuery("from " + getEntityName(),
                 getEntityClass()).getResultList();
-        entityTransaction.commit();
-        entityManager.close();
         return objects;
     }
 
@@ -76,13 +54,7 @@ public abstract class AbstractDAOHibernate<T> implements DAO<T> {
      */
     @Override
     public boolean add(final T object) {
-        EntityManager entityManager =
-                entityManagerFactory.createEntityManager();
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        entityTransaction.begin();
         entityManager.persist(object);
-        entityManager.getTransaction().commit();
-        entityManager.close();
         return true;
     }
 
@@ -91,13 +63,7 @@ public abstract class AbstractDAOHibernate<T> implements DAO<T> {
      */
     @Override
     public boolean update(final T object) {
-        EntityManager entityManager =
-                entityManagerFactory.createEntityManager();
-        EntityTransaction entityTransaction = entityManager.getTransaction();
-        entityTransaction.begin();
         entityManager.merge(object);
-        entityTransaction.commit();
-        entityManager.close();
         return true;
     }
 
@@ -114,17 +80,4 @@ public abstract class AbstractDAOHibernate<T> implements DAO<T> {
      * @return entity's name
      */
     public abstract String getEntityName();
-
-    /**
-     * Sets {@link EntityManagerFactory} object to be used by DAO.
-     * Used by Spring for IoC
-     *
-     * @param entityManagerFactory factory
-     */
-    @Required
-    @Autowired
-    public void setEntityManagerFactory(
-            final EntityManagerFactory entityManagerFactory) {
-        this.entityManagerFactory = entityManagerFactory;
-    }
 }
