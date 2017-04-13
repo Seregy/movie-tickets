@@ -2,6 +2,10 @@ package core;
 
 import cinema.dao.CinemaDAO;
 import cinema.dao.CinemaDAOHibernate;
+import hall.dao.HallDAO;
+import hall.dao.HallDAOHibernate;
+import hall.layout.dao.LayoutDAO;
+import hall.layout.dao.LayoutDAOHibernate;
 import org.springframework.context.annotation.*;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -56,6 +60,28 @@ public class AppConfiguration {
     @Bean
     public UserDAO getMySQLUserDAO() {
         return new UserDAOHibernate();
+    }
+
+    /**
+     * Gets an instance of {@link hall.dao.HallDAOHibernate} object.
+     *
+     * @return hall dao object
+     */
+    @Primary
+    @Bean
+    public HallDAO getHibernateHallDAO() {
+        return new HallDAOHibernate();
+    }
+
+    /**
+     * Gets an instance of {@link LayoutDAOHibernate} object.
+     *
+     * @return layout dao object
+     */
+    @Primary
+    @Bean
+    public LayoutDAO getHibernateLayoutDAO() {
+        return new LayoutDAOHibernate();
     }
 
     /**

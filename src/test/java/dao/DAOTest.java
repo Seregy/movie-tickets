@@ -2,6 +2,11 @@ package dao;
 
 import cinema.Cinema;
 import cinema.dao.CinemaDAO;
+import hall.Hall;
+import hall.dao.HallDAO;
+import hall.layout.Layout;
+import hall.layout.Seat;
+import hall.layout.dao.LayoutDAO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +41,10 @@ public class DAOTest {
     private TicketDAO ticketDAO;
     @Autowired
     private UserDAO userDAO;
+    @Autowired
+    private HallDAO hallDAO;
+    @Autowired
+    private LayoutDAO layoutDAO;
 
     @Test
     public void testCinema() throws Exception {
@@ -132,4 +141,64 @@ public class DAOTest {
         }
         assertTrue(userDAO.findAll().isEmpty());
     }
+
+    @Test
+    public void testHall() throws Exception {
+        Hall hall1 = new Hall("Test name 1");
+        Hall hall2 = new Hall("Test name 2");
+        Hall hall3 = new Hall("Test name 3");
+
+        List<Hall> halls = Arrays.asList(hall1, hall2, hall3);
+
+        for (Hall hall : halls) {
+            assertTrue(hallDAO.add(hall));
+            assertEquals(hall, hallDAO.find(hall.getId()));
+        }
+        assertEquals(halls.size(), hallDAO.findAll().size());
+
+        hall1.setName(hall1.getName() + " updated");
+
+        for (Hall hall : halls) {
+            assertTrue(hallDAO.update(hall));
+            assertEquals(hall, hallDAO.find(hall.getId()));
+        }
+
+        for (Hall hall : halls) {
+            assertTrue(hallDAO.delete(hall.getId()));
+        }
+        assertTrue(hallDAO.findAll().isEmpty());
+    }
+
+    @Test
+    public void testScheme() throws Exception {
+        Layout layout1 = new Layout(3, 3);
+        Layout layout2 = new Layout(4, 4);
+        Layout layout3 = new Layout(5, 5);
+
+        List<Layout> layouts = Arrays.asList(layout1, layout2, layout3);
+
+        for (Layout layout : layouts) {
+            assertTrue(layoutDAO.add(layout));
+            assertEquals(layout, layoutDAO.find(layout.getId()));
+        }
+        assertEquals(layouts.size(), layoutDAO.findAll().size());
+
+        layout1.setRowsAmount(13);
+        layout2.setSeatsAmount(14);
+        Seat[][] seats = layout3.getSeats();
+        seats[1][1] = Seat.RESERVED;
+        layout3.setSeats(seats);
+
+        for (Layout layout : layouts) {
+            assertTrue(layoutDAO.update(layout));
+            assertEquals(layout, layoutDAO.find(layout.getId()));
+        }
+
+        for (Layout layout : layouts) {
+            assertTrue(layoutDAO.delete(layout.getId()));
+        }
+        assertTrue(layoutDAO.findAll().isEmpty());
+    }
+
+
 }

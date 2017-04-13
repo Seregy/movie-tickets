@@ -23,8 +23,8 @@
     </facet>
     <facet type="Spring" name="Spring">
       <configuration>
-        <fileset id="fileset" name="App Context" removed="false">
-          <file>file://$MODULE_DIR$/src/main/java/core/web/WebConfiguration.java</file>
+        <fileset id="fileset2" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/src/main/java/core/AppConfiguration.java</file>
         </fileset>
       </configuration>
     </facet>
@@ -36,6 +36,7 @@
           <factory-entry name="AWS" />
           <factory-entry name="Local" />
           <factory-entry name="MySQL" />
+          <factory-entry name="getEntityManagerFactory" />
           <factory-entry name="getEntityManagerFactoryBean" />
         </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/web/WEB-INF/classes/META-INF/persistence.xml" />

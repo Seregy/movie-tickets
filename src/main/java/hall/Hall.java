@@ -1,6 +1,7 @@
 package hall;
 
 import cinema.Cinema;
+import hall.layout.Layout;
 import session.Session;
 
 import javax.persistence.*;
@@ -25,6 +26,9 @@ public class Hall {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hall")
     private Set<Session> sessions = new HashSet<>();
+
+    @OneToOne
+    private Layout layout;
 
     /**
      * Constructor for JPA.
@@ -115,6 +119,24 @@ public class Hall {
         if (sessions.remove(session)) {
             session.setHall(null);
         }
+    }
+
+    /**
+     * Gets the layout object, associated with this hall.
+     *
+     * @return layout, associated with the hall
+     */
+    public Layout getLayout() {
+        return layout;
+    }
+
+    /**
+     * Sets the layout object, associated with this hall.
+     *
+     * @param layout layout, associated with the hall
+     */
+    public void setLayout(final Layout layout) {
+        this.layout = layout;
     }
 
     /**
