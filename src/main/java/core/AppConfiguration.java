@@ -9,6 +9,8 @@ import hall.layout.dao.LayoutDAOHibernate;
 import org.springframework.context.annotation.*;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import seat.dao.SeatDAO;
+import seat.dao.SeatDAOHibernate;
 import ticket.dao.TicketDAO;
 import ticket.dao.TicketDAOHibernate;
 import user.dao.UserDAO;
@@ -82,6 +84,17 @@ public class AppConfiguration {
     @Bean
     public LayoutDAO getHibernateLayoutDAO() {
         return new LayoutDAOHibernate();
+    }
+
+    /**
+     * Gets an instance of {@link SeatDAOHibernate} object.
+     *
+     * @return layout dao object
+     */
+    @Primary
+    @Bean
+    public SeatDAO getHibernateSeatDAO() {
+        return new SeatDAOHibernate();
     }
 
     /**

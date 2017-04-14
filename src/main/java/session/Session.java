@@ -2,7 +2,7 @@ package session;
 
 import hall.Hall;
 import movie.Movie;
-import ticket.Ticket;
+import seat.Seat;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -33,7 +33,7 @@ public class Session {
     private Hall hall;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "session")
-    private Set<Ticket> tickets = new HashSet<>();
+    private Set<Seat> seats = new HashSet<>();
 
     /**
      * Constructor for JPA.
@@ -116,34 +116,34 @@ public class Session {
     }
 
     /**
-     * Gets the set of ticket objects that belong to the session.
+     * Gets the set of seat objects that belong to the session.
      *
-     * @return tickets {@link Ticket}
+     * @return seat {@link Seat}
      */
-    public Set<Ticket> getTickets() {
-        return tickets;
+    public Set<Seat> getSeats() {
+        return seats;
     }
 
     /**
-     * Adds ticket object to the Set of ticket objects.
-     * Sets ticket object's parameter 'session' to 'this'.
+     * Adds seat object to the Set of seat objects.
+     * Sets seat object's parameter 'session' to 'this'.
      *
-     * @param ticket {@link Ticket} ticket object added to the Set
+     * @param seat {@link Seat} seat object added to the Set
      */
-    public void addTicket(final Ticket ticket) {
-        tickets.add(ticket);
-        ticket.setSession(this);
+    public void addSeat(final Seat seat) {
+        seats.add(seat);
+        seat.setSession(this);
     }
 
     /**
-     * Removes ticket object from the Set of ticket objects.
-     * Sets ticket object's parameter 'session' to 'null'.
+     * Removes seat object from the Set of seat objects.
+     * Sets seat object's parameter 'session' to 'null'.
      *
-     * @param ticket {@link Ticket} ticket object removed from the Set
+     * @param seat {@link Seat} seat object removed from the Set
      */
-    public void removeTicket(final Ticket ticket) {
-        if (tickets.remove(ticket)) {
-            ticket.setSession(null);
+    public void removeSeat(final Seat seat) {
+        if (seats.remove(seat)) {
+            seat.setSession(null);
         }
     }
 
@@ -169,7 +169,7 @@ public class Session {
         return Objects.equals(sessionStart, session.sessionStart)
                 && Objects.equals(movie, session.movie)
                 && Objects.equals(hall, session.hall)
-                && Objects.equals(tickets, session.tickets);
+                && Objects.equals(seats, session.seats);
     }
 
     /**
@@ -177,7 +177,7 @@ public class Session {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(sessionStart, movie, hall, tickets);
+        return Objects.hash(sessionStart, movie, hall, seats);
     }
 
     /**

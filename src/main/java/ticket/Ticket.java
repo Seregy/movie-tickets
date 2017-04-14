@@ -1,6 +1,6 @@
 package ticket;
 
-import session.Session;
+import seat.Seat;
 import user.User;
 
 
@@ -21,11 +21,8 @@ public class Ticket {
     @Column(columnDefinition = "BINARY(16)", length = 16)
     private UUID id;
 
-    private int row;
-    private int seat;
-
-    @ManyToOne
-    private Session session;
+    @OneToOne
+    private Seat seat;
 
     @ManyToOne
     private User user;
@@ -36,14 +33,14 @@ public class Ticket {
     protected Ticket() { }
 
     /**
-     * Constructs new {@code Ticket} with specified id, user, row and seat.
+     * Constructs new {@code Ticket} with specified seat and user.
      *
-     * @param row row number of the ticket
-     * @param seat seat number of the ticket
+     * @param seat seat, associated with this ticket
+     * @param user user, associated with this ticket
      */
-    public Ticket(final int row, final int seat) {
-        this.row = row;
+    public Ticket(final Seat seat, final User user) {
         this.seat = seat;
+        this.user = user;
     }
 
     /**
@@ -65,7 +62,7 @@ public class Ticket {
     }
 
     /**
-     * Gets user {@link user.User},
+     * Gets {@link user.User},
      * associated with the ticket.
      *
      * @return {@code User} object
@@ -75,7 +72,7 @@ public class Ticket {
     }
 
     /**
-     * Sets user {@link user.User},
+     * Sets {@link user.User},
      * associated with the ticket.
      *
      * @param user {@code User} object
@@ -85,57 +82,21 @@ public class Ticket {
     }
 
     /**
-     * Gets ticket's row number.
+     * Gets {@link seat.Seat}, associated with the ticket.
      *
-     * @return row number
+     * @return {@code Seat} object
      */
-    public int getRow() {
-        return row;
-    }
-
-    /**
-     * Sets ticket's row number.
-     *
-     * @param row row number
-     */
-    public void setRow(final int row) {
-        this.row = row;
-    }
-
-    /**
-     * Gets ticket's seat number.
-     *
-     * @return seat number
-     */
-    public int getSeat() {
+    public Seat getSeat() {
         return seat;
     }
 
     /**
-     * Sets ticket's seat number.
+     * Sets {@link seat.Seat}, associated with the ticket.
      *
-     * @param seat seat number
+     * @param seat {@code Seat} object
      */
-    public void setSeat(final int seat) {
+    public void setSeat(final Seat seat) {
         this.seat = seat;
-    }
-
-    /**
-     * Gets the session object this ticket belongs to.
-     *
-     * @return session {@link Session}
-     */
-    public Session getSession() {
-        return session;
-    }
-
-    /**
-     * Sets session object this ticket belongs to.
-     *
-     * @param session {@link Session} session this ticket belongs to
-     */
-    public void setSession(final Session session) {
-        this.session = session;
     }
 
     /**
@@ -157,9 +118,7 @@ public class Ticket {
             return false;
         }
         Ticket ticket = (Ticket) o;
-        return row == ticket.row
-                && seat == ticket.seat
-                && Objects.equals(session, ticket.session)
+        return Objects.equals(seat, ticket.seat)
                 && Objects.equals(user, ticket.user);
     }
 
@@ -168,7 +127,7 @@ public class Ticket {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(row, seat, session, user);
+        return Objects.hash(seat, user);
     }
 
     /**
@@ -180,8 +139,8 @@ public class Ticket {
     public String toString() {
         return "Ticket{"
                 + "id=" + id
-                + ", row=" + row
                 + ", seat=" + seat
+                + ", user=" + user
                 + '}';
     }
 }

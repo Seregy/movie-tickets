@@ -24,12 +24,13 @@ public class Layout {
     private int rowsAmount;
     private int seatsAmount;
     @Lob
-    private byte[] seats;
+    private byte[] seatsStatuses;
     @OneToOne
     private Hall hall;
 
     /**
-     * Constructs new {@code Layout} with specified amounts of rows and seats.
+     * Constructs new {@code Layout} with specified amounts of rows and seats
+     * per row.
      *
      * @param rowsAmount amount of rows in the hall
      * @param seatsAmount amount of seats per row
@@ -37,10 +38,10 @@ public class Layout {
     public Layout(final int rowsAmount, final int seatsAmount) {
         this.rowsAmount = rowsAmount;
         this.seatsAmount = seatsAmount;
-        Seat[][] array = new Seat[rowsAmount][seatsAmount];
+        SeatStatus[][] array = new SeatStatus[rowsAmount][seatsAmount];
         for (int i = 0; i < rowsAmount; i++) {
             for (int j = 0; j < seatsAmount; j++) {
-                array[i][j] = Seat.AVAILABLE;
+                array[i][j] = SeatStatus.REGULAR;
             }
         }
         setSeats(array);
@@ -106,18 +107,19 @@ public class Layout {
     }
 
     /**
-     * Gets the array of {@link Seat} objects.
+     * Gets the array of {@link SeatStatus} objects.
      * The array is two-dimensional, first dimension is rows,
-     * second - seats. Value of {@code Seat} indicate the status of
+     * second - seats. Value of {@code SeatStatus} indicate the status of
      * the seat in the hall.
      *
-     * @return array of seats
+     * @return array of seats statuses
      */
-    public Seat[][] getSeats() {
-        Seat[][] deserialized = null;
-        try (ByteArrayInputStream byteIn = new ByteArrayInputStream(seats);
+    public SeatStatus[][] getSeatsStatuses() {
+        SeatStatus[][] deserialized = null;
+        try (ByteArrayInputStream byteIn =
+                     new ByteArrayInputStream(seatsStatuses);
             ObjectInputStream in = new ObjectInputStream(byteIn)) {
-            deserialized = (Seat[][]) in.readObject();
+            deserialized = (SeatStatus[][]) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -126,23 +128,23 @@ public class Layout {
     }
 
     /**
-     * Sets the array of {@link Seat} objects.
+     * Sets the array of {@link SeatStatus} objects.
      * The array is two-dimensional, first dimension is rows,
-     * second - seats. Value of {@code Seat} indicate the status of
+     * second - seatStatuses. Value of {@code SeatStatus} indicate the status of
      * the seat in the hall.
      *
-     * @param seats array of seats
+     * @param seatStatuses array of seats statuses
      */
-    public void setSeats(final Seat[][] seats) {
+    public void setSeats(final SeatStatus[][] seatStatuses) {
         byte[] serialized = null;
         try (ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
              ObjectOutputStream out = new ObjectOutputStream(byteOut)) {
-            out.writeObject(seats);
+            out.writeObject(seatStatuses);
             serialized = byteOut.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.seats = serialized;
+        this.seatsStatuses = serialized;
     }
 
     /**
@@ -186,7 +188,7 @@ public class Layout {
         Layout layout = (Layout) o;
         return rowsAmount == layout.rowsAmount
                 && seatsAmount == layout.seatsAmount
-                && Arrays.equals(seats, layout.seats);
+                && Arrays.equals(seatsStatuses, layout.seatsStatuses);
     }
 
     /**
@@ -194,7 +196,7 @@ public class Layout {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(rowsAmount, seatsAmount, seats);
+        return Objects.hash(rowsAmount, seatsAmount, seatsStatuses);
     }
 
     /**
@@ -209,7 +211,7 @@ public class Layout {
                 + "id=" + id
                 + ", rowsAmount=" + rowsAmount
                 + ", seatsAmount=" + seatsAmount
-                + ", seats=" + Arrays.toString(getSeats())
+                + ", seats statuses=" + Arrays.toString(getSeatsStatuses())
                 + '}';
     }
 }
