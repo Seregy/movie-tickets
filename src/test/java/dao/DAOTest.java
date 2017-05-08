@@ -1,24 +1,25 @@
 package dao;
 
-import cinema.Cinema;
-import cinema.dao.CinemaDAO;
-import hall.Hall;
-import hall.dao.HallDAO;
-import hall.layout.Layout;
-import hall.layout.SeatStatus;
-import hall.layout.dao.LayoutDAO;
+import movietickets.cinema.Cinema;
+import movietickets.cinema.dao.CinemaDAO;
+import movietickets.hall.Hall;
+import movietickets.hall.dao.HallDAO;
+import movietickets.hall.layout.Layout;
+import movietickets.hall.layout.SeatStatus;
+import movietickets.hall.layout.dao.LayoutDAO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import seat.Seat;
-import seat.dao.SeatDAO;
-import ticket.Ticket;
-import ticket.dao.TicketDAO;
-import user.User;
-import user.dao.UserDAO;
+import org.springframework.test.context.web.WebAppConfiguration;
+import movietickets.seat.Seat;
+import movietickets.seat.dao.SeatDAO;
+import movietickets.ticket.Ticket;
+import movietickets.ticket.dao.TicketDAO;
+import movietickets.user.User;
+import movietickets.user.dao.UserDAO;
 
 import javax.transaction.Transactional;
 import java.util.Arrays;
@@ -32,6 +33,7 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Seregy
  */
+@WebAppConfiguration
 @Component
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = core.TestConfiguration.class)
@@ -247,8 +249,8 @@ public class DAOTest {
         }
         assertEquals(seats.size(), seatDAO.findAll().size());
 
-        seat1.setRow(13);
-        seat2.setSeat(24);
+        seat1.setRowNumber(13);
+        seat2.setSeatNumber(24);
 
         for (Seat seat : seats) {
             assertTrue(seatDAO.update(seat));

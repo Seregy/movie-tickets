@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Without web resources" pattern="(file[movie-tickets]:src/assembly/*||file[movie-tickets]:src/main/java/*||file[movie-tickets]:src/main/resources/*||file[movie-tickets]:src/test/java/*||file[movie-tickets]:config/*||file[movie-tickets]:config//*||file[movie-tickets]:src/assembly//*||file[movie-tickets]:src/main/java//*||file[movie-tickets]:src/main/resources//*||file[movie-tickets]:src/test/java//*||file[movie-tickets]:web/resources/css/*)&amp;&amp;!file[movie-tickets]:web/resources/css/bootstrap//*&amp;&amp;!file[movie-tickets]:web/resources/images/*||file[movie-tickets]:web/WEB-INF//*||file:.gitignore||file:.travis.yml||file:pom.xml||file:README.md||file:sun_checks.xml" />
+</component>

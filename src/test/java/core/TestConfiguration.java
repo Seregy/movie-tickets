@@ -1,5 +1,6 @@
 package core;
 
+import movietickets.core.AppConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -17,8 +18,4 @@ import javax.persistence.EntityManagerFactory;
 @Configuration
 @Import(AppConfiguration.class)
 public class TestConfiguration {
-    @Bean
-    public JpaTransactionManager getTransactionManager(EntityManagerFactory entityManagerFactory) {
-        return new JpaTransactionManager(entityManagerFactory);
-    }
 }
