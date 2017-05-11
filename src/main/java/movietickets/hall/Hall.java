@@ -159,8 +159,7 @@ public class Hall {
         }
         Hall hall = (Hall) o;
         return Objects.equals(name, hall.name)
-                && Objects.equals(cinema, hall.cinema)
-                && Objects.equals(sessions, hall.sessions);
+                && Objects.equals(cinema, hall.cinema);
     }
 
     /**
@@ -168,7 +167,7 @@ public class Hall {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(name, cinema, sessions);
+        return Objects.hash(name, cinema);
     }
 
     /**

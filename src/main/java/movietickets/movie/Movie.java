@@ -16,9 +16,9 @@ public class Movie {
     @Id
     @GeneratedValue
     @Column(columnDefinition = "BINARY(16)", length = 16)
-    private  UUID id;
+    private UUID id;
 
-    private  String name;
+    private String name;
 
     private int duration;
 
@@ -48,15 +48,6 @@ public class Movie {
                 ? duration
                 : Math.abs(duration);
         this.annotation = annotation;
-    }
-
-    /**
-     * Constructs new movie with specified name.
-     *
-     * @param name full name of the hall
-     */
-    public Movie(final String name) {
-        this(name, 0, "");
     }
 
     /**
@@ -175,8 +166,7 @@ public class Movie {
         Movie movie = (Movie) o;
         return duration == movie.duration
                 && Objects.equals(name, movie.name)
-                && Objects.equals(annotation, movie.annotation)
-                && Objects.equals(sessions, movie.sessions);
+                && Objects.equals(annotation, movie.annotation);
     }
 
     /**
@@ -184,7 +174,7 @@ public class Movie {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(name, duration, annotation, sessions);
+        return Objects.hash(name, duration, annotation);
     }
 
     /**

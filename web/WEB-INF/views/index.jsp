@@ -12,10 +12,13 @@
 </head>
 <body>
 <ul>
-    <li><a href="${pageContext.request.contextPath}/user">Users</a> </li>
-    <li><a href="${pageContext.request.contextPath}/cinema">Cinemas</a> </li>
-    <li><a href="${pageContext.request.contextPath}/ticket">Tickets</a> </li>
-    <li><a href="${pageContext.request.contextPath}/seat">Seats</a> </li>
+    <li><a href="${pageContext.request.contextPath}/cinema">Cinemas</a></li>
+    <li><a href="${pageContext.request.contextPath}/hall">Halls</a></li>
+    <li><a href="${pageContext.request.contextPath}/movie">Movies</a></li>
+    <li><a href="${pageContext.request.contextPath}/seat">Seats</a></li>
+    <li><a href="${pageContext.request.contextPath}/session">Sessions</a></li>
+    <li><a href="${pageContext.request.contextPath}/ticket">Tickets</a></li>
+    <li><a href="${pageContext.request.contextPath}/user">Users</a></li>
 </ul>
 </body>
 </html>

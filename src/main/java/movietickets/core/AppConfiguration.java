@@ -6,6 +6,10 @@ import movietickets.hall.dao.HallDAO;
 import movietickets.hall.dao.HallDAOHibernate;
 import movietickets.hall.layout.dao.LayoutDAO;
 import movietickets.hall.layout.dao.LayoutDAOHibernate;
+import movietickets.movie.dao.MovieDAO;
+import movietickets.movie.dao.MovieDAOHibernate;
+import movietickets.session.dao.SessionDAO;
+import movietickets.session.dao.SessionDAOHibernate;
 import org.springframework.context.annotation.*;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -41,30 +45,8 @@ public class AppConfiguration {
      */
     @Primary
     @Bean
-    public CinemaDAO getMySQLCinemaDAO() {
+    public CinemaDAO getHibernateCinemaDAO() {
         return new CinemaDAOHibernate();
-    }
-
-    /**
-     * Gets an instance of {@link TicketDAOHibernate} object.
-     *
-     * @return ticket dao object
-     */
-    @Primary
-    @Bean
-    public TicketDAO getMySQLTicketDAO() {
-        return new TicketDAOHibernate();
-    }
-
-    /**
-     * Gets an instance of {@link UserDAOHibernate} object.
-     *
-     * @return user dao object
-     */
-    @Primary
-    @Bean
-    public UserDAO getMySQLUserDAO() {
-        return new UserDAOHibernate();
     }
 
     /**
@@ -90,6 +72,17 @@ public class AppConfiguration {
     }
 
     /**
+     * Gets an instance of {@link movietickets.movie.Movie} object.
+     *
+     * @return movie dao object
+     */
+    @Primary
+    @Bean
+    public MovieDAO getHibernateMovieDAO() {
+        return new MovieDAOHibernate();
+    }
+
+    /**
      * Gets an instance of {@link SeatDAOHibernate} object.
      *
      * @return layout dao object
@@ -98,6 +91,39 @@ public class AppConfiguration {
     @Bean
     public SeatDAO getHibernateSeatDAO() {
         return new SeatDAOHibernate();
+    }
+
+    /**
+     * Gets an instance of {@link SessionDAOHibernate} object.
+     *
+     * @return layout dao object
+     */
+    @Primary
+    @Bean
+    public SessionDAO getHibernateSessionDAO() {
+        return new SessionDAOHibernate();
+    }
+
+    /**
+     * Gets an instance of {@link TicketDAOHibernate} object.
+     *
+     * @return ticket dao object
+     */
+    @Primary
+    @Bean
+    public TicketDAO getHibernateTicketDAO() {
+        return new TicketDAOHibernate();
+    }
+
+    /**
+     * Gets an instance of {@link UserDAOHibernate} object.
+     *
+     * @return user dao object
+     */
+    @Primary
+    @Bean
+    public UserDAO getHibernateUserDAO() {
+        return new UserDAOHibernate();
     }
 
     /**

@@ -168,8 +168,7 @@ public class Session {
         Session session = (Session) o;
         return Objects.equals(sessionStart, session.sessionStart)
                 && Objects.equals(movie, session.movie)
-                && Objects.equals(hall, session.hall)
-                && Objects.equals(seats, session.seats);
+                && Objects.equals(hall, session.hall);
     }
 
     /**
@@ -177,7 +176,7 @@ public class Session {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(sessionStart, movie, hall, seats);
+        return Objects.hash(sessionStart, movie, hall);
     }
 
     /**
