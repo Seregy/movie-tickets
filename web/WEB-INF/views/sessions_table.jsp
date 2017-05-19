@@ -9,7 +9,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <c:forEach items="${requestScope.sessions}" var="session">
     <tr>
-        <td>${session.getId()}</td>
+        <td><a href="${pageContext.request.contextPath}/session/${session.getId()}">${session.getId()}</a></td>
         <td>${session.getSessionStart()}</td>
         <td>${session.getMovie().getId()}</td>
         <td>${session.getHall().getId()}</td>

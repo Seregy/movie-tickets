@@ -42,4 +42,13 @@ public enum SeatStatus implements Serializable {
     public int getId() {
         return id;
     }
+
+    /**
+     * Gets the name of the item in lowercase.
+     *
+     * @return lowercase name
+     */
+    public String nameLowerCase() {
+        return name().toLowerCase();
+    }
 }

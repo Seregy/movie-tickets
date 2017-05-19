@@ -1,6 +1,5 @@
 package movietickets.seat;
 
-import org.hibernate.annotations.NaturalId;
 import movietickets.session.Session;
 import movietickets.ticket.Ticket;
 
@@ -21,12 +20,9 @@ public class Seat {
     @Column(columnDefinition = "BINARY(16)", length = 16)
     private UUID id;
 
-    @NaturalId
     private int rowNumber;
-    @NaturalId
     private int seatNumber;
 
-    @NaturalId
     @ManyToOne
     private Session session;
 

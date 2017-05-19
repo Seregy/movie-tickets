@@ -1,7 +1,11 @@
 package movietickets.session.web;
 
+import movietickets.hall.Hall;
 import movietickets.hall.dao.HallDAO;
+import movietickets.hall.layout.Layout;
+import movietickets.hall.layout.SeatStatus;
 import movietickets.movie.dao.MovieDAO;
+import movietickets.seat.Seat;
 import movietickets.session.Session;
 import movietickets.session.dao.SessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -63,6 +68,63 @@ public class SessionController {
     }
 
     /**
+     * Shows seats selection block for given session.
+     *
+     * @param id session's identifier
+     * @return name of jsp-page
+     */
+    @GetMapping("/session/{id}")
+    public ModelAndView selectSeats(@PathVariable("id") final String id) {
+        ModelAndView modelAndView = new ModelAndView("seats_selection");
+        Session session = sessionDAO.find(UUID.fromString(id));
+        Layout layout = session.getHall().getLayout();
+        Seat[][] seats =
+                new Seat[layout.getRowsAmount()][layout.getSeatsAmount()];
+        SeatStatus[][] seatStatuses = layout.getSeatsStatuses();
+
+        boolean rowChanged = false;
+        int actualRow = 1;
+        for (int row = 0; row < seats.length; row++) {
+            int actualSeat = 1;
+            for (int seat = 0; seat < seats[row].length; seat++) {
+                if (seatStatuses[row][seat] == SeatStatus.REGULAR) {
+                    if (rowChanged) {
+                        actualRow++;
+                        rowChanged = false;
+                    }
+                    seats[row][seat] = findSeatInSet(session.getSeats(),
+                            actualRow, actualSeat++);
+                }
+            }
+            rowChanged = true;
+        }
+        modelAndView.addObject("seats", seats);
+        return modelAndView;
+    }
+
+    /**
+     * Finds seat in given set with specified row and seat number.
+     *
+     * @param set set with seats
+     * @param rowNumber row number
+     * @param seatNumber seat number
+     * @return seat with given row and seat number
+     * or {@code null} if seat wasn't found
+     */
+    private Seat findSeatInSet(final Set<Seat> set,
+                               final int rowNumber,
+                               final int seatNumber) {
+       for (Seat seat : set) {
+           if (seat.getRowNumber() == rowNumber
+                   && seat.getSeatNumber() == seatNumber) {
+               return seat;
+           }
+       }
+
+       return null;
+    }
+
+    /**
      * Shows table, filled with sessions.
      *
      * @return name of jsp-page
@@ -90,9 +152,30 @@ public class SessionController {
                                      @RequestParam("hall_id")
                                      final String hallId) {
         Session session = new Session(LocalDateTime.parse(dateTime));
+        Hall hall = hallDAO.find(UUID.fromString(hallId));
+
+        Layout layout = hall.getLayout();
+        SeatStatus[][] seatStatuses = layout.getSeatsStatuses();
+
+        boolean rowChanged = false;
+        int actualRow = 1;
+        for (int row = 0; row < seatStatuses.length; row++) {
+            int actualSeat = 1;
+            for (int seat = 0; seat < seatStatuses[row].length; seat++) {
+                if (seatStatuses[row][seat] == SeatStatus.REGULAR) {
+                    if (rowChanged) {
+                        actualRow++;
+                        rowChanged = false;
+                    }
+                    session.addSeat(new Seat(actualRow, actualSeat++));
+                }
+            }
+            rowChanged = true;
+        }
+
         sessionDAO.add(session);
         movieDAO.find(UUID.fromString(movieId)).addSession(session);
-        hallDAO.find(UUID.fromString(hallId)).addSession(session);
+        hall.addSession(session);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 

@@ -1,8 +1,32 @@
 @charset "utf-8";
 /* CSS Document */
-.loader {
+
+.seats-row {
+    display: block;
+}
+
+.seats-seat {
     display: inline-block;
-    height: 100%;
+}
+
+.available {
+    color: green;
+}
+
+.purchased {
+    color: red;
+}
+
+.reserved {
+    color: yellow;
+}
+
+.selected {
+    color : blue;
+}
+
+#loader {
+    display: inline-block;
     position: relative; /*required for z-index*/
     z-index: 1000; /*puts on top of everything*/
     margin-left: auto;

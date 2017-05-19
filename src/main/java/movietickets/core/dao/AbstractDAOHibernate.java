@@ -80,4 +80,13 @@ public abstract class AbstractDAOHibernate<T> implements DAO<T> {
      * @return entity's name
      */
     public abstract String getEntityName();
+
+    /**
+     * Gets entity manager for accessing database.
+     *
+     * @return entity manager
+     */
+    protected EntityManager getEntityManager() {
+        return entityManager;
+    }
 }
