@@ -2,7 +2,7 @@ package movietickets.movie.web;
 
 
 import movietickets.movie.Movie;
-import movietickets.movie.dao.MovieDAO;
+import movietickets.movie.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,9 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.UUID;
 
 /**
@@ -22,22 +19,17 @@ import java.util.UUID;
  * @author Seregy
  */
 @Controller
-@Transactional
 public class MovieController {
-
-    private final MovieDAO movieDAO;
-
-    @PersistenceContext
-    private EntityManager entityManager;
+    private final MovieService movieService;
 
     /**
-     * Constructs new movie controller with given Movie DAO.
+     * Constructs new movie controller with given Movie Service.
      *
-     * @param movieDAO movie data access object
+     * @param movieService movie service
      */
     @Autowired
-    public MovieController(final MovieDAO movieDAO) {
-        this.movieDAO = movieDAO;
+    public MovieController(final MovieService movieService) {
+        this.movieService = movieService;
     }
 
 
@@ -59,7 +51,7 @@ public class MovieController {
     @GetMapping("/movies")
     public ModelAndView showMovies() {
         ModelAndView modelAndView = new ModelAndView("movies_table");
-        modelAndView.addObject("movies", movieDAO.findAll());
+        modelAndView.addObject("movies", movieService.getAll());
         return modelAndView;
     }
 
@@ -79,7 +71,7 @@ public class MovieController {
                                    @RequestParam("annotation")
                                    final String annotation) {
         Movie movie = new Movie(name, duration, annotation);
-        movieDAO.add(movie);
+        movieService.add(movie);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -91,7 +83,7 @@ public class MovieController {
      */
     @DeleteMapping("/movies/{id}")
     public ResponseEntity deleteMovie(@PathVariable("id") final String id) {
-        movieDAO.delete(UUID.fromString(id));
+        movieService.delete(UUID.fromString(id));
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

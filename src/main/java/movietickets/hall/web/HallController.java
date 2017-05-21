@@ -1,10 +1,8 @@
 package movietickets.hall.web;
 
-import movietickets.cinema.dao.CinemaDAO;
 import movietickets.hall.Hall;
-import movietickets.hall.dao.HallDAO;
 import movietickets.hall.layout.Layout;
-import movietickets.hall.layout.dao.LayoutDAO;
+import movietickets.hall.service.HallService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.UUID;
 
@@ -25,29 +21,16 @@ import java.util.UUID;
 @Controller
 @Transactional
 public class HallController {
-
-    private final HallDAO hallDAO;
-    private final CinemaDAO cinemaDAO;
-    private final LayoutDAO layoutDAO;
-
-    @PersistenceContext
-    private EntityManager entityManager;
+    private final HallService hallService;
 
     /**
-     * Constructs new hall controller with given Hall DAO,
-     * Cinema DAO and Layout DAO.
+     * Constructs new hall controller with given Hall Service.
      *
-     * @param hallDAO hall data access object
-     * @param cinemaDAO cinema data access object
-     * @param layoutDAO layout data access object
+     * @param hallService hall service
      */
     @Autowired
-    public HallController(final HallDAO hallDAO,
-                          final CinemaDAO cinemaDAO,
-                          final LayoutDAO layoutDAO) {
-        this.hallDAO = hallDAO;
-        this.cinemaDAO = cinemaDAO;
-        this.layoutDAO = layoutDAO;
+    public HallController(final HallService hallService) {
+        this.hallService = hallService;
     }
 
 
@@ -69,7 +52,7 @@ public class HallController {
     @GetMapping("/halls")
     public ModelAndView showHalls() {
         ModelAndView modelAndView = new ModelAndView("halls_table");
-        modelAndView.addObject("halls", hallDAO.findAll());
+        modelAndView.addObject("halls", hallService.getAll());
         return modelAndView;
     }
 
@@ -93,10 +76,7 @@ public class HallController {
                                   final int seatsAmount) {
         Hall hall = new Hall(name);
         Layout layout = new Layout(rowsAmount, seatsAmount);
-        hall.setLayout(layout);
-        layoutDAO.add(layout);
-        hallDAO.add(hall);
-        cinemaDAO.find(UUID.fromString(cinemaId)).addHall(hall);
+        hallService.add(hall, layout, UUID.fromString(cinemaId));
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -108,7 +88,7 @@ public class HallController {
      */
     @DeleteMapping("/halls/{id}")
     public ResponseEntity deleteHall(@PathVariable("id") final String id) {
-        hallDAO.delete(UUID.fromString(id));
+        hallService.delete(UUID.fromString(id));
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

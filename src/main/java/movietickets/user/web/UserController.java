@@ -1,7 +1,7 @@
 package movietickets.user.web;
 
 import movietickets.user.User;
-import movietickets.user.dao.UserDAO;
+import movietickets.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,9 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -21,23 +18,20 @@ import java.util.logging.Logger;
  * @author Seregy
  */
 @Controller
-@Transactional
 public class UserController {
     private static Logger log =
             Logger.getLogger(UserController.class.getName());
 
-    private final UserDAO userDAO;
-    @PersistenceContext
-    private EntityManager entityManager;
+    private final UserService userService;
 
     /**
-     * Constructs new user controller with given User DAO.
+     * Constructs new user controller with given User Service.
      *
-     * @param userDAO user data access object
+     * @param userService user service
      */
     @Autowired
-    public UserController(final UserDAO userDAO) {
-        this.userDAO = userDAO;
+    public UserController(final UserService userService) {
+        this.userService = userService;
     }
 
     /**
@@ -58,7 +52,7 @@ public class UserController {
     @GetMapping("/users")
     public ModelAndView showUsers() {
         ModelAndView modelAndView = new ModelAndView("users_table");
-        modelAndView.addObject("users", userDAO.findAll());
+        modelAndView.addObject("users", userService.getAll());
         return modelAndView;
     }
 
@@ -85,7 +79,7 @@ public class UserController {
                                   @RequestParam("email")
                                     final String email) {
         User user = new User(fullName, userName, password, salt, email);
-        userDAO.add(user);
+        userService.register(user);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -97,7 +91,7 @@ public class UserController {
      */
     @DeleteMapping("/users/{id}")
     public ResponseEntity deleteUser(@PathVariable("id") final String id) {
-        userDAO.delete(UUID.fromString(id));
+        userService.delete(UUID.fromString(id));
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

@@ -1,11 +1,6 @@
 package movietickets.ticket.web;
 
-import movietickets.seat.Seat;
-import movietickets.seat.dao.SeatDAO;
-import movietickets.ticket.Ticket;
-import movietickets.ticket.dao.TicketDAO;
-import movietickets.user.User;
-import movietickets.user.dao.UserDAO;
+import movietickets.ticket.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -26,32 +18,21 @@ import java.util.logging.Logger;
  * @author Seregy
  */
 @Controller
-@Transactional
 public class TicketController {
     private static Logger log =
             Logger.getLogger(TicketController.class.getName());
 
-    private final TicketDAO ticketDAO;
-    private final SeatDAO seatDAO;
-    private final UserDAO userDAO;
-    @PersistenceContext
-    private EntityManager entityManager;
+    private final TicketService ticketService;
+
 
     /**
-     * Constructs new cinema controller with given Ticket DAO,
-     * Seat DAO and User DAO.
+     * Constructs new cinema controller with given Ticket Service.
      *
-     * @param ticketDAO ticket data access object
-     * @param seatDAO seat data access object
-     * @param userDAO user data access object
+     * @param ticketService ticket service
      */
     @Autowired
-    public TicketController(final TicketDAO ticketDAO,
-                            final SeatDAO seatDAO,
-                            final UserDAO userDAO) {
-        this.ticketDAO = ticketDAO;
-        this.seatDAO = seatDAO;
-        this.userDAO = userDAO;
+    public TicketController(final TicketService ticketService) {
+        this.ticketService = ticketService;
     }
 
     /**
@@ -72,7 +53,7 @@ public class TicketController {
     @GetMapping("/tickets")
     public ModelAndView showTickets() {
         ModelAndView modelAndView = new ModelAndView("tickets_table");
-        modelAndView.addObject("tickets", ticketDAO.findAll());
+        modelAndView.addObject("tickets", ticketService.getAll());
         return modelAndView;
     }
 
@@ -88,10 +69,7 @@ public class TicketController {
                                         final String seatId,
                                     @RequestParam("user_id")
                                         final String userId) {
-        Seat seat = seatDAO.find(UUID.fromString(seatId));
-        User user = userDAO.find(UUID.fromString(userId));
-        Ticket ticket = new Ticket(seat, user);
-        ticketDAO.add(ticket);
+        ticketService.buy(UUID.fromString(seatId), UUID.fromString(userId));
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -103,7 +81,7 @@ public class TicketController {
      */
     @DeleteMapping("/tickets/{id}")
     public ResponseEntity deleteTicket(@PathVariable("id") final String id) {
-        ticketDAO.delete(UUID.fromString(id));
+        ticketService.delete(UUID.fromString(id));
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

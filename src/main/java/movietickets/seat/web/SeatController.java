@@ -1,10 +1,8 @@
 package movietickets.seat.web;
 
 import movietickets.seat.Seat;
-import movietickets.seat.SeatStatus;
-import movietickets.seat.dao.SeatDAO;
-import movietickets.ticket.Ticket;
-import movietickets.ticket.dao.TicketDAO;
+import movietickets.seat.service.SeatService;
+import movietickets.ticket.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -25,26 +20,25 @@ import java.util.logging.Logger;
  * @author Seregy
  */
 @Controller
-@Transactional
 public class SeatController {
     private static Logger log =
             Logger.getLogger(SeatController.class.getName());
 
-    private final SeatDAO seatDAO;
-    private final TicketDAO ticketDAO;
-    @PersistenceContext
-    private EntityManager entityManager;
+    private final SeatService seatService;
+    private final TicketService ticketService;
 
     /**
-     * Constructs new seat controller with given Seat DAO and Ticket DAO.
+     * Constructs new seat controller with given Seat Service
+     * and Ticket Service.
      *
-     * @param seatDAO seat data access object
-     * @param ticketDAO ticket data access object
+     * @param seatService seat service
+     * @param ticketService ticket service
      */
     @Autowired
-    public SeatController(final SeatDAO seatDAO, final TicketDAO ticketDAO) {
-        this.seatDAO = seatDAO;
-        this.ticketDAO = ticketDAO;
+    public SeatController(final SeatService seatService,
+                          final TicketService ticketService) {
+        this.seatService = seatService;
+        this.ticketService = ticketService;
     }
 
     /**
@@ -65,7 +59,7 @@ public class SeatController {
     @GetMapping("/seats")
     public ModelAndView showSeats() {
         ModelAndView modelAndView = new ModelAndView("seats_table");
-        modelAndView.addObject("seats", seatDAO.findAll());
+        modelAndView.addObject("seats", seatService.getAll());
         return modelAndView;
     }
 
@@ -82,7 +76,7 @@ public class SeatController {
                                   @RequestParam("seat_number")
                                     final int seatNumber) {
         Seat seat = new Seat(rowNumber, seatNumber);
-        seatDAO.add(seat);
+        seatService.add(seat);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -96,12 +90,7 @@ public class SeatController {
     public ResponseEntity buySeats(@RequestParam("ids[]")
                                        final List<String> ids) {
         for (String id : ids) {
-            Seat seat = seatDAO.find(UUID.fromString(id));
-            if (seat.getSeatStatus() != SeatStatus.AVAILABLE) {
-                return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
-            }
-            seat.setSeatStatus(SeatStatus.PURCHASED);
-            ticketDAO.add(new Ticket(seat, null));
+            ticketService.buy(UUID.fromString(id), null);
         }
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -116,11 +105,7 @@ public class SeatController {
     public ResponseEntity reserveSeats(@RequestParam("ids[]")
                                            final String[] ids) {
         for (String id : ids) {
-            Seat seat = seatDAO.find(UUID.fromString(id));
-            if (seat.getSeatStatus() != SeatStatus.AVAILABLE) {
-                return new ResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY);
-            }
-            seat.setSeatStatus(SeatStatus.RESERVED);
+            ticketService.reserve(UUID.fromString(id), null);
         }
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -133,7 +118,7 @@ public class SeatController {
      */
     @DeleteMapping("/seats/{id}")
     public ResponseEntity deleteSeat(@PathVariable("id") final String id) {
-        seatDAO.delete(UUID.fromString(id));
+        seatService.delete(UUID.fromString(id));
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

@@ -179,7 +179,7 @@ public class Seat {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(rowNumber, seatNumber, session, ticket, seatStatus);
+        return Objects.hash(rowNumber, seatNumber, session, seatStatus);
     }
 
     /**

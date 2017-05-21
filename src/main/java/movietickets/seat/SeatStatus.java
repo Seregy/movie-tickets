@@ -23,7 +23,7 @@ public enum SeatStatus implements Serializable {
      */
     RESERVED(2);
 
-    private int id;
+    private final int id;
 
     /**
      * Constructs new SeatStatus object with given id.

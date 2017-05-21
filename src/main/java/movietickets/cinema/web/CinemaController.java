@@ -1,7 +1,7 @@
 package movietickets.cinema.web;
 
 import movietickets.cinema.Cinema;
-import movietickets.cinema.dao.CinemaDAO;
+import movietickets.cinema.service.CinemaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,9 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -22,24 +19,20 @@ import java.util.logging.Logger;
  * @author Seregy
  */
 @Controller
-@Transactional
 public class CinemaController {
     private static Logger log =
             Logger.getLogger(CinemaController.class.getName());
 
-    private final CinemaDAO cinemaDAO;
-    @PersistenceContext
-    private EntityManager entityManager;
-
+    private final CinemaService cinemaService;
 
     /**
-     * Constructs new cinema controller with given Cinema DAO.
+     * Constructs new cinema controller with given Cinema Service.
      *
-     * @param cinemaDAO cinema data access object
+     * @param cinemaService cinema service
      */
     @Autowired
-    public CinemaController(final CinemaDAO cinemaDAO) {
-        this.cinemaDAO = cinemaDAO;
+    public CinemaController(final CinemaService cinemaService) {
+        this.cinemaService = cinemaService;
     }
 
     /**
@@ -60,7 +53,7 @@ public class CinemaController {
     @GetMapping("/cinemas")
     public ModelAndView showCinemas() {
         ModelAndView modelAndView = new ModelAndView("cinemas_table");
-        modelAndView.addObject("cinemas", cinemaDAO.findAll());
+        modelAndView.addObject("cinemas", cinemaService.getAll());
         return modelAndView;
     }
 
@@ -77,7 +70,7 @@ public class CinemaController {
                                     @RequestParam("location")
                                         final String location) {
         Cinema cinema = new Cinema(name, location);
-        cinemaDAO.add(cinema);
+        cinemaService.add(cinema);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -89,7 +82,7 @@ public class CinemaController {
      */
     @DeleteMapping("/cinemas/{id}")
     public ResponseEntity deleteCinema(@PathVariable("id") final String id) {
-        cinemaDAO.delete(UUID.fromString(id));
+        cinemaService.delete(UUID.fromString(id));
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
