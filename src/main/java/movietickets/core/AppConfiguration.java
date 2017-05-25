@@ -35,8 +35,8 @@ import java.util.Map;
  * @author Seregy
  */
 @Configuration
-@EnableTransactionManagement
 @ComponentScan(basePackages = {"movietickets"})
+@EnableTransactionManagement
 public class AppConfiguration {
     /**
      * Gets an instance of {@link CinemaDAOHibernate} object.

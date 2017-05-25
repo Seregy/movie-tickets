@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -20,7 +21,7 @@
     <script src="${tether_js}"></script>
     <c:url value="${pageContext.request.contextPath}/resources/scripts/bootstrap/bootstrap.min.js" var="bootstrap_js" />
     <script src="${bootstrap_js}"></script>
-
+    <sec:csrfMetaTags />
 </head>
 <body>
     <div class="seats">
@@ -98,6 +99,12 @@
 
     $(document).ready(function() {
         var seats = $(".seats");
+        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        var csrfToken = $("meta[name='_csrf']").attr("content");
+
+        $(document).ajaxSend(function(e, xhr) {
+            xhr.setRequestHeader(csrfHeader, csrfToken);
+        });
         seats.on("click", ".seats-seat", seatClicked);
     })
 </script>
