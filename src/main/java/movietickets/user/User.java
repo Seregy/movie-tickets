@@ -1,6 +1,7 @@
 package movietickets.user;
 
 import movietickets.ticket.Ticket;
+import movietickets.user.role.Role;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -25,7 +26,10 @@ public class User {
     private String fullName;
     private String userName;
     private String password;
-    private String salt;
+
+    @ManyToOne
+    private Role role;
+
     private String email;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
@@ -49,12 +53,12 @@ public class User {
     public User(final String fullName,
                 final String userName,
                 final String password,
-                final String salt,
+                final Role role,
                 final String email) {
         this.fullName = fullName;
         this.userName = userName;
         this.password = password;
-        this.salt = salt;
+        this.role = role;
         this.email = email;
     }
 
@@ -130,22 +134,12 @@ public class User {
         this.password = password;
     }
 
-    /**
-     * Gets user's password salt.
-     *
-     * @return password salt
-     */
-    public String getSalt() {
-        return salt;
+    public Role getRole() {
+        return role;
     }
 
-    /**
-     * Sets user's password salt.
-     *
-     * @param salt password salt
-     */
-    public void setSalt(final String salt) {
-        this.salt = salt;
+    public void setRole(final Role role) {
+        this.role = role;
     }
 
     /**
@@ -221,7 +215,7 @@ public class User {
         return Objects.equals(fullName, user.fullName)
                 && Objects.equals(userName, user.userName)
                 && Objects.equals(password, user.password)
-                && Objects.equals(salt, user.salt)
+                && Objects.equals(role, user.role)
                 && Objects.equals(email, user.email);
     }
 
@@ -230,7 +224,7 @@ public class User {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(fullName, userName, password, salt, email);
+        return Objects.hash(fullName, userName, password, role, email);
     }
 
     /**
@@ -246,7 +240,7 @@ public class User {
                 + ", fullName='" + fullName + '\''
                 + ", userName='" + userName + '\''
                 + ", password='" + password + '\''
-                + ", salt='" + salt + '\''
+                + ", role='" + role + '\''
                 + ", email='" + email + '\''
                 + '}';
     }

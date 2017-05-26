@@ -8,6 +8,7 @@ import movietickets.seat.Seat;
 import movietickets.session.Session;
 import movietickets.session.dao.SessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,6 +44,7 @@ public class SessionServiceDAO implements SessionService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @Transactional
     @Override
     public void add(final Session session, final UUID hallId) {
@@ -94,6 +96,7 @@ public class SessionServiceDAO implements SessionService {
      */
     @Transactional(propagation = Propagation.MANDATORY)
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public void delete(final Session session) {
         delete(session.getId());
     }
@@ -103,6 +106,7 @@ public class SessionServiceDAO implements SessionService {
      */
     @Transactional
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public void delete(final UUID id) {
         sessionDAO.delete(id);
     }

@@ -2,6 +2,8 @@ package movietickets.user.service;
 
 import movietickets.user.User;
 import movietickets.user.dao.UserDAO;
+import movietickets.user.role.Role;
+import movietickets.user.role.dao.RoleDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,15 +19,18 @@ import java.util.UUID;
 @Service
 public class UserServiceDAO implements UserService {
     private final UserDAO userDAO;
+    private final RoleDAO roleDAO;
 
     /**
      * Constructs new ticket service with given User DAO.
      *
      * @param userDAO user data access object
+     * @param roleDAO
      */
     @Autowired
-    public UserServiceDAO(final UserDAO userDAO) {
+    public UserServiceDAO(final UserDAO userDAO, RoleDAO roleDAO) {
         this.userDAO = userDAO;
+        this.roleDAO = roleDAO;
     }
 
     /**
@@ -37,6 +42,16 @@ public class UserServiceDAO implements UserService {
         userDAO.add(user);
     }
 
+    @Transactional
+    @Override
+    public void register(String fullName, String userName, String password, UUID roleId, String email) {
+        Role role = roleDAO.find(roleId);
+        User user = new User(fullName, userName, password, role, email);
+        userDAO.add(user);
+        role.addUser(user);
+        roleDAO.update(role);
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -44,6 +59,17 @@ public class UserServiceDAO implements UserService {
     @Override
     public User get(final UUID id) {
         return userDAO.find(id);
+    }
+
+    @Transactional
+    @Override
+    public User get(String name) {
+        for (User user : userDAO.findAll()) {
+            if (user.getUserName().equals(name)) {
+                return user;
+            }
+        }
+        return null;
     }
 
     /**
@@ -103,7 +129,6 @@ public class UserServiceDAO implements UserService {
     public void changePassword(final UUID userId, final String newPassword) {
         User user = userDAO.find(userId);
         user.setPassword(newPassword);
-        user.setSalt(newPassword);
         userDAO.update(user);
     }
 

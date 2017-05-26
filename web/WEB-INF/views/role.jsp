@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Seregy
-  Date: 30.04.2017
-  Time: 23:01
+  Date: 11.05.2017
+  Time: 22:28
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -10,7 +10,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Users</title>
+    <title>Roles</title>
     <link rel="stylesheet" href="resources/css/bootstrap/bootstrap.min.css">
     <link rel="stylesheet" href="resources/css/main.css">
     <script src="resources/scripts/jquery/jquery-3.2.1.min.js"></script>
@@ -20,15 +20,11 @@
 </head>
 <body>
 <div id="wrapper">
-    <table id="users" class="table">
+    <table id="roles" class="table">
         <thead class="thead-inverse">
         <tr>
             <th>ID</th>
-            <th>Full name</th>
-            <th>User name</th>
-            <th>Password</th>
-            <th>Role</th>
-            <th>Email</th>
+            <th>Name</th>
             <th></th>
         </tr>
         </thead>
@@ -36,19 +32,7 @@
         <tr>
             <td></td>
             <td class="input-group">
-                <input id="full_name" type="text" placeholder="Full name..." class="form-control">
-            </td>
-            <td class="input-group">
-                <input id="user_name" type="text" placeholder="User name..." class="form-control">
-            </td>
-            <td class="input-group">
-                <input id="password" type="text" placeholder="Password..." class="form-control">
-            </td>
-            <td class="input-group">
-                <input id="role" type="text" placeholder="Role id..." class="form-control">
-            </td>
-            <td class="input-group">
-                <input id="email" type="text" placeholder="Email..." class="form-control">
+                <input id="name" type="text" placeholder="Name..." class="form-control">
             </td>
             <td>
                 <span class="input-group-btn">
@@ -67,11 +51,11 @@
     var loader;
 
     function loadTable() {
-        $("#users").find("tbody tr").not(":last").remove();
+        $("#roles").find("tbody tr").not(":last").remove();
         var tbody = $("tbody");
         loader.show();
         $.ajax({
-            url: "users",
+            url: "roles",
             type: "GET",
             success: function (data) {
                 tbody.prepend(data);
@@ -82,35 +66,25 @@
         });
     }
 
-    function deleteUser() {
+    function deleteRole() {
         $.ajax({
-            url: "users/" + $(this).data("value"),
+            url: "roles/" + $(this).data("value"),
             type: "DELETE",
             success: loadTable
         });
     }
 
-    function addUser() {
-        var inputFullName = $("#full_name");
-        var inputUserName = $("#user_name");
-        var inputPassword = $("#password");
-        var inputRole = $("#role");
-        var inputEmail = $("#email");
+    function addRole() {
+        var inputName = $("#name");
 
         $.ajax({
-            url: "users",
+            url: "roles",
             type: "POST",
-            data: {"full_name": inputFullName.val(), "user_name": inputUserName.val(),
-                "password": inputPassword.val(), "role_id": inputRole.val(),
-                "email": inputEmail.val()},
+            data: {"name": inputName.val()},
             success: loadTable
         });
 
-        inputFullName.val("");
-        inputUserName.val("");
-        inputPassword.val("");
-        inputRole.val("");
-        inputEmail.val("");
+        inputName.val("");
     }
 
     $(document).ready(function() {
@@ -123,9 +97,9 @@
             xhr.setRequestHeader(csrfHeader, csrfToken);
         });
 
-        var table = $("#users");
-        table.on("click", "#add", addUser);
-        table.on("click", "button.delete", deleteUser);
+        var table = $("#roles");
+        table.on("click", "#add", addRole);
+        table.on("click", "button.delete", deleteRole);
         loadTable();
     })
 </script>

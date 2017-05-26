@@ -19,6 +19,13 @@ public interface UserService {
     void register(User user);
 
     /**
+     * Registers new user.
+     *
+     * @param user new user
+     */
+    void register(String fullName, String userName, String password, UUID roleId, String email);
+
+    /**
      * Gets user with specified id.
      *
      * @param id user's id
@@ -26,6 +33,8 @@ public interface UserService {
      * or {@code null} if it wasn't found
      */
     User get(UUID id);
+
+    User get(String name);
 
     /**
      * Gets all existing users as list.

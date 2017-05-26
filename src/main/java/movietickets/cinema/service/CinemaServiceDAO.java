@@ -32,7 +32,7 @@ public class CinemaServiceDAO implements CinemaService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @Transactional
     @Override
     public void add(final Cinema cinema) {
@@ -60,6 +60,7 @@ public class CinemaServiceDAO implements CinemaService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     @Override
     public void delete(final Cinema cinema) {
@@ -70,6 +71,7 @@ public class CinemaServiceDAO implements CinemaService {
      * {@inheritDoc}
      */
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     @Override
     public void delete(final UUID id) {

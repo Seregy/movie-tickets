@@ -74,12 +74,11 @@ public class UserController {
                                     final String userName,
                                   @RequestParam("password")final
                                     String password,
-                                  @RequestParam("password_salt")
-                                    final String salt,
+                                  @RequestParam("role_id")
+                                    final String roleId,
                                   @RequestParam("email")
                                     final String email) {
-        User user = new User(fullName, userName, password, salt, email);
-        userService.register(user);
+        userService.register(fullName, userName, password, UUID.fromString(roleId), email);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 

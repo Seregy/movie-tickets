@@ -1,6 +1,7 @@
 package movietickets.user.dao;
 
 import movietickets.core.dao.AbstractDAOHibernate;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import movietickets.user.User;
 
@@ -11,8 +12,7 @@ import javax.transaction.Transactional;
  *
  * @author Seregy
  */
-@Service
-@Transactional
+@Repository
 public final class UserDAOHibernate
         extends AbstractDAOHibernate<User> implements UserDAO {
     @Override

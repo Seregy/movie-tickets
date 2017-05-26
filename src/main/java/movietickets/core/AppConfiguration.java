@@ -10,6 +10,8 @@ import movietickets.movie.dao.MovieDAO;
 import movietickets.movie.dao.MovieDAOHibernate;
 import movietickets.session.dao.SessionDAO;
 import movietickets.session.dao.SessionDAOHibernate;
+import movietickets.user.role.dao.RoleDAO;
+import movietickets.user.role.dao.RoleDAOHibernate;
 import org.springframework.context.annotation.*;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -124,6 +126,17 @@ public class AppConfiguration {
     @Bean
     public UserDAO getHibernateUserDAO() {
         return new UserDAOHibernate();
+    }
+
+    /**
+     * Gets an instance of {@link RoleDAOHibernate} object.
+     *
+     * @return role dao object
+     */
+    @Primary
+    @Bean
+    public RoleDAO getHibernateRoleDAO() {
+        return new RoleDAOHibernate();
     }
 
     /**

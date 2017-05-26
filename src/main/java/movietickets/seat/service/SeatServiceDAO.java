@@ -3,6 +3,7 @@ package movietickets.seat.service;
 import movietickets.seat.Seat;
 import movietickets.seat.dao.SeatDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,7 @@ public class SeatServiceDAO implements SeatService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @Transactional
     @Override
     public void add(final Seat seat) {
@@ -60,6 +62,7 @@ public class SeatServiceDAO implements SeatService {
      */
     @Transactional
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public void delete(final Seat seat) {
         delete(seat.getId());
     }
@@ -69,6 +72,7 @@ public class SeatServiceDAO implements SeatService {
      */
     @Transactional
     @Override
+    @PreAuthorize("hasRole('ADMIN')")
     public void delete(final UUID id) {
         seatDAO.delete(id);
     }

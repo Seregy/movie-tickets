@@ -3,6 +3,7 @@ package movietickets.movie.service;
 import movietickets.movie.Movie;
 import movietickets.movie.dao.MovieDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,7 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @Transactional
     @Override
     public void add(final Movie movie) {
@@ -58,6 +60,7 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     @Override
     public void delete(final Movie movie) {
@@ -67,6 +70,7 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     @Override
     public void delete(final UUID id) {
