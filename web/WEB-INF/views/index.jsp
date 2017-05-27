@@ -58,6 +58,7 @@
             <li><a href="${pageContext.request.contextPath}/ticket">Tickets</a></li>
             <li><a href="${pageContext.request.contextPath}/user">Users</a></li>
             <li><a href="${pageContext.request.contextPath}/role">Roles</a></li>
+            <li><a href="${pageContext.request.contextPath}/permission">Permissions</a></li>
         </ul>
     </div>
 </body>

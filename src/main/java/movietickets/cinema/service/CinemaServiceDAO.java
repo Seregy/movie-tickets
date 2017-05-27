@@ -32,7 +32,7 @@ public class CinemaServiceDAO implements CinemaService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("hasAuthority('PM_ADD')")
     @Transactional
     @Override
     public void add(final Cinema cinema) {
@@ -60,7 +60,7 @@ public class CinemaServiceDAO implements CinemaService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('PM_DELETE')")
     @Transactional
     @Override
     public void delete(final Cinema cinema) {
@@ -70,8 +70,7 @@ public class CinemaServiceDAO implements CinemaService {
     /**
      * {@inheritDoc}
      */
-
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('PM_DELETE')")
     @Transactional
     @Override
     public void delete(final UUID id) {
@@ -81,6 +80,7 @@ public class CinemaServiceDAO implements CinemaService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasAuthority('PM_EDIT')")
     @Transactional
     @Override
     public void changeName(final UUID cinemaId, final String newName) {
@@ -92,6 +92,7 @@ public class CinemaServiceDAO implements CinemaService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasAuthority('PM_EDIT')")
     @Transactional
     @Override
     public void changeLocation(final UUID cinemaId, final String newLocation) {

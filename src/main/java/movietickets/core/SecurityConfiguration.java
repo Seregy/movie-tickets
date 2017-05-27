@@ -1,6 +1,5 @@
 package movietickets.core;
 
-import movietickets.user.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -20,6 +19,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
 
+    /**
+     * Constructs new security configuration.
+     *
+     * @param userDetailsService user detail service
+     */
     @Autowired
     public SecurityConfiguration(final UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -61,7 +65,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/user**").permitAll()
                 .antMatchers("/role**").permitAll()
-                .anyRequest().hasRole("USER")
+                .antMatchers("/permission**").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll();
     }

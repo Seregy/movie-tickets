@@ -65,9 +65,9 @@ public class TicketServiceDAO implements TicketService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasAuthority('PM_DELETE')")
     @Transactional(propagation = Propagation.MANDATORY)
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
     public void delete(final Ticket ticket) {
         delete(ticket.getId());
     }
@@ -75,9 +75,9 @@ public class TicketServiceDAO implements TicketService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasAuthority('PM_DELETE')")
     @Transactional
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
     public void delete(final UUID id) {
         ticketDAO.delete(id);
     }
@@ -85,7 +85,6 @@ public class TicketServiceDAO implements TicketService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @Transactional
     @Override
     public Ticket buy(final UUID seatId, final UUID userId) {
@@ -113,7 +112,6 @@ public class TicketServiceDAO implements TicketService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @Transactional
     @Override
     public Ticket reserve(final UUID seatId, final UUID userId) {
@@ -141,7 +139,6 @@ public class TicketServiceDAO implements TicketService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @Transactional
     @Override
     public void cancel(final UUID ticketId) {

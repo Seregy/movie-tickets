@@ -32,7 +32,7 @@ public class SeatServiceDAO implements SeatService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("hasAuthority('PM_ADD')")
     @Transactional
     @Override
     public void add(final Seat seat) {
@@ -62,7 +62,7 @@ public class SeatServiceDAO implements SeatService {
      */
     @Transactional
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('PM_DELETE')")
     public void delete(final Seat seat) {
         delete(seat.getId());
     }
@@ -72,7 +72,7 @@ public class SeatServiceDAO implements SeatService {
      */
     @Transactional
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('PM_DELETE')")
     public void delete(final UUID id) {
         seatDAO.delete(id);
     }

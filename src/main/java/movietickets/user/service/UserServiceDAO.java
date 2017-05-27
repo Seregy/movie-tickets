@@ -22,13 +22,13 @@ public class UserServiceDAO implements UserService {
     private final RoleDAO roleDAO;
 
     /**
-     * Constructs new ticket service with given User DAO.
+     * Constructs new user service.
      *
      * @param userDAO user data access object
-     * @param roleDAO
+     * @param roleDAO role data access object
      */
     @Autowired
-    public UserServiceDAO(final UserDAO userDAO, RoleDAO roleDAO) {
+    public UserServiceDAO(final UserDAO userDAO, final RoleDAO roleDAO) {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
     }
@@ -42,11 +42,15 @@ public class UserServiceDAO implements UserService {
         userDAO.add(user);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
-    public void register(String fullName, String userName, String password, UUID roleId, String email) {
+    public void register(final String name, final String password,
+                         final UUID roleId, final String email) {
         Role role = roleDAO.find(roleId);
-        User user = new User(fullName, userName, password, role, email);
+        User user = new User(name, password, role, email);
         userDAO.add(user);
         role.addUser(user);
         roleDAO.update(role);
@@ -61,11 +65,14 @@ public class UserServiceDAO implements UserService {
         return userDAO.find(id);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Transactional
     @Override
-    public User get(String name) {
+    public User get(final String name) {
         for (User user : userDAO.findAll()) {
-            if (user.getUserName().equals(name)) {
+            if (user.getName().equals(name)) {
                 return user;
             }
         }
@@ -104,20 +111,9 @@ public class UserServiceDAO implements UserService {
      */
     @Transactional
     @Override
-    public void changeFullName(final UUID userId, final String newFullName) {
+    public void changeName(final UUID userId, final String newName) {
         User user = userDAO.find(userId);
-        user.setFullName(newFullName);
-        userDAO.update(user);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional
-    @Override
-    public void changeUserName(final UUID userId, final String newUserName) {
-        User user = userDAO.find(userId);
-        user.setUserName(newUserName);
+        user.setName(newName);
         userDAO.update(user);
     }
 

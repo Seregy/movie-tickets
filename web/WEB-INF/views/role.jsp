@@ -25,6 +25,7 @@
         <tr>
             <th>ID</th>
             <th>Name</th>
+            <th>Permissions</th>
             <th></th>
         </tr>
         </thead>
@@ -33,6 +34,9 @@
             <td></td>
             <td class="input-group">
                 <input id="name" type="text" placeholder="Name..." class="form-control">
+            </td>
+            <td class="input-group">
+                <input id="permissions" type="text" placeholder="Permissions..." class="form-control">
             </td>
             <td>
                 <span class="input-group-btn">
@@ -76,15 +80,19 @@
 
     function addRole() {
         var inputName = $("#name");
+        var inputPermissions = $("#permissions");
+
+        var permissions = inputPermissions.val().split(",");
 
         $.ajax({
             url: "roles",
             type: "POST",
-            data: {"name": inputName.val()},
+            data: {"name": inputName.val(), "permissions_ids": permissions},
             success: loadTable
         });
 
         inputName.val("");
+        inputPermissions.val("");
     }
 
     $(document).ready(function() {

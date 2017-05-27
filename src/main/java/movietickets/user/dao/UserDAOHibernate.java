@@ -2,10 +2,7 @@ package movietickets.user.dao;
 
 import movietickets.core.dao.AbstractDAOHibernate;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 import movietickets.user.User;
-
-import javax.transaction.Transactional;
 
 /**
  * Data access object for {@link User}, uses Hibernate.

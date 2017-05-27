@@ -32,7 +32,7 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("hasAuthority('PM_ADD')")
     @Transactional
     @Override
     public void add(final Movie movie) {
@@ -60,7 +60,7 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('PM_DELETE')")
     @Transactional
     @Override
     public void delete(final Movie movie) {
@@ -70,7 +70,7 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('PM_DELETE')")
     @Transactional
     @Override
     public void delete(final UUID id) {
@@ -80,6 +80,7 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasAuthority('PM_EDIT')")
     @Transactional
     @Override
     public void changeName(final UUID movieId, final String newName) {
@@ -91,6 +92,7 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasAuthority('PM_EDIT')")
     @Transactional
     @Override
     public void changeDuration(final UUID movieId, final int newDuration) {
@@ -102,6 +104,7 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasAuthority('PM_EDIT')")
     @Transactional
     @Override
     public void changeAnnotation(final UUID movieId,

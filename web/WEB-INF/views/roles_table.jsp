@@ -13,7 +13,12 @@
         <td>${role.getId()}</td>
         <td>${role.getName()}</td>
         <td>
-            <sec:authorize access="hasRole('ADMIN')">
+            <c:forEach items="${role.getPermissions()}" var="permission">
+                <p>${permission.getAuthority()}</p>
+            </c:forEach>
+        </td>
+        <td>
+            <sec:authorize access="hasAuthority('PM_DELETE')">
                 <button class="delete" data-value="${role.getId()}">Remove</button>
             </sec:authorize>
         </td>

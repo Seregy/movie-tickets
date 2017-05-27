@@ -23,8 +23,7 @@ public class User {
     @Column(columnDefinition = "BINARY(16)", length = 16)
     private UUID id;
 
-    private String fullName;
-    private String userName;
+    private String name;
     private String password;
 
     @ManyToOne
@@ -41,22 +40,18 @@ public class User {
     protected User() { }
 
     /**
-     * Constructs new {@code User} with specified id, full name, user name,
-     * password, password salt and email.
+     * Constructs new {@code User}.
      *
-     * @param fullName user's full name
-     * @param userName user's short name(nickname)
+     * @param name user's name
      * @param password user's password
-     * @param salt unique user's salt
+     * @param role user's role
      * @param email user's email
      */
-    public User(final String fullName,
-                final String userName,
+    public User(final String name,
                 final String password,
                 final Role role,
                 final String email) {
-        this.fullName = fullName;
-        this.userName = userName;
+        this.name = name;
         this.password = password;
         this.role = role;
         this.email = email;
@@ -81,39 +76,21 @@ public class User {
     }
 
     /**
-     * Gets user's full name.
-     *
-     * @return full name
-     */
-    public String getFullName() {
-        return fullName;
-    }
-
-    /**
-     * Sets user's full name.
-     *
-     * @param fullName full name
-     */
-    public void setFullName(final String fullName) {
-        this.fullName = fullName;
-    }
-
-    /**
      * Gets user's short name(nickname).
      *
      * @return nickname
      */
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
     /**
-     * Sets user's short name(nickname).
+     * Sets user's name.
      *
-     * @param userName nickname
+     * @param name name
      */
-    public void setUserName(final String userName) {
-        this.userName = userName;
+    public void setName(final String name) {
+        this.name = name;
     }
 
     /**
@@ -134,10 +111,20 @@ public class User {
         this.password = password;
     }
 
+    /**
+     * Gets user's role.
+     *
+     * @return role
+     */
     public Role getRole() {
         return role;
     }
 
+    /**
+     * Sets user's role.
+     *
+     * @param role role
+     */
     public void setRole(final Role role) {
         this.role = role;
     }
@@ -174,7 +161,7 @@ public class User {
      * Adds ticket object to the Set of ticket objects.
      * Sets ticket object's parameter 'user' to 'this'.
      *
-     * @param ticket {@link Ticket} ticket object added to the Set
+     * @param ticket {@link Ticket} ticket object to be added to the Set
      */
     public void addTicket(final Ticket ticket) {
         tickets.add(ticket);
@@ -185,7 +172,7 @@ public class User {
      * Removes ticket object from the Set of ticket objects.
      * Sets ticket object's parameter 'user' to 'null'.
      *
-     * @param ticket {@link Ticket} ticket object removed from the Set
+     * @param ticket {@link Ticket} ticket object to be removed from the Set
      */
     public void removeTicket(final Ticket ticket) {
         if (tickets.remove(ticket)) {
@@ -212,8 +199,7 @@ public class User {
             return false;
         }
         User user = (User) o;
-        return Objects.equals(fullName, user.fullName)
-                && Objects.equals(userName, user.userName)
+        return Objects.equals(name, user.name)
                 && Objects.equals(password, user.password)
                 && Objects.equals(role, user.role)
                 && Objects.equals(email, user.email);
@@ -224,12 +210,11 @@ public class User {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(fullName, userName, password, role, email);
+        return Objects.hash(name, password, role, email);
     }
 
     /**
-     * Returns the string representation of users's id, full name,
-     * user name, password, salt and email.
+     * Returns the string representation the user.
      *
      * @return information about the user
      */
@@ -237,8 +222,7 @@ public class User {
     public String toString() {
         return "User{"
                 + "id=" + id
-                + ", fullName='" + fullName + '\''
-                + ", userName='" + userName + '\''
+                + ", name='" + name + '\''
                 + ", password='" + password + '\''
                 + ", role='" + role + '\''
                 + ", email='" + email + '\''

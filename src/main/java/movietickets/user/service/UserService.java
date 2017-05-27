@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Ticket's service object, used for applying business logic.
+ * User's service object, used for applying business logic.
  *
  * @author Seregy
  */
@@ -21,9 +21,12 @@ public interface UserService {
     /**
      * Registers new user.
      *
-     * @param user new user
+     * @param name user's name
+     * @param password user's password
+     * @param roleId user's role identifier
+     * @param email user's email
      */
-    void register(String fullName, String userName, String password, UUID roleId, String email);
+    void register(String name, String password, UUID roleId, String email);
 
     /**
      * Gets user with specified id.
@@ -34,6 +37,13 @@ public interface UserService {
      */
     User get(UUID id);
 
+    /**
+     * Gets user with specified name.
+     *
+     * @param name user's name
+     * @return user with specified id
+     * or {@code null} if it wasn't found
+     */
     User get(String name);
 
     /**
@@ -58,20 +68,12 @@ public interface UserService {
     void delete(UUID id);
 
     /**
-     * Changes the full name of the user.
-     *
-     * @param userId user's id
-     * @param newFullName new full name
-     */
-    void changeFullName(UUID userId, String newFullName);
-
-    /**
      * Changes the user name of the user.
      *
      * @param userId user's id
-     * @param newUserName new user name
+     * @param newName new user name
      */
-    void changeUserName(UUID userId, String newUserName);
+    void changeName(UUID userId, String newName);
 
     /**
      * Changes the password of the user.

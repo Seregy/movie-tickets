@@ -14,7 +14,7 @@
         <td>${ticket.getSeat().getId()}</td>
         <td>${ticket.getUser().getId()}</td>
         <td>
-            <sec:authorize access="hasRole('ADMIN')">
+            <sec:authorize access="hasAuthority('PM_DELETE')">
                 <button class="delete" data-value="${ticket.getId()}">Remove</button>
             </sec:authorize>
         </td>

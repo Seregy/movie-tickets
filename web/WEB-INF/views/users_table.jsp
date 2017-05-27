@@ -11,13 +11,12 @@
 <c:forEach items="${requestScope.users}" var="user">
     <tr>
         <td>${user.getId()}</td>
-        <td>${user.getFullName()}</td>
-        <td>${user.getUserName()}</td>
+        <td>${user.getName()}</td>
         <td>${user.getPassword()}</td>
         <td>${user.getRole().getName()}</td>
         <td>${user.getEmail()}</td>
         <td>
-            <sec:authorize access="hasRole('ADMIN')">
+            <sec:authorize access="hasAuthority('PM_DELETE')">
             <button class="delete" data-value="${user.getId()}">Remove</button>
             </sec:authorize>
         </td>

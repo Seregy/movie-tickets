@@ -6,52 +6,62 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * Created by Seregy on 26.05.2017.
+ * Role's service object, used for applying business logic.
+ *
+ * @author Seregy
  */
 public interface RoleService {
     /**
-     * Registers new user.
+     * Adds new role.
      *
-     * @param user new user
+     * @param name name
      */
     void add(String name);
 
+    /**
+     * Adds new role.
+     *
+     * @param name name
+     * @param permissionsIds permissions' identifiers
+     */
+    void add(String name, UUID... permissionsIds);
+
 
     /**
-     * Gets user with specified id.
+     * Gets role.
      *
-     * @param id user's id
-     * @return user with specified id
+     * @param id role's id
+     * @return role with specified id
      * or {@code null} if it wasn't found
      */
     Role get(UUID id);
 
     /**
-     * Gets all existing users as list.
+     * Gets all existing roles.
      *
-     * @return list of users
+     * @return list of roles
      */
     List<Role> getAll();
 
     /**
-     * Deletes user.
+     * Deletes role.
      *
-     * @param user user to delete
+     * @param role role to delete
      */
     void delete(Role role);
 
     /**
-     * Deletes user.
+     * Deletes role.
      *
-     * @param id id of the user to delete
+     * @param id id of the role to delete
      */
     void delete(UUID id);
 
     /**
-     * Changes the full name of the user.
+     * Changes the name of the role.
      *
-     * @param userId user's id
-     * @param newFullName new full name
+     * @param roleId role's id
+     * @param newName new name
      */
     void changeName(UUID roleId, String newName);
 }

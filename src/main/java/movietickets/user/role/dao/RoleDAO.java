@@ -4,7 +4,9 @@ import movietickets.core.dao.DAO;
 import movietickets.user.role.Role;
 
 /**
- * Created by Seregy on 26.05.2017.
+ * Role's data access object.
+ *
+ * @author Seregy
  */
 public interface RoleDAO extends DAO<Role> {
 }

@@ -15,7 +15,7 @@
         <td>${seat.getSeatNumber()}</td>
         <td>${seat.getSeatStatus()}</td>
         <td>
-            <sec:authorize access="hasRole('ADMIN')">
+            <sec:authorize access="hasAuthority('PM_DELETE')">
                 <button class="delete" data-value="${seat.getId()}">Remove</button>
             </sec:authorize>
         </td>

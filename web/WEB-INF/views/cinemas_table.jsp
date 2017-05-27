@@ -14,7 +14,7 @@
         <td>${cinema.getName()}</td>
         <td>${cinema.getLocation()}</td>
         <td>
-            <sec:authorize access="hasRole('ADMIN')">
+            <sec:authorize access="hasAuthority('PM_DELETE')">
                 <button class="delete" data-value="${cinema.getId()}">Remove</button>
             </sec:authorize>
         </td>

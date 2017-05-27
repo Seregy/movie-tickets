@@ -16,7 +16,7 @@
         <td>${hall.getLayout().getRowsAmount()}</td>
         <td>${hall.getLayout().getSeatsAmount()}</td>
         <td>
-            <sec:authorize access="hasRole('ADMIN')">
+            <sec:authorize access="hasAuthority('PM_DELETE')">
                 <button class="delete" data-value="${hall.getId()}">Remove</button>
             </sec:authorize>
         </td>

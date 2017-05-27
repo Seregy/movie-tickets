@@ -1,7 +1,6 @@
 package movietickets.cinema.service;
 
 import movietickets.cinema.Cinema;
-import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 import java.util.UUID;
@@ -17,7 +16,6 @@ public interface CinemaService {
      *
      * @param cinema new cinema
      */
-    @PreAuthorize("hasRole('USER')")
     void add(Cinema cinema);
 
     /**
@@ -40,7 +38,6 @@ public interface CinemaService {
      *
      * @param cinema cinema to delete
      */
-    @PreAuthorize("hasRole('ADMIN')")
     void delete(Cinema cinema);
 
     /**
@@ -48,7 +45,6 @@ public interface CinemaService {
      *
      * @param id id of the cinema to delete
      */
-    @PreAuthorize("hasRole('ADMIN')")
     void delete(UUID id);
 
     /**

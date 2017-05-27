@@ -1,6 +1,5 @@
 package movietickets.user.web;
 
-import movietickets.user.User;
 import movietickets.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -57,28 +56,25 @@ public class UserController {
     }
 
     /**
-     * Adds new user with given full name, user name, password,
-     * salt and email.
+     * Adds new user.
      *
-     * @param fullName full name of the user
-     * @param userName user's name
+     * @param name user's name
      * @param password user's password
-     * @param salt password's salt
+     * @param roleId user's role identifier
      * @param email user's email
      * @return response code
      */
     @PostMapping("/users")
-    public ResponseEntity addUser(@RequestParam("full_name")
-                                    final String fullName,
-                                  @RequestParam("user_name")
-                                    final String userName,
+    public ResponseEntity addUser(@RequestParam("name")
+                                    final String name,
                                   @RequestParam("password")final
                                     String password,
                                   @RequestParam("role_id")
                                     final String roleId,
                                   @RequestParam("email")
                                     final String email) {
-        userService.register(fullName, userName, password, UUID.fromString(roleId), email);
+        userService.register(name, password, UUID.fromString(roleId),
+                email);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 

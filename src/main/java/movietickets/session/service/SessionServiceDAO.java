@@ -44,7 +44,7 @@ public class SessionServiceDAO implements SessionService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    @PreAuthorize("hasAuthority('PM_ADD')")
     @Transactional
     @Override
     public void add(final Session session, final UUID hallId) {
@@ -94,9 +94,9 @@ public class SessionServiceDAO implements SessionService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasAuthority('PM_DELETE')")
     @Transactional(propagation = Propagation.MANDATORY)
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
     public void delete(final Session session) {
         delete(session.getId());
     }
@@ -104,9 +104,9 @@ public class SessionServiceDAO implements SessionService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasAuthority('PM_DELETE')")
     @Transactional
     @Override
-    @PreAuthorize("hasRole('ADMIN')")
     public void delete(final UUID id) {
         sessionDAO.delete(id);
     }
@@ -114,6 +114,7 @@ public class SessionServiceDAO implements SessionService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasAuthority('PM_EDIT')")
     @Transactional
     @Override
     public void changeTime(final UUID sessionId, final LocalDateTime newTime) {
@@ -125,6 +126,7 @@ public class SessionServiceDAO implements SessionService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasAuthority('PM_EDIT')")
     @Transactional
     @Override
     public void changeHall(final UUID sessionId, final UUID newHallId) {
