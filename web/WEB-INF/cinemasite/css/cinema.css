@@ -1,0 +1,36 @@
+.thumbnail h3 {
+height: 36px;
+overflow: hidden;
+}
+
+.block-name {
+  color:white; 
+  font-size: 20pt;
+  font-family: 'Cormorant';
+  font-weight: bold;
+  text-align: center;
+}
+
+.comingSoon {
+ background-color: #133a65;
+}
+
+.page-header {
+  color: white;
+  border-radius:5px;
+  margin-top: 0;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.page-header h1 {
+  font-family: 'Cormorant';
+}
+
+.vertical-align {
+    display: flex;
+    align-items: center;
+}
+
+.image-container {
+  width: 120px;
+}

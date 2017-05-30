@@ -1,0 +1,39 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+   margin-bottom: 110px;
+   background: url('../img/events-background.jpg') no-repeat center center fixed; 
+   -webkit-background-size: cover;
+   -moz-background-size: cover;
+   -o-background-size: cover;
+   background-size: cover;
+}
+
+@media (min-width: 1400px) {
+    .container{
+        min-width: 1400px;
+    }
+}
+
+h3 {
+  font-family: 'Cormorant';
+  font-size: 13pt;
+  font-weight: bold;
+}
+
+.footer {
+  position: absolute;
+  bottom:0;
+  width: 100%;
+  background-color: #185596;
+  padding-top: 15pt;
+  color: white;
+  
+}
+
+.footer a {
+   color: white;
+}

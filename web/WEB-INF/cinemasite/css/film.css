@@ -1,0 +1,14 @@
+.filmInfo {
+  color: grey;
+  font-size: 10pt;  
+}
+
+.infoHeader {
+  font-size: 10pt;
+  margin-bottom: 0pt;
+}
+
+.cinemaName {
+  font-size: 12pt;
+  font-weight: bold;
+}

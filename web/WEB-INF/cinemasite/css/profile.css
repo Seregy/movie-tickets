@@ -1,0 +1,65 @@
+.vertical-align {
+    display: flex;
+    align-items: center;
+}
+
+.main-canvas {
+  background-color: white;
+  padding: 30pt;
+  border-radius: 0em 0.5em 0.5em 0.5em;
+
+}
+
+.nav-tabs {
+  border-bottom:0px;
+}
+
+.nav-tabs > li > a {
+  border: medium none;
+  background-color:#abcdef;
+  color: black;
+}
+
+.table th {
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.table td {
+    text-align: center; 
+}
+
+.table > tbody > tr > td {
+     vertical-align: middle;
+}
+
+.first-column {
+  border-right: 0.5px solid #d9d9d9;
+}
+
+.image-container {
+  width: 90px;
+}
+
+.change-info-lable {
+    height:40px;
+    vertical-align: bottom;    
+    display: table-cell;
+    font-size: 12pt;
+}
+
+.menu {
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0px 0px 5px 5px;
+    padding: 10px;
+    margin-bottom: 15pt;
+}
+
+@media (max-width: 1200px){
+      .change-info-lable {
+        vertical-align: top;  
+      }
+    }

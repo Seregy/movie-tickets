@@ -1,0 +1,16 @@
+.thumbnail h3 {
+height: 36px;
+overflow: hidden;
+}
+
+.blockName {
+  color:white; 
+  font-size: 20pt;
+  font-family: 'Cormorant';
+  font-weight: bold;
+  text-align: center;
+}
+
+.comingSoon {
+ background-color: #133a65;
+}
