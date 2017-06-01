@@ -42,7 +42,7 @@ public class PermissionController {
      */
     @GetMapping("/permission")
     public String showPermissionsPage() {
-        return "permission";
+        return "admin/permission";
     }
 
     /**
@@ -52,7 +52,7 @@ public class PermissionController {
      */
     @GetMapping("/permissions")
     public ModelAndView showPermissions() {
-        ModelAndView modelAndView = new ModelAndView("permissions_table");
+        ModelAndView modelAndView = new ModelAndView("admin/permissions_table");
         modelAndView.addObject("permissions", permissionService.getAll());
         return modelAndView;
     }

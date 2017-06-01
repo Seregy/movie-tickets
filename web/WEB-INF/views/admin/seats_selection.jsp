@@ -11,15 +11,15 @@
 <html>
 <head>
     <title>Seats</title>
-    <c:url value="${pageContext.request.contextPath}/resources/css/bootstrap/bootstrap.min.css" var="bootstrap_css" />
+    <c:url value="${pageContext.request.contextPath}/resources/css/bootstrap/bootstrap.css" var="bootstrap_css" />
     <link rel="stylesheet" href="${bootstrap_css}">
     <c:url value="${pageContext.request.contextPath}/resources/css/main.css" var="main_css" />
     <link rel="stylesheet" href="${main_css}">
-    <c:url value="${pageContext.request.contextPath}/resources/scripts/jquery/jquery-3.2.1.min.js" var="jquery_js" />
+    <c:url value="${pageContext.request.contextPath}/resources/scripts/jquery/jquery-3.2.1.js" var="jquery_js" />
     <script src="${jquery_js}"></script>
-    <c:url value="${pageContext.request.contextPath}/resources/scripts/tether/tether.min.js" var="tether_js" />
+    <c:url value="${pageContext.request.contextPath}/resources/scripts/tether/tether.js" var="tether_js" />
     <script src="${tether_js}"></script>
-    <c:url value="${pageContext.request.contextPath}/resources/scripts/bootstrap/bootstrap.min.js" var="bootstrap_js" />
+    <c:url value="${pageContext.request.contextPath}/resources/scripts/bootstrap/bootstrap.js" var="bootstrap_js" />
     <script src="${bootstrap_js}"></script>
     <sec:csrfMetaTags />
 </head>

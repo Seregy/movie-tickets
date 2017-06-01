@@ -41,7 +41,7 @@ public class RoleController {
      */
     @GetMapping("/role")
     public String showRolesPage() {
-        return "role";
+        return "admin/role";
     }
 
     /**
@@ -51,7 +51,7 @@ public class RoleController {
      */
     @GetMapping("/roles")
     public ModelAndView showRoles() {
-        ModelAndView modelAndView = new ModelAndView("roles_table");
+        ModelAndView modelAndView = new ModelAndView("admin/roles_table");
         modelAndView.addObject("roles", roleService.getAll());
         return modelAndView;
     }
