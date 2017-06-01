@@ -42,7 +42,7 @@ public class TicketController {
      */
     @GetMapping("/ticket")
     public String showTicketsPages() {
-        return "ticket";
+        return "admin/ticket";
     }
 
     /**
@@ -52,7 +52,7 @@ public class TicketController {
      */
     @GetMapping("/tickets")
     public ModelAndView showTickets() {
-        ModelAndView modelAndView = new ModelAndView("tickets_table");
+        ModelAndView modelAndView = new ModelAndView("admin/tickets_table");
         modelAndView.addObject("tickets", ticketService.getAll());
         return modelAndView;
     }

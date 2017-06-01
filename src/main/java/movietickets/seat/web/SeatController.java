@@ -48,7 +48,7 @@ public class SeatController {
      */
     @GetMapping("/seat")
     public String showSeatsPages() {
-        return "seat";
+        return "admin/seat";
     }
 
     /**
@@ -58,7 +58,7 @@ public class SeatController {
      */
     @GetMapping("/seats")
     public ModelAndView showSeats() {
-        ModelAndView modelAndView = new ModelAndView("seats_table");
+        ModelAndView modelAndView = new ModelAndView("admin/seats_table");
         modelAndView.addObject("seats", seatService.getAll());
         return modelAndView;
     }

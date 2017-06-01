@@ -15,12 +15,62 @@ public class AppController {
     private static Logger log = Logger.getLogger(AppController.class.getName());
 
     /**
-     * Shows application's main web-page.
+     * Shows admin web-page.
      *
      * @return name of jsp-page
      */
-    @RequestMapping("/")
+    @RequestMapping("/admin")
+    public String showAdminPage() {
+        return "admin/index";
+    }
+
+    /**
+     * Shows main web-page.
+     *
+     * @return name of jsp-page
+     */
+    @RequestMapping({"/index", "/"})
     public String showHomePage() {
         return "index";
+    }
+
+    /**
+     * Shows cinema web-page.
+     *
+     * @return name of jsp-page
+     */
+    @RequestMapping("/m/cinema")
+    public String showCinemaPage() {
+        return "cinema";
+    }
+
+    /**
+     * Shows web-page with list of cinemas.
+     *
+     * @return name of jsp-page
+     */
+    @RequestMapping("/m/cinemas")
+    public String showCinemaListPage() {
+        return "cinema_list";
+    }
+
+    /**
+     * Shows film web-page.
+     *
+     * @return name of jsp-page
+     */
+    @RequestMapping("/m/film")
+    public String showFilmPage() {
+        return "film";
+    }
+
+    /**
+     * Shows profile web-page.
+     *
+     * @return name of jsp-page
+     */
+    @RequestMapping("/m/profile")
+    public String showProfilePage() {
+        return "profile";
     }
 }

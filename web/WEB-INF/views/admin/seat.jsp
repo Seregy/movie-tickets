@@ -10,11 +10,11 @@
 <html>
 <head>
     <title>Seat</title>
-    <link rel="stylesheet" href="resources/css/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="resources/css/main.css">
-    <script src="resources/scripts/jquery/jquery-3.2.1.min.js"></script>
-    <script src="resources/scripts/tether/tether.min.js"></script>
-    <script src="resources/scripts/bootstrap/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../../../resources/css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../resources/css/main.css">
+    <script src="../../../resources/scripts/jquery/jquery-3.2.1.min.js"></script>
+    <script src="../../../resources/scripts/tether/tether.min.js"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap.min.js"></script>
 
 </head>
 <body>
@@ -48,7 +48,7 @@
         </tr>
         </tbody>
     </table>
-    <img id="loader" src="resources/images/loader.svg">
+    <img id="loader" src="../../../resources/images/loader.svg">
 </div>
 
 <script>

@@ -1,30 +1,30 @@
 <%--
   Created by IntelliJ IDEA.
   User: Seregy
-  Date: 30.04.2017
-  Time: 23:10
+  Date: 21.04.2017
+  Time: 0:38
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Tickets</title>
-    <link rel="stylesheet" href="resources/css/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="resources/css/main.css">
-    <script src="resources/scripts/jquery/jquery-3.2.1.min.js"></script>
-    <script src="resources/scripts/tether/tether.min.js"></script>
-    <script src="resources/scripts/bootstrap/bootstrap.min.js"></script>
+    <title>Cinemas</title>
+    <link rel="stylesheet" href="../../../resources/css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="../../../resources/css/main.css">
+    <script src="../../../resources/scripts/jquery/jquery-3.2.1.min.js"></script>
+    <script src="../../../resources/scripts/tether/tether.min.js"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap.min.js"></script>
 
 </head>
 <body>
 <div id="wrapper">
-    <table id="tickets" class="table">
+    <table id="cinemas" class="table">
         <thead class="thead-inverse">
         <tr>
             <th>ID</th>
-            <th>Seat ID</th>
-            <th>User ID</th>
+            <th>Name</th>
+            <th>Location</th>
             <th></th>
         </tr>
         </thead>
@@ -32,10 +32,10 @@
         <tr>
             <td></td>
             <td class="input-group">
-                <input id="seat" type="text" placeholder="Seat ID..." class="form-control">
+                <input id="name" type="text" placeholder="Name..." class="form-control">
             </td>
             <td>
-                <input id="user" type="text" placeholder="User ID..." class="form-control">
+                <input id="location" type="text" placeholder="Location..." class="form-control">
             </td>
             <td>
                 <span class="input-group-btn">
@@ -47,18 +47,18 @@
         </tr>
         </tbody>
     </table>
-    <img id="loader" src="resources/images/loader.svg">
+    <img id="loader" src="../../../resources/images/loader.svg">
 </div>
 
 <script>
     var loader = $("#loader");
 
     function loadTable() {
-        $("#tickets").find("tbody tr").not(":last").remove();
+        $("#cinemas").find("tbody tr").not(":last").remove();
         var tbody = $("tbody");
         loader.show();
         $.ajax({
-            url: "tickets",
+            url: "cinemas",
             type: "GET",
             success: function (data) {
                 tbody.prepend(data);
@@ -69,35 +69,35 @@
         });
     }
 
-    function deleteTicket() {
+    function deleteCinema() {
         console.log($(this).data("value"));
         $.ajax({
-            url: "tickets/" + $(this).data("value"),
+            url: "cinemas/" + $(this).data("value"),
             type: "DELETE",
             success: loadTable
         });
     }
 
-    function addTicket() {
-        var inputSeat = $("#seat");
-        var inputUser = $("#user");
+    function addCinema() {
+        var inputName = $("#name");
+        var inputLocation = $("#location");
 
         $.ajax({
-            url: "tickets",
+            url: "cinemas",
             type: "POST",
-            data: {"seat_id": inputSeat.val(), "user_id": inputUser.val()},
+            data: {"name": inputName.val(), "location": inputLocation.val()},
             success: loadTable
         });
 
-        inputSeat.val("");
-        inputUser.val("");
+        inputName.val("");
+        inputLocation.val("");
     }
 
     $(document).ready(function() {
         loader.hide();
-        var table = $("#tickets");
-        table.on("click", "#add", addTicket);
-        table.on("click", "button.delete", deleteTicket);
+        var table = $("#cinemas");
+        table.on("click", "#add", addCinema);
+        table.on("click", "button.delete", deleteCinema);
         loadTable();
     })
 </script>

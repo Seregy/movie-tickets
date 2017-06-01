@@ -41,7 +41,7 @@ public class HallController {
      */
     @GetMapping("/hall")
     public String showHallsPages() {
-        return "hall";
+        return "admin/hall";
     }
 
     /**
@@ -51,7 +51,7 @@ public class HallController {
      */
     @GetMapping("/halls")
     public ModelAndView showHalls() {
-        ModelAndView modelAndView = new ModelAndView("halls_table");
+        ModelAndView modelAndView = new ModelAndView("admin/halls_table");
         modelAndView.addObject("halls", hallService.getAll());
         return modelAndView;
     }

@@ -41,7 +41,7 @@ public class SessionController {
      */
     @GetMapping("/session")
     public String showSessionsPages() {
-        return "session";
+        return "admin/session";
     }
 
     /**
@@ -52,7 +52,7 @@ public class SessionController {
      */
     @GetMapping("/session/{id}")
     public ModelAndView selectSeats(@PathVariable("id") final String id) {
-        ModelAndView modelAndView = new ModelAndView("seats_selection");
+        ModelAndView modelAndView = new ModelAndView("admin/seats_selection");
         Seat[][] seats = sessionService.getDisplayedSeats(UUID.fromString(id));
         modelAndView.addObject("seats", seats);
         return modelAndView;
@@ -65,7 +65,7 @@ public class SessionController {
      */
     @GetMapping("/sessions")
     public ModelAndView showSessions() {
-        ModelAndView modelAndView = new ModelAndView("sessions_table");
+        ModelAndView modelAndView = new ModelAndView("admin/sessions_table");
         modelAndView.addObject("sessions", sessionService.getAll());
         return modelAndView;
     }
