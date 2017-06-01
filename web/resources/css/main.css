@@ -1,34 +1,39 @@
-@charset "utf-8";
-/* CSS Document */
-
-.seats-row {
-    display: block;
+html {
+    position: relative;
+    min-height: 100%;
 }
 
-.seats-seat {
-    display: inline-block;
+body {
+    margin-bottom: 110px;
+    background: url('/resources/images/events-background.jpg') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
-.available {
-    color: green;
+@media (min-width: 1400px) {
+    .container {
+        min-width: 1400px;
+    }
 }
 
-.purchased {
-    color: red;
+h3 {
+    font-family: 'Cormorant', serif;
+    font-size: 13pt;
+    font-weight: bold;
 }
 
-.reserved {
-    color: yellow;
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #185596;
+    padding-top: 15pt;
+    color: white;
+
 }
 
-.selected {
-    color : blue;
-}
-
-#loader {
-    display: inline-block;
-    position: relative; /*required for z-index*/
-    z-index: 1000; /*puts on top of everything*/
-    margin-left: auto;
-    margin-right: auto;
+.footer a {
+    color: white;
 }

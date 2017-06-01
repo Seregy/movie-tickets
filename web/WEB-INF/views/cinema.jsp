@@ -1,112 +1,301 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Seregy
-  Date: 21.04.2017
-  Time: 0:38
-  To change this template use File | Settings | File Templates.
---%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-    <title>Cinemas</title>
-    <link rel="stylesheet" href="resources/css/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="resources/css/main.css">
-    <script src="resources/scripts/jquery/jquery-3.2.1.min.js"></script>
-    <script src="resources/scripts/tether/tether.min.js"></script>
-    <script src="resources/scripts/bootstrap/bootstrap.min.js"></script>
-    <sec:csrfMetaTags />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <title>Cinema</title>
+    <link rel="stylesheet" type="text/css"
+          href="${pageContext.request.contextPath}/resources/css/bootstrap/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/font-awesome.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/main.css">
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/cinema.css">
+    <link href='https://fonts.googleapis.com/css?family=Cormorant' rel='stylesheet' type='text/css'>
+    <script src="${pageContext.request.contextPath}/resources/scripts/jquery/jquery-3.2.1.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/bootstrap/bootstrap.js"></script>
 </head>
 <body>
-<div id="wrapper">
-    <table id="cinemas" class="table">
-        <thead class="thead-inverse">
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Location</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td></td>
-            <td class="input-group">
-                <input id="name" type="text" placeholder="Name..." class="form-control">
-            </td>
-            <td>
-                <input id="location" type="text" placeholder="Location..." class="form-control">
-            </td>
-            <td>
-                <span class="input-group-btn">
-                    <button id="add" class="btn btn-default" type="button">
-                        Add
-                    </button>
-                </span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <img id="loader" src="resources/images/loader.svg">
+<div class="container">
+    <nav class="navbar navbar-default" style="margin-bottom:0">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#collapsed-menu" aria-expanded="false">
+                    <span class="sr-only"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="collapse navbar-collapse" id="collapsed-menu">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="${pageContext.request.contextPath}/index">
+                            Главная
+                            <span class="sr-only"></span>
+                        </a>
+                    </li>
+                    <li class="active"><a href="#">Кнопка1</a></li>
+                    <li><a href="#">Кнопка2</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                           aria-expanded="false">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i>
+                            Киев
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <form class="navbar-form" role="search">
+                                    <div class="input-group input-group-sm">
+                                        <input type="text" class="form-control" placeholder="Город" maxlength="20">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default btn-xs" type="button">
+                                                <span class="glyphicon glyphicon-search"></span>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Львов</a></li>
+                            <li><a href="#">Харьков</a></li>
+                            <li><a href="#">Одесса</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">Вход</a></li>
+                    <li><a href="#">Регистрация</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 </div>
 
-<script>
-    var loader;
+<div class="container">
+    <div class="page-header">
+        <ul class="list-inline vertical-align">
+            <li class="image-container"><img class="img-responsive" src="resources/images/baterfly.png"></li>
+            <li><h1>Кинотеатр Баттерфляй DeLuxe</h1></li>
+        </ul>
+        <ul class="list-unstyled col-xs-offset-1">
+            <li>ул. Горького, 50</li>
+            <li>(044) 206 13 20</li>
+            <li><a href="">www.kino-butterfly.com.ua</a></li>
+        </ul>
+    </div>
+    <br>
+    <p class="block-name">СЕЙЧАС НА ЭКРАНАХ</p>
+    <br>
+    <div class="row" style="word-wrap:break-word;">
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+            <div class="thumbnail">
+                <img src="resources/images/film1.jpg" alt="...">
+                <div class="caption">
+                    <h3>Красавица и чудовище</h3>
+                    <p>с 16.03.2017 до 10.05.2017</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+            <div class="thumbnail">
+                <img src="resources/images/film2.jpg" alt="...">
+                <div class="caption">
+                    <h3>Стражи галактики. Часть 2</h3>
+                    <p>с 04.05.2017 до 31.05.2017</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+            <div class="thumbnail">
+                <img src="resources/images/film3.jpg" alt="...">
+                <div class="caption">
+                    <h3>Путешествие во времени</h3>
+                    <p>с 13.04.2017 до 10.05.2017</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+            <div class="thumbnail">
+                <img src="resources/images/film4.jpg" alt="...">
+                <div class="caption">
+                    <h3>Путешествие во времени</h3>
+                    <p>с 13.04.2017 до 10.05.2017</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+            <div class="thumbnail">
+                <img src="resources/images/film5.jpg" alt="...">
+                <div class="caption">
+                    <h3>Путешествие во времени</h3>
+                    <p>с 13.04.2017 до 10.05.2017</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+            <div class="thumbnail">
+                <img src="resources/images/film6.jpg" alt="...">
+                <div class="caption">
+                    <h3>Путешествие во времени</h3>
+                    <p>с 13.04.2017 до 10.05.2017</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    function loadTable() {
-        $("#cinemas").find("tbody tr").not(":last").remove();
-        var tbody = $("tbody");
-        loader.show();
-        $.ajax({
-            url: "cinemas",
-            type: "GET",
-            success: function (data) {
-                tbody.prepend(data);
-            },
-            complete: function () {
-                loader.hide();
-            }
-        });
-    }
+<div class="container">
+    <div class="row">
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+            <div class="thumbnail">
+                <img src="resources/images/film1.jpg" alt="...">
+                <div class="caption">
+                    <h3>Красавица и чудовище</h3>
+                    <p>с 16.03.2017 до 10.05.2017</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+            <div class="thumbnail">
+                <img src="resources/images/film2.jpg" alt="...">
+                <div class="caption">
+                    <h3>Стражи галактики. Часть 2</h3>
+                    <p>с 04.05.2017 до 31.05.2017</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+            <div class="thumbnail">
+                <img src="resources/images/film3.jpg" alt="...">
+                <div class="caption">
+                    <h3>Путешествие во времени</h3>
+                    <p>с 13.04.2017 до 10.05.2017</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+            <div class="thumbnail">
+                <img src="resources/images/film3.jpg" alt="...">
+                <div class="caption">
+                    <h3>Путешествие во времени</h3>
+                    <p>с 13.04.2017 до 10.05.2017</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+            <div class="thumbnail">
+                <img src="resources/images/film3.jpg" alt="...">
+                <div class="caption">
+                    <h3>Путешествие во времени</h3>
+                    <p>с 13.04.2017 до 10.05.2017</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+            <div class="thumbnail">
+                <img src="resources/images/film3.jpg" alt="...">
+                <div class="caption">
+                    <h3>Путешествие во времени</h3>
+                    <p>с 13.04.2017 до 10.05.2017</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    function deleteCinema() {
-        $.ajax({
-            url: "cinemas/" + $(this).data("value"),
-            type: "DELETE",
-            success: loadTable
-        });
-    }
+<br>
+<div class='comingSoon'>
+    <div class="container">
+        <br>
+        <p class="block-name">СКОРО В ПРОКАТЕ</p>
+        <br>
+        <div class="row">
+            <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+                <div class="thumbnail">
+                    <img src="resources/images/film1.jpg" alt="...">
+                    <div class="caption">
+                        <h3>Красавица и чудовище</h3>
+                        <p>с 16.03.2017 до 10.05.2017</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+                <div class="thumbnail">
+                    <img src="resources/images/film2.jpg" alt="...">
+                    <div class="caption">
+                        <h3>Стражи галактики. Часть 2</h3>
+                        <p>с 04.05.2017 до 31.05.2017</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+                <div class="thumbnail">
+                    <img src="resources/images/film3.jpg" alt="...">
+                    <div class="caption">
+                        <h3>Путешествие во времени</h3>
+                        <p>с 13.04.2017 до 10.05.2017</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+                <div class="thumbnail">
+                    <img src="resources/images/film3.jpg" alt="...">
+                    <div class="caption">
+                        <h3>Путешествие во времени</h3>
+                        <p>с 13.04.2017 до 10.05.2017</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+                <div class="thumbnail">
+                    <img src="resources/images/film3.jpg" alt="...">
+                    <div class="caption">
+                        <h3>Путешествие во времени</h3>
+                        <p>с 13.04.2017 до 10.05.2017</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
+                <div class="thumbnail">
+                    <img src="resources/images/film3.jpg" alt="...">
+                    <div class="caption">
+                        <h3>Путешествие во времени</h3>
+                        <p>с 13.04.2017 до 10.05.2017</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    function addCinema() {
-        var inputName = $("#name");
-        var inputLocation = $("#location");
-        $.ajax({
-            url: "cinemas",
-            type: "POST",
-            data: {"name": inputName.val(), "location": inputLocation.val()},
-            success: loadTable
-        });
-
-        inputName.val("");
-        inputLocation.val("");
-    }
-
-    $(document).ready(function() {
-        loader = $("#loader");
-        loader.hide();
-
-        var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-        var csrfToken = $("meta[name='_csrf']").attr("content");
-        $(document).ajaxSend(function(e, xhr) {
-            xhr.setRequestHeader(csrfHeader, csrfToken);
-        });
-
-        var table = $("#cinemas");
-        table.on("click", "#add", addCinema);
-        table.on("click", "button.delete", deleteCinema);
-        loadTable();
-    })
-</script>
+<div class="footer">
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg-offset-4 col-md-offset-4 col-sm-offset-4 text-center">
+            <ul class="list-inline">
+                <li><a href="#">Главная</a></li>
+                <li><a href="#">|</a></li>
+                <li>Перечень:</li>
+                <li><a href="">Кнопка</a></li>
+                <li><a href="">Кнопка</a></li>
+                <li><a href="">Кнопка</a></li>
+                <li><a href="">|</a></li>
+                <li><a href="">Контакты</a></li>
+            </ul>
+        </div>
+        <div class="col-lg-2 col-md-4 col-sm-3 col-xs-9 col-lg-offset-2  col-sm-offset-0 col-xs-offset-3 pull-right">
+            <span>
+                <i class="fa fa-envelope-open" aria-hidden="true" style="line-height:6%;"></i>
+                e-mail: mail@mail.com
+            </span>
+            <p>
+                <i class="fa fa-address-book" aria-hidden="true" style="line-height:6%;"></i>
+                тел. +380000000000
+            </p>
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -42,7 +42,7 @@ public class CinemaController {
      */
     @GetMapping("/cinema")
     public String showCinemasPages() {
-        return "cinema";
+        return "admin/cinema";
     }
 
     /**
@@ -52,7 +52,7 @@ public class CinemaController {
      */
     @GetMapping("/cinemas")
     public ModelAndView showCinemas() {
-        ModelAndView modelAndView = new ModelAndView("cinemas_table");
+        ModelAndView modelAndView = new ModelAndView("admin/cinemas_table");
         modelAndView.addObject("cinemas", cinemaService.getAll());
         return modelAndView;
     }

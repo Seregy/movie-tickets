@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: Seregy
-  Date: 30.04.2017
-  Time: 23:52
+  Date: 11.05.2017
+  Time: 22:28
   To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -10,23 +10,23 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Seat</title>
-    <link rel="stylesheet" href="resources/css/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="resources/css/main.css">
-    <script src="resources/scripts/jquery/jquery-3.2.1.min.js"></script>
-    <script src="resources/scripts/tether/tether.min.js"></script>
-    <script src="resources/scripts/bootstrap/bootstrap.min.js"></script>
+    <title>Movies</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/main.css">
+    <script src="${pageContext.request.contextPath}/resources/scripts/jquery/jquery-3.2.1.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/tether/tether.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/scripts/bootstrap/bootstrap.min.js"></script>
     <sec:csrfMetaTags />
 </head>
 <body>
 <div id="wrapper">
-    <table id="seats" class="table">
+    <table id="movies" class="table">
         <thead class="thead-inverse">
         <tr>
             <th>ID</th>
-            <th>Row #</th>
-            <th>Seat #</th>
-            <th>Seat status</th>
+            <th>Name</th>
+            <th>Duration</th>
+            <th>Annotation</th>
             <th></th>
         </tr>
         </thead>
@@ -34,10 +34,13 @@
         <tr>
             <td></td>
             <td class="input-group">
-                <input id="row" type="text" placeholder="Row #..." class="form-control">
+                <input id="name" type="text" placeholder="Name..." class="form-control">
             </td>
             <td>
-                <input id="seat" type="text" placeholder="Seat #..." class="form-control">
+                <input id="duration" type="text" placeholder="Duration..." class="form-control">
+            </td>
+            <td>
+                <input id="annotation" type="text" placeholder="Annotation..." class="form-control">
             </td>
             <td>
                 <span class="input-group-btn">
@@ -49,18 +52,18 @@
         </tr>
         </tbody>
     </table>
-    <img id="loader" src="resources/images/loader.svg">
+    <img id="loader" src="${pageContext.request.contextPath}/resources/images/loader.svg">
 </div>
 
 <script>
     var loader;
 
     function loadTable() {
-        $("#seats").find("tbody tr").not(":last").remove();
+        $("#movies").find("tbody tr").not(":last").remove();
         var tbody = $("tbody");
         loader.show();
         $.ajax({
-            url: "seats",
+            url: "movies",
             type: "GET",
             success: function (data) {
                 tbody.prepend(data);
@@ -71,27 +74,30 @@
         });
     }
 
-    function deleteSeat() {
+    function deleteMovie() {
         $.ajax({
-            url: "seats/" + $(this).data("value"),
+            url: "movies/" + $(this).data("value"),
             type: "DELETE",
             success: loadTable
         });
     }
 
-    function addSeat() {
-        var inputRow = $("#row");
-        var inputSeat = $("#seat");
+    function addMovie() {
+        var inputName = $("#name");
+        var inputDuration = $("#duration");
+        var inputAnnotation = $("#annotation");
 
         $.ajax({
-            url: "seats",
+            url: "movies",
             type: "POST",
-            data: {"row_number": inputRow.val(), "seat_number": inputSeat.val()},
+            data: {"name": inputName.val(), "duration": inputDuration.val(),
+            "annotation": inputAnnotation.val()},
             success: loadTable
         });
 
-        inputRow.val("");
-        inputSeat.val("");
+        inputName.val("");
+        inputDuration.val("");
+        inputAnnotation.val("");
     }
 
     $(document).ready(function() {
@@ -104,9 +110,9 @@
             xhr.setRequestHeader(csrfHeader, csrfToken);
         });
 
-        var table = $("#seats");
-        table.on("click", "#add", addSeat);
-        table.on("click", "button.delete", deleteSeat);
+        var table = $("#movies");
+        table.on("click", "#add", addMovie);
+        table.on("click", "button.delete", deleteMovie);
         loadTable();
     })
 </script>

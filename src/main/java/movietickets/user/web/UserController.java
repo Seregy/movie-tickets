@@ -40,7 +40,7 @@ public class UserController {
      */
     @GetMapping("/user")
     public String showUsersPage() {
-        return "user";
+        return "admin/user";
     }
 
     /**
@@ -50,7 +50,7 @@ public class UserController {
      */
     @GetMapping("/users")
     public ModelAndView showUsers() {
-        ModelAndView modelAndView = new ModelAndView("users_table");
+        ModelAndView modelAndView = new ModelAndView("admin/users_table");
         modelAndView.addObject("users", userService.getAll());
         return modelAndView;
     }
