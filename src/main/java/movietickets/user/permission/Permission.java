@@ -72,6 +72,24 @@ public class Permission implements GrantedAuthority {
     }
 
     /**
+     * Gets permission's name.
+     *
+     * @return name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Sets permission's name.
+     *
+     * @param name name
+     */
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    /**
      * Indicates whether some other object is "equal to" this one.
      * This method accepts subclasses as parameters to work with Proxy
      * objects.

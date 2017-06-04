@@ -1,6 +1,5 @@
-package core;
+package movietickets.core;
 
-import movietickets.core.AppConfiguration;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
