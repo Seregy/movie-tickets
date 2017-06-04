@@ -1,20 +1,3 @@
 language: java
 jdk:
 - oraclejdk8
-script:
-- mvn clean package
-deploy:
-  skip_cleanup: true
-  provider: elasticbeanstalk
-  access_key_id: AKIAIB46ZGVBCYSCIOTQ
-  secret_access_key:
-    secure: lYnwiDoW5pbKkVjwL0SPCOMc9qHS5AROBXchk96EfNpfD90jYVqCtJ5rYJNE5hUfKuSuRrNGvjJ7wwdkzj1/OUVd/sBDaUs9/XWWQE0mbwhfhWcvIyInsHSqdkAsnpIAY0Ly4T7jvkalqimWv4iOZ4mfw97HiDlsBJu+IPBPsatRr7mvwJLytswUGH7B1qNuR0FEp4WS0D91D43OiigDyqULO+8PfKMRwDoh95ZN1LM/6XxE4Ud00L1J/UzSMQMHpXyAcQ+V9LoGOg3F0u8PsVFDwg5HE+C3MvOrLekVdV8O3tbOuhK9YZEmNB4Q8NpdIWsm3tTi9o8G76eMZtJQNFlQrRIDOt28WsTa1k5A6+n9OuHKsakJNs2qrIaFNwFCeBxumgUvaUCKSiQ/dvlQFoONvgemw8GBaFRypsSHTbnB3JE21HTftAvd3aGrwRT94Rc7Tu7FdKbxOpawncpm9mpCYFsrrgf3GhomSXfmMSTPRfgShLfm/ARpkta+JtyrCmlnbn4WKEO1swAKr/qhQtYx2reZS9tcDxbdt78Js95rSPv7MlBKBUrzHFtghKcFOd77arduIQUslpXCsl8HAojkeSGDqEAqzNSVx+ecsy20du4yx7f7AdY1IygKoUjOZmJnntCsIgwIxpS2e/LLv4yxn5qJO+z2bLl+itro4lU=
-  region: us-west-2
-  app: Movie Tickets
-  env: LowCost-env
-  bucket_name: elasticbeanstalk-us-west-2-772281452425
-  file_glob: true
-  zip_file: target/movie-tickets-web.zip
-  on:
-    repo: Seregy/movie-tickets
-    branch: master
