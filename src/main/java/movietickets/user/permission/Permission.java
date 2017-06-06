@@ -22,10 +22,10 @@ public class Permission implements GrantedAuthority {
     @Column(columnDefinition = "BINARY(16)", length = 16)
     private UUID id;
 
+    private String name;
+
     @ManyToMany(mappedBy = "permissions")
     private final Set<Role> roles = new HashSet<>();
-
-    private String name;
 
     /**
      * Constructor for JPA.

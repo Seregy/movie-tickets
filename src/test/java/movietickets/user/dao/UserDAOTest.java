@@ -1,6 +1,5 @@
 package movietickets.user.dao;
 
-import movietickets.session.Session;
 import movietickets.user.User;
 import movietickets.user.role.Role;
 import movietickets.user.role.dao.RoleDAO;

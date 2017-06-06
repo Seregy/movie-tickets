@@ -23,10 +23,8 @@ public class Hall {
 
     @ManyToOne
     private Cinema cinema;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hall")
     private Set<Session> sessions = new HashSet<>();
-
     @OneToOne
     private Layout layout;
 

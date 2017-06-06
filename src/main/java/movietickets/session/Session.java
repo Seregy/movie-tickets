@@ -25,13 +25,12 @@ public class Session {
     private UUID id;
 
     private LocalDateTime sessionStart;
+    private String technology;
 
     @ManyToOne
     private Movie movie;
-
     @ManyToOne
     private Hall hall;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "session")
     private Set<Seat> seats = new HashSet<>();
 
@@ -77,6 +76,24 @@ public class Session {
      */
     public LocalDateTime getSessionStart() {
         return sessionStart;
+    }
+
+    /**
+     * Gets film's display technology of the session.
+     *
+     * @return film's technology
+     */
+    public String getTechnology() {
+        return technology;
+    }
+
+    /**
+     * Sets film's display technology of the session.
+     *
+     * @param technology film's technology
+     */
+    public void setTechnology(final String technology) {
+        this.technology = technology;
     }
 
     /**
@@ -180,16 +197,16 @@ public class Session {
     }
 
     /**
-     * Returns the string representation of session's id,
-     * and starting time.
+     * Returns string representation of the movie.
      *
-     * @return information about the session
+     * @return movie's information
      */
     @Override
     public String toString() {
         return "Session{"
                 + "id=" + id
                 + ", sessionStart=" + sessionStart
+                + ", technology='" + technology + '\''
                 + '}';
     }
 }

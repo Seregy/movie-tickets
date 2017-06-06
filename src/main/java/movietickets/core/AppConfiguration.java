@@ -15,6 +15,8 @@ import movietickets.user.role.dao.RoleDAOHibernate;
 import org.springframework.context.annotation.*;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import movietickets.seat.dao.SeatDAO;
@@ -187,5 +189,16 @@ public class AppConfiguration {
     public PlatformTransactionManager getJPATransactionManager(
             final EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
+    }
+
+    /**
+     * Gets an Instance of
+     * {@link PasswordEncoder} object.
+     *
+     * @return password encoder
+     */
+    @Bean
+    public PasswordEncoder getBCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

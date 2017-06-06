@@ -1,8 +1,8 @@
 package movietickets.movie;
 
 import movietickets.session.Session;
-
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -19,10 +19,18 @@ public class Movie {
     private UUID id;
 
     private String name;
-
-    private int duration;
-
+    @Lob
     private String annotation;
+    private int year;
+    private String country;
+    private String genres;
+    private String cast;
+    private String director;
+    private LocalDate screeningDate;
+    private LocalDate premierEndDate;
+    private int duration;
+    private String contentRating;
+    private String pathToPoster;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "movie")
     private Set<Session> sessions = new HashSet<>();
@@ -39,14 +47,10 @@ public class Movie {
      * @param duration duration of the movie in minutes
      * @param annotation annotation to the movie
      */
-    @SuppressWarnings("checkstyle:AvoidInlineConditionals")
     public Movie(final String name, final int duration,
                  final String annotation) {
         this.name = name;
-
-        this.duration = duration > 0
-                ? duration
-                : Math.abs(duration);
+        this.duration = duration;
         this.annotation = annotation;
     }
 
@@ -78,6 +82,150 @@ public class Movie {
     }
 
     /**
+     * Sets annotation of the movie.
+     *
+     * @param annotation annotation of the movie
+     */
+    public void setAnnotation(final String annotation) {
+        this.annotation = annotation;
+    }
+
+    /**
+     * Gets annotation of the movie.
+     *
+     * @return annotation
+     */
+    public String getAnnotation() {
+        return annotation;
+    }
+
+    /**
+     * Gets movie's release year.
+     *
+     * @return release year
+     */
+    public int getYear() {
+        return year;
+    }
+
+    /**
+     * Sets movie's release year.
+     *
+     * @param year release year
+     */
+    public void setYear(final int year) {
+        this.year = year;
+    }
+
+    /**
+     * Gets movie's country of creation.
+     *
+     * @return country
+     */
+    public String getCountry() {
+        return country;
+    }
+
+    /**
+     * Sets movie's country of creation.
+     *
+     * @param country country
+     */
+    public void setCountry(final String country) {
+        this.country = country;
+    }
+
+    /**
+     * Gets movie's genres.
+     *
+     * @return genres
+     */
+    public String getGenres() {
+        return genres;
+    }
+
+    /**
+     * Sets movie's genres.
+     *
+     * @param genres genres
+     */
+    public void setGenres(final String genres) {
+        this.genres = genres;
+    }
+
+    /**
+     * Gets movie's cast.
+     *
+     * @return cast
+     */
+    public String getCast() {
+        return cast;
+    }
+
+    /**
+     * Sets movie's cast.
+     *
+     * @param cast cast
+     */
+    public void setCast(final String cast) {
+        this.cast = cast;
+    }
+
+    /**
+     * Gets movie's director.
+     *
+     * @return director
+     */
+    public String getDirector() {
+        return director;
+    }
+
+    /**
+     * Sets movie's director.
+     *
+     * @param director director
+     */
+    public void setDirector(final String director) {
+        this.director = director;
+    }
+
+    /**
+     * Gets movie's screening date.
+     *
+     * @return screening date
+     */
+    public LocalDate getScreeningDate() {
+        return screeningDate;
+    }
+
+    /**
+     * Sets movie's screening date.
+     *
+     * @param screeningDate screening date
+     */
+    public void setScreeningDate(final LocalDate screeningDate) {
+        this.screeningDate = screeningDate;
+    }
+
+    /**
+     * Gets end date of the movie's premier period.
+     *
+     * @return premier end date
+     */
+    public LocalDate getPremierEndDate() {
+        return premierEndDate;
+    }
+
+    /**
+     * Sets end date of the movie's premier period.
+     *
+     * @param premierEndDate premier end date
+     */
+    public void setPremierEndDate(final LocalDate premierEndDate) {
+        this.premierEndDate = premierEndDate;
+    }
+
+    /**
      * Sets duration of the movie in minutes.
      *
      * @param duration duration of the movie
@@ -96,21 +244,39 @@ public class Movie {
     }
 
     /**
-     * Sets annotation of the movie.
+     * Gets content rating of the movie.
      *
-     * @param annotation annotation of the movie
+     * @return content rating
      */
-    public void setAnnotation(final String annotation) {
-        this.annotation = annotation;
+    public String getContentRating() {
+        return contentRating;
     }
 
     /**
-     * Gets annotation of the movie.
+     * Sets content rating of the movie.
      *
-     * @return annotation
+     * @param contentRating content rating
      */
-    public String getAnnotation() {
-        return annotation;
+    public void setContentRating(final String contentRating) {
+        this.contentRating = contentRating;
+    }
+
+    /**
+     * Gets path to movie's poster.
+     *
+     * @return path to poster
+     */
+    public String getPathToPoster() {
+        return pathToPoster;
+    }
+
+    /**
+     * Sets path to movie's poster.
+     *
+     * @param pathToPoster path to poster.
+     */
+    public void setPathToPoster(final String pathToPoster) {
+        this.pathToPoster = pathToPoster;
     }
 
     /**
@@ -174,22 +340,30 @@ public class Movie {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(name, duration, annotation);
+        return Objects.hash(name, annotation, duration);
     }
 
     /**
-     * Returns the string representation of Movie's id, name,
-     * duration and annotation.
+     * Returns string representation of the movie.
      *
-     * @return information about the movie
+     * @return movie's information
      */
     @Override
     public String toString() {
         return "Movie{"
                 + "id=" + id
                 + ", name='" + name + '\''
-                + ", duration=" + duration
                 + ", annotation='" + annotation + '\''
+                + ", year=" + year
+                + ", country='" + country + '\''
+                + ", genres='" + genres + '\''
+                + ", cast='" + cast + '\''
+                + ", director='" + director + '\''
+                + ", screeningDate=" + screeningDate
+                + ", premierEndDate=" + premierEndDate
+                + ", duration=" + duration
+                + ", contentRating='" + contentRating + '\''
+                + ", pathToPoster='" + pathToPoster + '\''
                 + '}';
     }
 }

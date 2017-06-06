@@ -5,6 +5,7 @@ import movietickets.user.dao.UserDAO;
 import movietickets.user.role.Role;
 import movietickets.user.role.dao.RoleDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,17 +21,22 @@ import java.util.UUID;
 public class UserServiceDAO implements UserService {
     private final UserDAO userDAO;
     private final RoleDAO roleDAO;
+    private final PasswordEncoder passwordEncoder;
 
     /**
      * Constructs new user service.
      *
      * @param userDAO user data access object
      * @param roleDAO role data access object
+     * @param passwordEncoder password encoder
      */
     @Autowired
-    public UserServiceDAO(final UserDAO userDAO, final RoleDAO roleDAO) {
+    public UserServiceDAO(final UserDAO userDAO,
+                          final RoleDAO roleDAO,
+                          final PasswordEncoder passwordEncoder) {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
+        this.passwordEncoder = passwordEncoder;
     }
 
     /**
@@ -50,7 +56,8 @@ public class UserServiceDAO implements UserService {
     public void register(final String name, final String password,
                          final UUID roleId, final String email) {
         Role role = roleDAO.find(roleId);
-        User user = new User(name, password, role, email);
+        User user = new User(name, passwordEncoder.encode(password),
+                role, email);
         userDAO.add(user);
         role.addUser(user);
         roleDAO.update(role);

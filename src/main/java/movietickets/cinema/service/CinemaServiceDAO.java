@@ -97,7 +97,7 @@ public class CinemaServiceDAO implements CinemaService {
     @Override
     public void changeLocation(final UUID cinemaId, final String newLocation) {
         Cinema cinema = cinemaDAO.find(cinemaId);
-        cinema.setLocation(newLocation);
+        cinema.setAddress(newLocation);
         cinemaDAO.update(cinema);
     }
 }

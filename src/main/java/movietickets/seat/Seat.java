@@ -22,14 +22,13 @@ public class Seat {
 
     private int rowNumber;
     private int seatNumber;
+    private SeatStatus seatStatus;
 
     @ManyToOne
     private Session session;
-
     @OneToOne
     private Ticket ticket;
 
-    private SeatStatus seatStatus;
 
     /**
      * Constructs new {@code Seat} with specified row and seat number.

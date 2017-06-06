@@ -25,12 +25,10 @@ public class User {
 
     private String name;
     private String password;
+    private String email;
 
     @ManyToOne
     private Role role;
-
-    private String email;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Ticket> tickets = new HashSet<>();
 

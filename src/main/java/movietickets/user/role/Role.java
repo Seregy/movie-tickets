@@ -27,7 +27,6 @@ public class Role implements GrantedAuthority {
 
     @OneToMany(mappedBy = "role")
     private final Set<User> users = new HashSet<>();
-
     @ManyToMany(fetch = FetchType.EAGER)
     private final Set<Permission> permissions = new HashSet<>();
 

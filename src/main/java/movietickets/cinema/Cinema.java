@@ -19,8 +19,10 @@ public class Cinema {
     private UUID id;
 
     private String name;
-
-    private String location;
+    private String address;
+    private String phone;
+    private String website;
+    private String pathToLogo;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cinema")
     private Set<Hall> halls = new HashSet<>();
@@ -31,14 +33,14 @@ public class Cinema {
     protected Cinema() { }
 
     /**
-     * Constructs new cinema with specified name and location.
+     * Constructs new cinema.
      *
      * @param name full name of the cinema
-     * @param location location in format [City, street, building]
+     * @param address cinema's address in format [City, street, building]
      */
-    public Cinema(final String name, final String location) {
+    public Cinema(final String name, final String address) {
         this.name = name;
-        this.location = location;
+        this.address = address;
     }
 
     /**
@@ -69,21 +71,21 @@ public class Cinema {
     }
 
     /**
-     * Gets location of the cinema in format [City, street, building].
+     * Gets address of the cinema in format [City, street, building].
      *
-     * @return location in format [City, street, building]
+     * @return address in format [City, street, building]
      */
-    public String getLocation() {
-        return location;
+    public String getAddress() {
+        return address;
     }
 
     /**
-     * Sets location of the cinema in format [City, street, building].
+     * Sets address of the cinema in format [City, street, building].
      *
-     * @param location location in format [City, street, building]
+     * @param address address in format [City, street, building]
      */
-    public void setLocation(final String location) {
-        this.location = location;
+    public void setAddress(final String address) {
+        this.address = address;
     }
 
     /**
@@ -120,6 +122,60 @@ public class Cinema {
     }
 
     /**
+     * Gets cinema's phone number.
+     *
+     * @return phone number
+     */
+    public String getPhone() {
+        return phone;
+    }
+
+    /**
+     * Sets cinema's phone number.
+     *
+     * @param phone phone number
+     */
+    public void setPhone(final String phone) {
+        this.phone = phone;
+    }
+
+    /**
+     * Gets cinema's website address.
+     *
+     * @return website address
+     */
+    public String getWebsite() {
+        return website;
+    }
+
+    /**
+     * Sets cinema's website address.
+     *
+     * @param website website address
+     */
+    public void setWebsite(final String website) {
+        this.website = website;
+    }
+
+    /**
+     * Gets path to cinema's logo.
+     *
+     * @return logo path
+     */
+    public String getPathToLogo() {
+        return pathToLogo;
+    }
+
+    /**
+     * Sets path to cinema's logo.
+     *
+     * @param pathToLogo path to logo
+     */
+    public void setPathToLogo(final String pathToLogo) {
+        this.pathToLogo = pathToLogo;
+    }
+
+    /**
      * Indicates whether some other object is "equal to" this one.
      * This method accepts subclasses as parameters to work with Proxy
      * objects.
@@ -139,7 +195,7 @@ public class Cinema {
         }
         Cinema cinema = (Cinema) o;
         return Objects.equals(name, cinema.name)
-                && Objects.equals(location, cinema.location);
+                && Objects.equals(address, cinema.address);
     }
 
     /**
@@ -147,20 +203,23 @@ public class Cinema {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(name, location);
+        return Objects.hash(name, address);
     }
 
     /**
-     * Returns the string representation of cinema's id, name and location.
+     * Returns string representation of the cinema.
      *
-     * @return information about the cinema
+     * @return cinema's information
      */
     @Override
     public String toString() {
         return "Cinema{"
                 + "id=" + id
                 + ", name='" + name + '\''
-                + ", location='" + location + '\''
+                + ", address='" + address + '\''
+                + ", phone='" + phone + '\''
+                + ", website='" + website + '\''
+                + ", pathToLogo='" + pathToLogo + '\''
                 + '}';
     }
 }
