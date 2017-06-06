@@ -34,13 +34,17 @@ public class MovieController {
 
 
     /**
-     * Shows main movies' page.
+     * Shows movie page.
      *
+     * @param id movie's id
      * @return name of jsp-page
      */
-    @GetMapping("/movie")
-    public String showMoviesPages() {
-        return "admin/movie";
+    @GetMapping("/movie/{id}")
+    public ModelAndView showMoviesPages(@PathVariable("id") final String id) {
+        ModelAndView modelAndView = new ModelAndView("movie");
+        modelAndView.addObject("movie",
+                movieService.get(UUID.fromString(id)));
+        return modelAndView;
     }
 
     /**

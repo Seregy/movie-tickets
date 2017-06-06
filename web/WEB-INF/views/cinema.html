@@ -1,0 +1,62 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <title>Cinema</title>
+    <link rel="stylesheet" type="text/css"
+          href="../../resources/css/bootstrap/bootstrap.css" th:href="@{/resources/css/bootstrap/bootstrap.css}" >
+    <link rel="stylesheet" type="text/css"
+          href="../../resources/css/font-awesome.css" th:href="@{/resources/css/font-awesome.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../resources/css/main.css" th:href="@{/resources/css/main.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../resources/css/cinema.css" th:href="@{/resources/css/cinema.css}">
+    <link href='https://fonts.googleapis.com/css?family=Cormorant' rel='stylesheet' type='text/css'>
+    <script src="../../resources/scripts/jquery/jquery-3.2.1.js"
+            th:src="@{/resources/scripts/jquery/jquery-3.2.1.js}"></script>
+    <script src="../../resources/scripts/bootstrap/bootstrap.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap.js}"></script>
+</head>
+<body>
+<div class="container" th:include="fragments/navbar :: navbar"></div>
+
+<div class="container">
+    <div class="page-header">
+        <ul class="list-inline vertical-align">
+            <li class="image-container">
+                <img class="img-responsive" src=""
+                     th:src="@{/resources/images/cinemas/{logo}(logo=${cinema.pathToLogo})}"></li>
+            <li><h1 th:text="${cinema.name}">Cinema name</h1></li>
+        </ul>
+        <ul class="list-unstyled col-xs-offset-1">
+            <li th:text="${cinema.address}">Cinema address</li>
+            <li th:text="${cinema.phone}">Cinema phone</li>
+            <li><a th:text="${cinema.website}" th:href="${cinema.website}" href="">Cinema website</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class='in-theaters'>
+    <div class="container">
+        <br>
+        <p class="block-name">In Theaters</p>
+        <br>
+        <div th:replace="fragments/movie_block :: movie_block (${inTheaters})"></div>
+    </div>
+</div>
+
+<br>
+<div class='coming-soon'>
+    <div class="container">
+        <br>
+        <p class="block-name">Coming Soon</p>
+        <br>
+        <div th:replace="fragments/movie_block :: movie_block (${comingSoon})"></div>
+    </div>
+</div>
+<div class="footer" th:include="fragments/footer :: footer"></div>
+</body>
+</html>

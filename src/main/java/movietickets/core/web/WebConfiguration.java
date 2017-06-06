@@ -8,7 +8,11 @@ import org.springframework.web.servlet.config.annotation.DefaultServletHandlerCo
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.thymeleaf.spring4.SpringTemplateEngine;
+import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
+import org.thymeleaf.spring4.view.ThymeleafViewResolver;
+import org.thymeleaf.templatemode.TemplateMode;
+import org.thymeleaf.templateresolver.ITemplateResolver;
 
 /**
  * Configuration class for Spring's MVC.
@@ -51,10 +55,40 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
      */
     @Bean
     public ViewResolver getViewResolver() {
-        InternalResourceViewResolver resolver =
-                new InternalResourceViewResolver();
-        resolver.setPrefix("/WEB-INF/views/");
-        resolver.setSuffix(".jsp");
+        ThymeleafViewResolver resolver =
+                new ThymeleafViewResolver();
+        resolver.setTemplateEngine(getSpringTemplateEngine());
+        resolver.setCharacterEncoding("UTF-8");
         return resolver;
+    }
+
+    /**
+     * Gets TemplateResolver for processing
+     * pages with Thymeleaf tags.
+     *
+     * @return template resolver
+     */
+    @Bean
+    public ITemplateResolver getTemplateResolver() {
+        SpringResourceTemplateResolver resolver =
+                new SpringResourceTemplateResolver();
+        resolver.setCharacterEncoding("UTF-8");
+        resolver.setPrefix("/WEB-INF/views/");
+        resolver.setSuffix(".html");
+        resolver.setTemplateMode(TemplateMode.HTML);
+        return resolver;
+    }
+
+    /**
+     * Gets SpringTemplateEngine for processing
+     * pages with Thymeleaf tags.
+     *
+     * @return template engine
+     */
+    @Bean
+    public SpringTemplateEngine getSpringTemplateEngine() {
+        SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+        templateEngine.setTemplateResolver(getTemplateResolver());
+        return templateEngine;
     }
 }

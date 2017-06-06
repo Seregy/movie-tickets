@@ -1,0 +1,148 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <title>Movie</title>
+    <link rel="stylesheet" type="text/css"
+          href="../../resources/css/bootstrap/bootstrap-datepicker.css" th:href="@{/resources/css/bootstrap/bootstrap-datepicker.css}" >
+    <link rel="stylesheet" type="text/css"
+          href="../../resources/css/bootstrap/bootstrap.css" th:href="@{/resources/css/bootstrap/bootstrap.css}" >
+    <link rel="stylesheet" type="text/css"
+          href="../../resources/css/font-awesome.css" th:href="@{/resources/css/font-awesome.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../resources/css/main.css" th:href="@{/resources/css/main.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../resources/css/cinema_list.css" th:href="@{/resources/css/movie.css}">
+    <link href='https://fonts.googleapis.com/css?family=Cormorant' rel='stylesheet' type='text/css'>
+    <script src="../../resources/scripts/jquery/jquery-3.2.1.js"
+            th:src="@{/resources/scripts/jquery/jquery-3.2.1.js}"></script>
+    <script src="../../resources/scripts/bootstrap/bootstrap.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap.js}"></script>
+    <script src="../../resources/scripts/bootstrap/bootstrap-datepicker.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap-datepicker.js}"></script>
+    <script src="../../resources/scripts/bootstrap/bootstrap-datepicker.ru.min.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap-datepicker.ru.min.js}"></script>
+</head>
+<body>
+<div class="container" th:include="fragments/navbar :: navbar"></div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+            <div class="thumbnail">
+                <img src=""
+                     th:src="@{/resources/images/movies/{poster}(poster=${movie.pathToPoster})}">
+                <div class="caption">
+                    <p class='info-header'>Year</p>
+                    <p class='film-info' th:text="${movie.year}">Movie year</p>
+                    <p class='info-header'>Country</p>
+                    <p class='film-info' th:text="${movie.country}">Movie country</p>
+                    <p class='info-header'>Genre</p>
+                    <p class='film-info' th:text="${movie.genres}">Movie genres</p>
+                    <p class='info-header'>Cast</p>
+                    <p class='film-info' th:text="${movie.cast}">Movie cast</p>
+                    <p class='info-header'>Director</p>
+                    <p class='film-info' th:text="${movie.director}">Movie director</p>
+                    <p class='info-header'>Screening date</p>
+                    <p class='film-info' th:text="${movie.screeningDate}">Movie screening date</p>
+                    <p class='info-header'>Premiere end date</p>
+                    <p class='film-info' th:text="${movie.premiereEndDate}">Movie premiere end date</p>
+                    <p class='info-header'>Duration</p>
+                    <p class='film-info' th:text="${movie.duration} + ' min'">Movie duration in mins</p>
+                    <p class='info-header'>Content rating</p>
+                    <p class='film-info' th:text="${movie.contentRating}">Movie content rating</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
+            <div class="thumbnail movie-details">
+                <h3 th:text="${movie.name}">Movie name</h3>
+                <p class='film-info' th:text="${movie.annotation}">Movie description</p>
+                <div class="input-group">
+                    <span class="input-group-addon">Форматы:</span>
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-primary active">
+                            <input type="radio" name="options" id="option1" autocomplete="off" checked> Все
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type="radio" name="options" id="option2" autocomplete="off"> 2D
+                        </label>
+                        <label class="btn btn-primary">
+                            <input type="radio" name="options" id="option3" autocomplete="off"> 3D
+                        </label>
+                    </div>
+                    <div class="input-group pull-right ">
+                        <label>
+                            <input class="filmDatepicker form-control" type="text">
+                        </label>
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <hr/>
+                <ul class="list-inline">
+                    <li class="cinemaName">Планета Кино</li>
+                    <li><a href="#">10:30</a></li>
+                    <li><img src="resources/images/3d.png" class="img-responsive center-block"><a href="#">11:30</a>
+                    </li>
+                    <li><a href="#">14:30</a></li>
+                    <li><a href="#">14:30</a></li>
+                    <li><a href="#">14:30</a></li>
+                    <li><img src="resources/images/3d.png" class="img-responsive center-block"><a href="#">14:30</a>
+                    </li>
+                    <li><a href="#">14:30</a></li>
+                    <li><a href="#">14:30</a></li>
+                </ul>
+                <hr/>
+                <ul class="list-inline">
+                    <li class="cinemaName">Планета Кино</li>
+                    <li><a href="#">10:30</a></li>
+                    <li><a href="#">11:30</a></li>
+                    <li><a href="#">14:30</a></li>
+                    <li><a href="#">14:30</a></li>
+                    <li><a href="#">14:30</a></li>
+                    <li><img src="resources/images/3d.png" class="img-responsive center-block"><a href="#">14:30</a>
+                    </li>
+                    <li><img src="resources/images/3d.png" class="img-responsive center-block"><a href="#">14:30</a>
+                    </li>
+                    <li><a href="#">14:30</a></li>
+                </ul>
+                <hr/>
+                <ul class="list-inline">
+                    <li class="cinemaName">Планета Кино</li>
+                    <li><a href="#">10:30</a></li>
+                    <li><a href="#">11:30</a></li>
+                    <li><a href="#">14:30</a></li>
+                    <li><a href="#">14:30</a></li>
+                    <li><a href="#">14:30</a></li>
+                    <li><a href="#">14:30</a></li>
+                    <li><a href="#">14:30</a></li>
+                    <li><a href="#">14:30</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer" th:include="fragments/footer :: footer"></div>
+
+<script>
+    $(document).ready(function () {
+        $('.filmDatepicker').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            todayHighlight: true,
+            language: "ru"
+        });
+        var date = new Date();
+        var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        $('.filmDatepicker').datepicker('setDate', today);
+    });
+</script>
+</body>
+</html>

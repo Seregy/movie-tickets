@@ -1,0 +1,74 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <title>CinemaList</title>
+    <link rel="stylesheet" type="text/css"
+          href="../../resources/css/bootstrap/bootstrap-datepicker.css" th:href="@{/resources/css/bootstrap/bootstrap-datepicker.css}" >
+    <link rel="stylesheet" type="text/css"
+          href="../../resources/css/bootstrap/bootstrap.css" th:href="@{/resources/css/bootstrap/bootstrap.css}" >
+    <link rel="stylesheet" type="text/css"
+          href="../../resources/css/font-awesome.css" th:href="@{/resources/css/font-awesome.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../resources/css/main.css" th:href="@{/resources/css/main.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../resources/css/cinema_list.css" th:href="@{/resources/css/cinema_list.css}">
+    <link href='https://fonts.googleapis.com/css?family=Cormorant' rel='stylesheet' type='text/css'>
+    <script src="../../resources/scripts/jquery/jquery-3.2.1.js"
+            th:src="@{/resources/scripts/jquery/jquery-3.2.1.js}"></script>
+    <script src="../../resources/scripts/bootstrap/bootstrap.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap.js}"></script>
+    <script src="../../resources/scripts/bootstrap/bootstrap-datepicker.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap-datepicker.js}"></script>
+    <script src="../../resources/scripts/bootstrap/bootstrap-datepicker.ru.min.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap-datepicker.ru.min.js}"></script>
+</head>
+<body>
+<div class="container" th:include="fragments/navbar :: navbar"></div>
+
+<div class="container">
+    <div class="jumbotron">
+        <h2>Cinemas in Киев</h2>
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" placeholder="Cinema's name" maxlength="20">
+                    <span class="input-group-btn">
+             <button class="btn btn-default btn-xs" type="button"> <span
+                     class="glyphicon glyphicon-search"></span> </button>
+           </span>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <div th:each="cinema : ${cinemas}">
+            <ul class="list-unstyled">
+                <li class="cinema-name">
+                    <a th:text="${cinema.name}" th:href="@{/cinema/{id}/(id=${cinema.id})}" href="#">Cinema name</a></li>
+                <li th:text="${cinema.address}">Cinema address</li>
+            </ul>
+            <hr/>
+        </div>
+    </div>
+</div>
+
+<div class="footer" th:include="fragments/footer :: footer"></div>
+
+<script>
+    $(document).ready(function () {
+        $('.filmDatepicker').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            todayHighlight: true,
+            language: "ru"
+        });
+        var date = new Date();
+        var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        $('.filmDatepicker').datepicker('setDate', today);
+    });
+</script>
+</body>
+</html>

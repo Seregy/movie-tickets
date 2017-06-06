@@ -27,7 +27,7 @@ public class Movie {
     private String cast;
     private String director;
     private LocalDate screeningDate;
-    private LocalDate premierEndDate;
+    private LocalDate premiereEndDate;
     private int duration;
     private String contentRating;
     private String pathToPoster;
@@ -208,21 +208,21 @@ public class Movie {
     }
 
     /**
-     * Gets end date of the movie's premier period.
+     * Gets end date of the movie's premiere period.
      *
-     * @return premier end date
+     * @return premiere end date
      */
-    public LocalDate getPremierEndDate() {
-        return premierEndDate;
+    public LocalDate getPremiereEndDate() {
+        return premiereEndDate;
     }
 
     /**
-     * Sets end date of the movie's premier period.
+     * Sets end date of the movie's premiere period.
      *
-     * @param premierEndDate premier end date
+     * @param premiereEndDate premiere end date
      */
-    public void setPremierEndDate(final LocalDate premierEndDate) {
-        this.premierEndDate = premierEndDate;
+    public void setPremiereEndDate(final LocalDate premiereEndDate) {
+        this.premiereEndDate = premiereEndDate;
     }
 
     /**
@@ -360,7 +360,7 @@ public class Movie {
                 + ", cast='" + cast + '\''
                 + ", director='" + director + '\''
                 + ", screeningDate=" + screeningDate
-                + ", premierEndDate=" + premierEndDate
+                + ", premiereEndDate=" + premiereEndDate
                 + ", duration=" + duration
                 + ", contentRating='" + contentRating + '\''
                 + ", pathToPoster='" + pathToPoster + '\''

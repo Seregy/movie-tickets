@@ -1,14 +1,18 @@
-.filmInfo {
+.film-info {
     color: grey;
     font-size: 10pt;
 }
 
-.infoHeader {
+.info-header {
     font-size: 10pt;
     margin-bottom: 0pt;
 }
 
-.cinemaName {
+.cinema-name {
     font-size: 12pt;
     font-weight: bold;
+}
+
+.movie-details {
+    padding: 15pt;
 }

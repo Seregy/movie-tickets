@@ -1,7 +1,11 @@
 package movietickets.cinema.web;
 
+import com.google.common.collect.Lists;
 import movietickets.cinema.Cinema;
 import movietickets.cinema.service.CinemaService;
+import movietickets.core.web.AppController;
+import movietickets.movie.Movie;
+import movietickets.movie.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +13,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Cinema controller, responsible for giving pages
@@ -24,25 +33,47 @@ public class CinemaController {
             Logger.getLogger(CinemaController.class.getName());
 
     private final CinemaService cinemaService;
+    private final MovieService movieService;
 
     /**
-     * Constructs new cinema controller with given Cinema Service.
+     * Constructs new cinema controller.
      *
      * @param cinemaService cinema service
+     * @param movieService movie service
      */
     @Autowired
-    public CinemaController(final CinemaService cinemaService) {
+    public CinemaController(final CinemaService cinemaService,
+                            final MovieService movieService) {
         this.cinemaService = cinemaService;
+        this.movieService = movieService;
     }
 
     /**
-     * Shows page with cinemas.
+     * Shows cinema page.
      *
-     * @return name of jsp-page
+     * @param id cinema's id
+     * @return model and view
      */
-    @GetMapping("/cinema")
-    public String showCinemasPages() {
-        return "admin/cinema";
+    @GetMapping("/cinema/{id}")
+    public ModelAndView showCinemaPages(@PathVariable("id") final String id) {
+        ModelAndView modelAndView = new ModelAndView("cinema");
+        modelAndView.addObject("cinema",
+                cinemaService.get(UUID.fromString(id)));
+        List<Movie> movies = movieService.getAll();
+        movies.sort(Comparator.comparing(Movie::getScreeningDate));
+        Map<Boolean, List<Movie>> partitioned = movies.stream()
+                .collect(Collectors.partitioningBy((movie) -> movie
+                        .getScreeningDate()
+                        .isBefore(LocalDate.now())));
+        List<List<Movie>> inTheaters =
+                Lists.partition(partitioned.get(Boolean.TRUE),
+                        AppController.MOVIE_ROW_SIZE);
+        List<List<Movie>> comingSoon =
+                Lists.partition(partitioned.get(Boolean.FALSE),
+                        AppController.MOVIE_ROW_SIZE);
+        modelAndView.addObject("inTheaters", inTheaters);
+        modelAndView.addObject("comingSoon", comingSoon);
+        return modelAndView;
     }
 
     /**
@@ -52,7 +83,7 @@ public class CinemaController {
      */
     @GetMapping("/cinemas")
     public ModelAndView showCinemas() {
-        ModelAndView modelAndView = new ModelAndView("admin/cinemas_table");
+        ModelAndView modelAndView = new ModelAndView("cinema_list");
         modelAndView.addObject("cinemas", cinemaService.getAll());
         return modelAndView;
     }

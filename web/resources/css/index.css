@@ -3,7 +3,7 @@
     overflow: hidden;
 }
 
-.blockName {
+.block-name {
     color: white;
     font-size: 20pt;
     font-family: 'Cormorant', serif;;
@@ -11,6 +11,14 @@
     text-align: center;
 }
 
-.comingSoon {
+.in-theaters .row {
+    word-wrap: break-word;
+}
+
+.coming-soon {
     background-color: #133a65;
+}
+
+.coming-soon .row {
+    word-wrap: break-word;
 }
