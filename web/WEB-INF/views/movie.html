@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width = device-width, initial-scale = 1">
-    <title>Movie</title>
+    <title th:text="${movie.name}">Movie</title>
     <link rel="stylesheet" type="text/css"
           href="../../resources/css/bootstrap/bootstrap-datepicker.css" th:href="@{/resources/css/bootstrap/bootstrap-datepicker.css}" >
     <link rel="stylesheet" type="text/css"
@@ -47,11 +47,15 @@
                     <p class='info-header'>Director</p>
                     <p class='film-info' th:text="${movie.director}">Movie director</p>
                     <p class='info-header'>Screening date</p>
-                    <p class='film-info' th:text="${movie.screeningDate}">Movie screening date</p>
-                    <p class='info-header'>Premiere end date</p>
-                    <p class='film-info' th:text="${movie.premiereEndDate}">Movie premiere end date</p>
-                    <p class='info-header'>Duration</p>
-                    <p class='film-info' th:text="${movie.duration} + ' min'">Movie duration in mins</p>
+                    <p class='film-info' th:text="${{movie.screeningDate}}">Movie screening date</p>
+                    <div th:if="${movie.premiereEndDate}">
+                        <p class='info-header'>Premiere end date</p>
+                        <p class='film-info' th:text="${{movie.premiereEndDate}}">Movie premiere end date</p>
+                    </div>
+                    <div th:if="${movie.duration}">
+                        <p class='info-header'>Duration</p>
+                        <p class='film-info' th:text="${movie.duration} + ' min'">Movie duration in mins</p>
+                    </div>
                     <p class='info-header'>Content rating</p>
                     <p class='film-info' th:text="${movie.contentRating}">Movie content rating</p>
                 </div>
@@ -83,47 +87,21 @@
                         </div>
                     </div>
                 </div>
-
-                <hr/>
-                <ul class="list-inline">
-                    <li class="cinemaName">Планета Кино</li>
-                    <li><a href="#">10:30</a></li>
-                    <li><img src="resources/images/3d.png" class="img-responsive center-block"><a href="#">11:30</a>
-                    </li>
-                    <li><a href="#">14:30</a></li>
-                    <li><a href="#">14:30</a></li>
-                    <li><a href="#">14:30</a></li>
-                    <li><img src="resources/images/3d.png" class="img-responsive center-block"><a href="#">14:30</a>
-                    </li>
-                    <li><a href="#">14:30</a></li>
-                    <li><a href="#">14:30</a></li>
-                </ul>
-                <hr/>
-                <ul class="list-inline">
-                    <li class="cinemaName">Планета Кино</li>
-                    <li><a href="#">10:30</a></li>
-                    <li><a href="#">11:30</a></li>
-                    <li><a href="#">14:30</a></li>
-                    <li><a href="#">14:30</a></li>
-                    <li><a href="#">14:30</a></li>
-                    <li><img src="resources/images/3d.png" class="img-responsive center-block"><a href="#">14:30</a>
-                    </li>
-                    <li><img src="resources/images/3d.png" class="img-responsive center-block"><a href="#">14:30</a>
-                    </li>
-                    <li><a href="#">14:30</a></li>
-                </ul>
-                <hr/>
-                <ul class="list-inline">
-                    <li class="cinemaName">Планета Кино</li>
-                    <li><a href="#">10:30</a></li>
-                    <li><a href="#">11:30</a></li>
-                    <li><a href="#">14:30</a></li>
-                    <li><a href="#">14:30</a></li>
-                    <li><a href="#">14:30</a></li>
-                    <li><a href="#">14:30</a></li>
-                    <li><a href="#">14:30</a></li>
-                    <li><a href="#">14:30</a></li>
-                </ul>
+                <div th:each="cinemaEntry : ${cinemaSessionMap}">
+                    <hr/>
+                    <ul>
+                        <li th:text="${cinemaEntry.key.name}" class="cinema-name">Cinema name</li>
+                        <li th:each="dateEntry : ${cinemaEntry.value}">
+                            <ul class="list-inline">
+                                <li th:text="${{dateEntry.key}}"></li>
+                                <li th:each="movieSession : ${dateEntry.value}">
+                                    <a th:text="${#temporals.format(movieSession.sessionStart, 'HH:mm')}"
+                                       th:href="@{/session/{id}/(id=${movieSession.id})}"></a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

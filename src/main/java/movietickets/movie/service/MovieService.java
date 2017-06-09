@@ -1,6 +1,7 @@
 package movietickets.movie.service;
 
 import movietickets.movie.Movie;
+import movietickets.session.Session;
 
 import java.util.List;
 import java.util.UUID;
@@ -33,6 +34,14 @@ public interface MovieService {
      * @return list of movies
      */
     List<Movie> getAll();
+
+    /**
+     * Gets all sessions that belongs to the movie.
+     *
+     * @param id movie's id
+     * @return list of sessions
+     */
+    List<Session> getSessions(UUID id);
 
     /**
      * Deletes movie.

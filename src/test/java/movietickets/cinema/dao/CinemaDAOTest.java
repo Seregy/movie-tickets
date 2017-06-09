@@ -1,7 +1,6 @@
 package movietickets.cinema.dao;
 
 import movietickets.cinema.Cinema;
-import movietickets.movie.dao.MovieDAO;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

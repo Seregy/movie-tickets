@@ -10,9 +10,9 @@
             <img src="" th:src="@{/resources/images/movies/{poster}(poster=${movie.pathToPoster})}">
             <div class="caption">
                 <h3>
-                    <a th:href="@{/movie/{id}/(id=${movie.id})}" th:text="${movie.name}" href="">Movie name</a>
+                    <a class="text-primary" th:href="@{/movie/{id}/(id=${movie.id})}" th:text="${movie.name}" href="">Movie name</a>
                 </h3>
-                <p th:text="${'з ' + movie.screeningDate}">}</p>
+                <p class="text-muted" th:text="${'з ' + movie.screeningDate}">}</p>
             </div>
         </div>
     </div>

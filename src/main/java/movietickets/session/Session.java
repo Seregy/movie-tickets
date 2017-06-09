@@ -40,7 +40,7 @@ public class Session {
     protected Session() { }
 
     /**
-     * Constructs new session with specified date-time of the beginning.
+     * Constructs new session.
      *
      * @param sessionStart {@link LocalDateTime} date-time of the session
      * beginning in the ISO-8601 calendar system
@@ -48,6 +48,19 @@ public class Session {
      */
     public Session(final LocalDateTime sessionStart) {
         this.sessionStart = sessionStart;
+    }
+
+    /**
+     * Constructs new session.
+     *
+     * @param sessionStart {@link LocalDateTime} date-time of the session
+     * beginning in the ISO-8601 calendar system
+     * @param technology film's display technology
+
+     */
+    public Session(final LocalDateTime sessionStart, final String technology) {
+        this.sessionStart = sessionStart;
+        this.technology = technology;
     }
 
     /**

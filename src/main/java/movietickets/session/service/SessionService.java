@@ -14,12 +14,13 @@ import java.util.UUID;
  */
 public interface SessionService {
     /**
-     * Adds new session with given hall.
+     * Adds new session.
      *
      * @param session new session
      * @param hallId id of the hall that session belongs to
+     * @param movieId id of the movie that session belongs to
      */
-    void add(Session session, UUID hallId);
+    void add(Session session, UUID hallId, UUID movieId);
 
     /**
      * Gets session with specified id.

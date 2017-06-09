@@ -2,11 +2,13 @@ package movietickets.movie.service;
 
 import movietickets.movie.Movie;
 import movietickets.movie.dao.MovieDAO;
+import movietickets.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,6 +57,15 @@ public class MovieServiceDAO implements MovieService {
     @Override
     public List<Movie> getAll() {
         return movieDAO.findAll();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    public List<Session> getSessions(final UUID id) {
+        return new ArrayList<>(movieDAO.find(id).getSessions());
     }
 
     /**

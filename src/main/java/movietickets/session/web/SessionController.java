@@ -86,7 +86,9 @@ public class SessionController {
                                      @RequestParam("hall_id")
                                      final String hallId) {
         Session session = new Session(LocalDateTime.parse(dateTime));
-        sessionService.add(session, UUID.fromString(hallId));
+        sessionService.add(session,
+                UUID.fromString(hallId),
+                UUID.fromString(movieId));
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 

@@ -4,6 +4,8 @@ import movietickets.hall.Hall;
 import movietickets.hall.dao.HallDAO;
 import movietickets.hall.layout.Layout;
 import movietickets.hall.layout.SeatStatus;
+import movietickets.movie.Movie;
+import movietickets.movie.dao.MovieDAO;
 import movietickets.seat.Seat;
 import movietickets.session.Session;
 import movietickets.session.dao.SessionDAO;
@@ -27,18 +29,22 @@ import java.util.UUID;
 public class SessionServiceDAO implements SessionService {
     private final SessionDAO sessionDAO;
     private final HallDAO hallDAO;
+    private final MovieDAO movieDAO;
 
     /**
-     * Constructs new seat service with given Session DAO and Hall DAO.
+     * Constructs new seat service.
      *
      * @param sessionDAO session data access object
      * @param hallDAO hall data access object
+     * @param movieDAO movie data access object
      */
     @Autowired
     public SessionServiceDAO(final SessionDAO sessionDAO,
-                             final HallDAO hallDAO) {
+                             final HallDAO hallDAO,
+                             final MovieDAO movieDAO) {
         this.sessionDAO = sessionDAO;
         this.hallDAO = hallDAO;
+        this.movieDAO = movieDAO;
     }
 
     /**
@@ -47,7 +53,9 @@ public class SessionServiceDAO implements SessionService {
     @PreAuthorize("hasAuthority('PM_ADD')")
     @Transactional
     @Override
-    public void add(final Session session, final UUID hallId) {
+    public void add(final Session session,
+                    final UUID hallId,
+                    final UUID movieId) {
         Hall hall = hallDAO.find(hallId);
         Layout layout = hall.getLayout();
         SeatStatus[][] seatStatuses = layout.getSeatsStatuses();
@@ -71,6 +79,9 @@ public class SessionServiceDAO implements SessionService {
         sessionDAO.add(session);
         hall.addSession(session);
         hallDAO.update(hall);
+        Movie movie = movieDAO.find(movieId);
+        movie.addSession(session);
+        movieDAO.update(movie);
     }
 
     /**

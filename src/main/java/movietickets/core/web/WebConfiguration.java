@@ -3,11 +3,14 @@ package movietickets.core.web;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.format.FormatterRegistry;
+import org.springframework.format.datetime.DateFormatter;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.spring4.SpringTemplateEngine;
 import org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring4.view.ThymeleafViewResolver;
@@ -45,6 +48,25 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
         super.addResourceHandlers(registry);
         registry.addResourceHandler("resources/**")
                 .addResourceLocations("resources/");
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addFormatters(final FormatterRegistry registry) {
+        super.addFormatters(registry);
+        registry.addFormatter(getDateFormatter());
+    }
+
+    /**
+     * Gets Date formatter.
+     *
+     * @return date formatter
+     */
+    @Bean
+    public DateFormatter getDateFormatter() {
+        return new DateFormatter("dd.MM.yyyy HH:mm");
     }
 
     /**
@@ -89,6 +111,7 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
     public SpringTemplateEngine getSpringTemplateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(getTemplateResolver());
+        templateEngine.addDialect(new Java8TimeDialect());
         return templateEngine;
     }
 }
