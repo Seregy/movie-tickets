@@ -23,8 +23,6 @@
             th:src="@{/resources/scripts/bootstrap/bootstrap.js}"></script>
     <script src="../../resources/scripts/bootstrap/bootstrap-datepicker.js"
             th:src="@{/resources/scripts/bootstrap/bootstrap-datepicker.js}"></script>
-    <script src="../../resources/scripts/bootstrap/bootstrap-datepicker.ru.min.js"
-            th:src="@{/resources/scripts/bootstrap/bootstrap-datepicker.ru.min.js}"></script>
 </head>
 <body>
 <div class="container" th:include="fragments/navbar :: navbar"></div>
@@ -78,30 +76,16 @@
                             <input type="radio" name="options" id="option3" autocomplete="off"> 3D
                         </label>
                     </div>
-                    <div class="input-group pull-right ">
-                        <label>
-                            <input class="filmDatepicker form-control" type="text">
-                        </label>
+                    <div class="input-group date pull-right" data-provide="datepicker">
+                        <label for="film-datepicker">Date</label>
+                        <input id="film-datepicker" type="text" class="form-control" title="">
                         <div class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                         </div>
                     </div>
                 </div>
-                <div th:each="cinemaEntry : ${cinemaSessionMap}">
-                    <hr/>
-                    <ul>
-                        <li th:text="${cinemaEntry.key.name}" class="cinema-name">Cinema name</li>
-                        <li th:each="dateEntry : ${cinemaEntry.value}">
-                            <ul class="list-inline">
-                                <li th:text="${{dateEntry.key}}"></li>
-                                <li th:each="movieSession : ${dateEntry.value}">
-                                    <a th:text="${#temporals.format(movieSession.sessionStart, 'HH:mm')}"
-                                       th:href="@{/session/{id}/(id=${movieSession.id})}"></a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+                <div class="spinner" th:replace="fragments/spinner :: spinner"></div>
+                <div class="session-block"></div>
             </div>
         </div>
     </div>
@@ -109,18 +93,70 @@
 
 <div class="footer" th:include="fragments/footer :: footer"></div>
 
-<script>
+<script th:inline="javascript">
+    var sessions = $(".session-block");
+    var spinner = $(".spinner");
+
     $(document).ready(function () {
-        $('.filmDatepicker').datepicker({
-            format: "dd-mm-yyyy",
+        var picker = $('.input-group.date');
+        picker.datepicker({
             autoclose: true,
-            todayHighlight: true,
-            language: "ru"
+            format: "d M D",
+            startDate: new Date(),
+            todayHighlight: true
         });
-        var date = new Date();
-        var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-        $('.filmDatepicker').datepicker('setDate', today);
+        picker.datepicker('setDate', new Date());
+        spinner.hide();
+        picker.on('changeDate', getSessions);
+        getSessions();
     });
+
+    function getSessions(event) {
+        var movie =  /*[[@{${movie.id}} ]]*/undefined;
+        var params = {movie: movie};
+
+        var cinema =  /*[[@{${param.cinema}} ]]*/undefined;
+        if (cinema) {
+            params.cinema = cinema;
+        }
+
+        var date = event ? event.date : undefined;
+        if (date) {
+            params.date = date.getFullYear() +
+                '-' + pad(date.getMonth() + 1) +
+                '-' + pad(date.getDate());
+        }
+
+        var path = /*[[@{@{/sessions}} ]]*/'/sessions';
+        showSpinner();
+        $.get(path, params)
+            .done(function (data) {
+                sessions.html(data);
+            })
+            .fail(function () {
+                sessions.html("<p class='bg-danger'>Something went wrong</p>");
+            })
+            .always(function () {
+                hideSpinner();
+            });
+    }
+
+    function pad(number) {
+        if (number < 10) {
+            return '0' + number;
+        }
+        return number;
+    }
+
+    function showSpinner() {
+        sessions.addClass("disabled-block");
+        spinner.show();
+    }
+
+    function hideSpinner() {
+        sessions.removeClass("disabled-block");
+        spinner.hide();
+    }
 </script>
 </body>
 </html>

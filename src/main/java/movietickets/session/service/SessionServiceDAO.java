@@ -1,5 +1,6 @@
 package movietickets.session.service;
 
+import movietickets.cinema.Cinema;
 import movietickets.hall.Hall;
 import movietickets.hall.dao.HallDAO;
 import movietickets.hall.layout.Layout;
@@ -15,10 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Session's service object, uses DAO.
@@ -105,6 +106,46 @@ public class SessionServiceDAO implements SessionService {
     /**
      * {@inheritDoc}
      */
+    @Transactional
+    @Override
+    public List<Session> getAllFuture() {
+        return sessionDAO.findAll().stream()
+                .filter(session -> session.getSessionStart()
+                        .isAfter(LocalDateTime.now()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    public List<Session> getAllFuture(final UUID movieId) {
+        return sessionDAO.findAll().stream()
+                .filter(session -> session.getSessionStart()
+                        .isAfter(LocalDateTime.now())
+                        && session.getMovie().getId().equals(movieId))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    public List<Session> getAllFuture(final UUID movieId, final UUID cinemaId) {
+        return sessionDAO.findAll().stream()
+                .filter(session -> session.getSessionStart()
+                        .isAfter(LocalDateTime.now())
+                        && session.getMovie().getId().equals(movieId)
+                        && session.getHall().getCinema()
+                        .getId().equals(cinemaId))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @PreAuthorize("hasAuthority('PM_DELETE')")
     @Transactional(propagation = Propagation.MANDATORY)
     @Override
@@ -185,6 +226,34 @@ public class SessionServiceDAO implements SessionService {
         }
 
         return seats;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    public Map<Cinema, List<Session>> groupByCinema(
+            final Collection<Session> sessions) {
+        return sessions.stream()
+                .collect(Collectors.groupingBy(s ->
+                        s.getHall().getCinema(),
+                        LinkedHashMap::new,
+                        Collectors.toList()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    public Map<LocalDate, List<Session>> groupByDate(
+            final Collection<Session> sessions) {
+        return sessions.stream()
+                .collect(Collectors.groupingBy(s ->
+                        LocalDate.from(s.getSessionStart()),
+                        LinkedHashMap::new,
+                        Collectors.toList()));
     }
 
     /**

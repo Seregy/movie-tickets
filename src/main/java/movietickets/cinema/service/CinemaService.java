@@ -1,6 +1,7 @@
 package movietickets.cinema.service;
 
 import movietickets.cinema.Cinema;
+import movietickets.city.City;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,11 +29,20 @@ public interface CinemaService {
     Cinema get(UUID id);
 
     /**
-     * Gets all existing cinemas as list.
+     * Gets all existing cinemas as a list.
      *
      * @return list of cinemas
      */
     List<Cinema> getAll();
+
+    /**
+     * Gets all cinemas in specified city as a list.
+     *
+     * @param city city to search cinemas in
+     * @return list of cinemas
+     */
+    List<Cinema> getAll(City city);
+
     /**
      * Deletes cinema.
      *

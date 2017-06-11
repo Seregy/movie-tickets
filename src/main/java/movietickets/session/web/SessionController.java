@@ -1,17 +1,23 @@
 package movietickets.session.web;
 
+import movietickets.cinema.Cinema;
 import movietickets.seat.Seat;
 import movietickets.session.Session;
 import movietickets.session.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Session controller, responsible for giving pages
@@ -59,14 +65,58 @@ public class SessionController {
     }
 
     /**
-     * Shows table, filled with sessions.
+     * Shows session, associated with specific movie.
+     * Also allows filtering sessions by cinema and starting date.
      *
-     * @return name of jsp-page
+     * @param movieId movie's id
+     * @param cinemaId movie's id
+     * @param date session's date
+     * @return name of the view
      */
     @GetMapping("/sessions")
-    public ModelAndView showSessions() {
-        ModelAndView modelAndView = new ModelAndView("admin/sessions_table");
-        modelAndView.addObject("sessions", sessionService.getAll());
+    public ModelAndView showSessions(@RequestParam(value = "movie")
+                                         final String movieId,
+                                     @RequestParam(value = "cinema",
+                                             required = false)
+                                         final String cinemaId,
+                                     @RequestParam(value = "date",
+                                             required = false)
+                                     @DateTimeFormat(iso =
+                                             DateTimeFormat.ISO.DATE)
+                                         final LocalDate date) {
+        ModelAndView modelAndView = new ModelAndView("fragments/session_block");
+
+        List<Session> sessions;
+        if (cinemaId != null) {
+            sessions = sessionService.getAllFuture(UUID.fromString(movieId),
+                    UUID.fromString(cinemaId));
+        } else {
+            sessions = sessionService.getAllFuture(UUID.fromString(movieId));
+        }
+
+        if (date != null) {
+            sessions = sessions.stream()
+                    .filter(session -> LocalDate
+                            .from(session.getSessionStart())
+                            .isEqual(date))
+                    .collect(Collectors.toList());
+        }
+
+        final Map<Cinema, List<Session>> byCinema;
+        Map<Cinema, Map<LocalDate, List<Session>>> byCinemaAndDate;
+        if (sessions.isEmpty()) {
+            byCinemaAndDate = null;
+        } else {
+            byCinema = sessionService.groupByCinema(sessions);
+
+            byCinemaAndDate = byCinema.entrySet().stream()
+                    .collect(Collectors.toMap(Map.Entry::getKey,
+                            t -> sessionService
+                                    .groupByDate(t.getValue())));
+        }
+
+
+        modelAndView.addObject("cinemaSessionMap", byCinemaAndDate);
         return modelAndView;
     }
 

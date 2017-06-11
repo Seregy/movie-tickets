@@ -22,4 +22,9 @@ public final class CinemaDAOHibernate
     public String getEntityName() {
         return "Cinema";
     }
+
+    @Override
+    public String getOrderColumn() {
+        return "name";
+    }
 }

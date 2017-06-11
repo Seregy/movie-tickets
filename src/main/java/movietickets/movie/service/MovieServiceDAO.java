@@ -1,16 +1,18 @@
 package movietickets.movie.service;
 
+import movietickets.city.City;
 import movietickets.movie.Movie;
 import movietickets.movie.dao.MovieDAO;
-import movietickets.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Movie's service object, uses DAO.
@@ -64,8 +66,31 @@ public class MovieServiceDAO implements MovieService {
      */
     @Transactional
     @Override
-    public List<Session> getSessions(final UUID id) {
-        return new ArrayList<>(movieDAO.find(id).getSessions());
+    public List<Movie> getAllAvailable() {
+        return movieDAO.findAll().stream()
+                .filter(movie -> movie.getScreeningDate()
+                        .isAfter(LocalDate.now())
+                        || movie.getSessions().stream()
+                                .anyMatch(session -> session.getSessionStart()
+                                        .isAfter(LocalDateTime.now())))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    public List<Movie> getAllAvailable(final City city) {
+        return movieDAO.findAll().stream()
+                .filter(movie -> movie.getScreeningDate()
+                        .isAfter(LocalDate.now())
+                        || movie.getSessions().stream()
+                        .anyMatch(session -> session.getSessionStart()
+                                .isAfter(LocalDateTime.now())
+                                && session.getHall().getCinema()
+                                .getCity().equals(city)))
+                .collect(Collectors.toList());
     }
 
     /**

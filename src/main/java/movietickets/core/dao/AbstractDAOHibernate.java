@@ -43,10 +43,13 @@ public abstract class AbstractDAOHibernate<T> implements DAO<T> {
      */
     @Override
     public List<T> findAll() {
-        List<T> objects;
-        objects = entityManager.createQuery("from " + getEntityName(),
+        String query = String.format("from %s",
+                getEntityName());
+        if (getOrderColumn() != null) {
+            query += (" order by " + getOrderColumn());
+        }
+        return getEntityManager().createQuery(query,
                 getEntityClass()).getResultList();
-        return objects;
     }
 
     /**
@@ -80,6 +83,16 @@ public abstract class AbstractDAOHibernate<T> implements DAO<T> {
      * @return entity's name
      */
     public abstract String getEntityName();
+
+    /**
+     * Gets name of column or columns
+     * for ordering entities.
+     * Column names are separated with comma(',').
+     *
+     * @return name of column or columns
+     * or {@code null} if order isn't set
+     */
+    public abstract String getOrderColumn();
 
     /**
      * Gets entity manager for accessing database.

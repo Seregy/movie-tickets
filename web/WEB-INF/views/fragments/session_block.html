@@ -1,0 +1,24 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:each="cinemaEntry : ${cinemaSessionMap}">
+    <div class="cinema-block">
+        <p th:text="${cinemaEntry.key.name}">Cinema name</p>
+        <ul class="list-group">
+            <li class="list-group-item" th:each="dateEntry : ${cinemaEntry.value}">
+                <ul class="list-inline">
+                    <li class="session-date" th:text="${{dateEntry.key}}"></li>
+                    <li th:each="movieSession : ${dateEntry.value}">
+                        <a th:text="${#temporals.format(movieSession.sessionStart, 'HH:mm')}"
+                           th:href="@{/session/{id}/(id=${movieSession.id})}"></a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <hr/>
+</div>
+<p th:if="not ${cinemaSessionMap}" class="text-warning no-session">Couldn't find any session</p>
+</body>
+</html>

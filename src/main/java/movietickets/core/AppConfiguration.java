@@ -2,6 +2,8 @@ package movietickets.core;
 
 import movietickets.cinema.dao.CinemaDAO;
 import movietickets.cinema.dao.CinemaDAOHibernate;
+import movietickets.city.dao.CityDAO;
+import movietickets.city.dao.CityDAOHibernate;
 import movietickets.hall.dao.HallDAO;
 import movietickets.hall.dao.HallDAOHibernate;
 import movietickets.hall.layout.dao.LayoutDAO;
@@ -51,6 +53,17 @@ public class AppConfiguration {
     @Bean
     public CinemaDAO getHibernateCinemaDAO() {
         return new CinemaDAOHibernate();
+    }
+
+    /**
+     * Gets an instance of {@link CityDAOHibernate} object.
+     *
+     * @return city dao object
+     */
+    @Primary
+    @Bean
+    public CityDAO getHibernateCityDAO() {
+        return new CityDAOHibernate();
     }
 
     /**

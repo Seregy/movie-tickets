@@ -24,4 +24,9 @@ public final class TicketDAOHibernate
     public String getEntityName() {
         return "Ticket";
     }
+
+    @Override
+    public String getOrderColumn() {
+        return null;
+    }
 }

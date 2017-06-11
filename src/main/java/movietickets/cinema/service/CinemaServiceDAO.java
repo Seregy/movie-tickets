@@ -2,6 +2,7 @@ package movietickets.cinema.service;
 
 import movietickets.cinema.Cinema;
 import movietickets.cinema.dao.CinemaDAO;
+import movietickets.city.City;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Cinema's service object, uses DAO.
@@ -55,6 +57,18 @@ public class CinemaServiceDAO implements CinemaService {
     @Override
     public List<Cinema> getAll() {
         return cinemaDAO.findAll();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    public List<Cinema> getAll(final City city) {
+        return cinemaDAO.findAll().stream()
+                .filter(cinema ->
+                        cinema.getCity().equals(city))
+                .collect(Collectors.toList());
     }
 
     /**

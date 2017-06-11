@@ -1,5 +1,6 @@
 package movietickets.cinema;
 
+import movietickets.city.City;
 import movietickets.hall.Hall;
 
 import javax.persistence.*;
@@ -24,6 +25,8 @@ public class Cinema {
     private String website;
     private String pathToLogo;
 
+    @ManyToOne
+    private City city;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "cinema")
     private Set<Hall> halls = new HashSet<>();
 
@@ -71,12 +74,41 @@ public class Cinema {
     }
 
     /**
-     * Gets address of the cinema in format [City, street, building].
+     * Gets city in which the cinema is located.
      *
-     * @return address in format [City, street, building]
+     * @return cinema's city
+     */
+    public City getCity() {
+        return city;
+    }
+
+    /**
+     * Sets city in which the cinema is located.
+     *
+     * @param city cinema's city
+     */
+    public void setCity(final City city) {
+        this.city = city;
+    }
+
+    /**
+     * Gets address of the cinema in format
+     * [Street, building, location in building].
+     *
+     * @return address in format [Street, building, location in building]
      */
     public String getAddress() {
         return address;
+    }
+
+    /**
+     * Gets full address(combines both city and address)
+     * of the cinema in format {city, address}.
+     *
+     * @return full address in format {city, address}
+     */
+    public String getFullAddress() {
+        return String.format("%s, %s", getCity().getName(), getAddress());
     }
 
     /**
@@ -195,7 +227,7 @@ public class Cinema {
         }
         Cinema cinema = (Cinema) o;
         return Objects.equals(name, cinema.name)
-                && Objects.equals(address, cinema.address);
+                && Objects.equals(city, cinema.city);
     }
 
     /**
@@ -203,7 +235,7 @@ public class Cinema {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(name, address);
+        return Objects.hash(name, city);
     }
 
     /**
@@ -216,6 +248,7 @@ public class Cinema {
         return "Cinema{"
                 + "id=" + id
                 + ", name='" + name + '\''
+                + ", city='" + city + '\''
                 + ", address='" + address + '\''
                 + ", phone='" + phone + '\''
                 + ", website='" + website + '\''

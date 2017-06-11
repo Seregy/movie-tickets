@@ -1,7 +1,7 @@
 package movietickets.movie.service;
 
+import movietickets.city.City;
 import movietickets.movie.Movie;
-import movietickets.session.Session;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,19 +29,32 @@ public interface MovieService {
     Movie get(UUID id);
 
     /**
-     * Gets all existing movies as list.
+     * Gets all existing movies as a list.
      *
      * @return list of movies
      */
     List<Movie> getAll();
 
     /**
-     * Gets all sessions that belongs to the movie.
+     * Gets all available movies as a list.
+     * Movie is considered available if its either 'coming soon'
+     * (screening date is in the future) or it has
+     * sessions in the future.
      *
-     * @param id movie's id
-     * @return list of sessions
+     * @return list of available movies
      */
-    List<Session> getSessions(UUID id);
+    List<Movie> getAllAvailable();
+
+    /**
+     * Gets all available(in specified city) movies as a list.
+     * Movie is considered available if its either 'coming soon'
+     * (screening date is in the future) or it has
+     * sessions in the future in specified city.
+     *
+     * @param city city to search movies in
+     * @return list of available movies
+     */
+    List<Movie> getAllAvailable(City city);
 
     /**
      * Deletes movie.

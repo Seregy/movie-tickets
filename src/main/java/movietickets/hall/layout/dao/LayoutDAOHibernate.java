@@ -19,4 +19,9 @@ public final class LayoutDAOHibernate
     public String getEntityName() {
         return "Layout";
     }
+
+    @Override
+    public String getOrderColumn() {
+        return null;
+    }
 }

@@ -3,6 +3,7 @@ package movietickets.cinema.web;
 import com.google.common.collect.Lists;
 import movietickets.cinema.Cinema;
 import movietickets.cinema.service.CinemaService;
+import movietickets.city.City;
 import movietickets.core.web.AppController;
 import movietickets.movie.Movie;
 import movietickets.movie.service.MovieService;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -27,6 +27,7 @@ import java.util.stream.Collectors;
  *
  * @author Seregy
  */
+@SessionAttributes("currentCity")
 @Controller
 public class CinemaController {
     private static Logger log =
@@ -49,7 +50,8 @@ public class CinemaController {
     }
 
     /**
-     * Shows cinema page.
+     * Shows cinema page and movies that
+     * are shown in this cinema.
      *
      * @param id cinema's id
      * @return model and view
@@ -59,8 +61,7 @@ public class CinemaController {
         ModelAndView modelAndView = new ModelAndView("cinema");
         modelAndView.addObject("cinema",
                 cinemaService.get(UUID.fromString(id)));
-        List<Movie> movies = movieService.getAll();
-        movies.sort(Comparator.comparing(Movie::getScreeningDate));
+        List<Movie> movies = movieService.getAllAvailable();
         Map<Boolean, List<Movie>> partitioned = movies.stream()
                 .collect(Collectors.partitioningBy((movie) -> movie
                         .getScreeningDate()
@@ -77,14 +78,16 @@ public class CinemaController {
     }
 
     /**
-     * Shows table, filled with cinemas.
+     * Shows list of cinemas in the current city.
      *
-     * @return name of jsp-page
+     * @param city current city
+     * @return name the view
      */
     @GetMapping("/cinemas")
-    public ModelAndView showCinemas() {
+    public ModelAndView showCinemas(@ModelAttribute("currentCity")
+                                        final City city) {
         ModelAndView modelAndView = new ModelAndView("cinema_list");
-        modelAndView.addObject("cinemas", cinemaService.getAll());
+        modelAndView.addObject("cinemas", cinemaService.getAll(city));
         return modelAndView;
     }
 

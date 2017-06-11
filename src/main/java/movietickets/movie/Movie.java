@@ -1,6 +1,7 @@
 package movietickets.movie;
 
 import movietickets.session.Session;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.*;
@@ -33,7 +34,8 @@ public class Movie {
     private String pathToPoster;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "movie")
-    private Set<Session> sessions = new HashSet<>();
+    @OrderBy("sessionStart ASC")
+    private List<Session> sessions = new ArrayList<>();
 
     /**
      * Constructor for JPA.
@@ -280,19 +282,19 @@ public class Movie {
     }
 
     /**
-     * Gets the set of session objects that belong to the movie.
+     * Gets the list of session objects that belong to the movie.
      *
      * @return sessions {@link Session}
      */
-    public Set<Session> getSessions() {
+    public List<Session> getSessions() {
         return sessions;
     }
 
     /**
-     * Adds session object to the Set of session objects.
-     * Sets session object's parameter 'movie' to 'this'.
+     * Adds session object to the set of session objects.
+     * Also sets session's parameter 'movie' to this.
      *
-     * @param session {@link Session} session object added to the Set
+     * @param session {@link Session} object to be added
      */
     public void addSession(final Session session) {
         sessions.add(session);
@@ -300,10 +302,10 @@ public class Movie {
     }
 
     /**
-     * Removes session object from the Set of session objects.
-     * Sets session object's parameter 'movie' to 'null'.
+     * Removes session object from the set of session objects.
+     * Also sets session's parameter 'movie' to 'null'.
      *
-     * @param session {@link Session} session object removed from the Set
+     * @param session {@link Session} object to be removed
      */
     public void removeSession(final Session session) {
         if (sessions.remove(session)) {

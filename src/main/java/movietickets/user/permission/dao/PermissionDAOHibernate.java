@@ -21,4 +21,9 @@ public final class PermissionDAOHibernate
     public String getEntityName() {
         return "Permission";
     }
+
+    @Override
+    public String getOrderColumn() {
+        return "name";
+    }
 }

@@ -21,4 +21,9 @@ public final class UserDAOHibernate
     public String getEntityName() {
         return "User";
     }
+
+    @Override
+    public String getOrderColumn() {
+        return "name";
+    }
 }

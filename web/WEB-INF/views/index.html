@@ -28,7 +28,7 @@
         <br>
         <p  class="block-name">In Theaters</p>
         <br>
-        <div th:replace="fragments/movie_block :: movie_block (${inTheaters})"></div>
+        <div th:replace="fragments/movie_block :: movie_block (movieLists=${inTheaters})"></div>
     </div>
 </div>
 
@@ -38,7 +38,7 @@
         <br>
         <p class="block-name">Coming Soon</p>
         <br>
-        <div th:replace="fragments/movie_block :: movie_block (${comingSoon})"></div>
+        <div th:replace="fragments/movie_block :: movie_block (movieLists=${comingSoon})"></div>
     </div>
 </div>
 <div class="footer" th:include="fragments/footer :: footer"></div>

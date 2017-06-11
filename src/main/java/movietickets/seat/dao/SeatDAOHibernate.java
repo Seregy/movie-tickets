@@ -19,4 +19,9 @@ public final class SeatDAOHibernate
     public String getEntityName() {
         return "Seat";
     }
+
+    @Override
+    public String getOrderColumn() {
+        return null;
+    }
 }

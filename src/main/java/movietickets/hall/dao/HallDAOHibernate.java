@@ -19,4 +19,9 @@ public final class HallDAOHibernate
     public String getEntityName() {
         return "Hall";
     }
+
+    @Override
+    public String getOrderColumn() {
+        return null;
+    }
 }

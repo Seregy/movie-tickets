@@ -25,14 +25,15 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">
                             <i class="fa fa-map-marker" aria-hidden="true"></i>
-                            Киев
+                            <!--/*@thymesVar id="currentCity" type="movietickets.city.City"*/-->
+                            <span th:text="${session.currentCity.name}">Current city</span>
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
                             <li>
                                 <form class="navbar-form" role="search">
                                     <div class="input-group input-group-sm">
-                                        <input type="text" class="form-control" placeholder="Город" maxlength="20">
+                                        <input type="text" class="form-control" placeholder="City" maxlength="20">
                                         <span class="input-group-btn">
                                         <button class="btn btn-default btn-xs" type="button">
                                             <span class="glyphicon glyphicon-search"></span>
@@ -42,9 +43,15 @@
                                 </form>
                             </li>
                             <li role="separator" class="divider"></li>
-                            <li><a href="#">Львов</a></li>
-                            <li><a href="#">Харьков</a></li>
-                            <li><a href="#">Одесса</a></li>
+                            <!--/*@thymesVar id="cityList" type="java.util.List<movietickets.city.City>"*/-->
+                            <th:block th:each="city : ${cityList}">
+                                <li>
+                                    <a th:text="${city.name}" th:href="@{city/{id}/(id=${city.id})}"
+                                       href="#">
+                                        City name
+                                    </a>
+                                </li>
+                            </th:block>
                         </ul>
                     </li>
                     <li><a href="#">Вход</a></li>

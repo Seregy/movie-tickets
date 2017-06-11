@@ -10,6 +10,7 @@ import movietickets.movie.Movie;
  */
 public final class MovieDAOHibernate
         extends AbstractDAOHibernate<Movie> implements MovieDAO {
+
     @Override
     public Class<Movie> getEntityClass() {
         return Movie.class;
@@ -18,5 +19,10 @@ public final class MovieDAOHibernate
     @Override
     public String getEntityName() {
         return "Movie";
+    }
+
+    @Override
+    public String getOrderColumn() {
+        return "screeningDate";
     }
 }

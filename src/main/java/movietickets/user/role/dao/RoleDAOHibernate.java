@@ -21,4 +21,9 @@ public final class RoleDAOHibernate
     public String getEntityName() {
         return "Role";
     }
+
+    @Override
+    public String getOrderColumn() {
+        return "name";
+    }
 }

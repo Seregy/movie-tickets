@@ -1,10 +1,8 @@
 package movietickets.movie.web;
 
 
-import movietickets.cinema.Cinema;
 import movietickets.movie.Movie;
 import movietickets.movie.service.MovieService;
-import movietickets.session.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,10 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 /**
  * Movie controller, responsible for giving pages and
@@ -37,35 +32,18 @@ public class MovieController {
         this.movieService = movieService;
     }
 
-
     /**
-     * Shows movie page.
+     * Shows movie page with information about movie.
      *
      * @param id movie's id
      * @return name of jsp-page
      */
     @GetMapping("/movie/{id}")
-    public ModelAndView showMoviesPages(@PathVariable("id") final String id) {
+    public ModelAndView showMovie(@PathVariable("id")
+                                    final String id) {
         ModelAndView modelAndView = new ModelAndView("movie");
         Movie movie = movieService.get(UUID.fromString(id));
         modelAndView.addObject("movie", movie);
-
-        Map<Cinema, List<Session>> preGrouped =
-                movieService.getSessions(movie.getId()).stream()
-                        .collect(Collectors.groupingBy(s ->
-                                s.getHall().getCinema()));
-
-        Collector<Session, ?,
-                Map<LocalDate, List<Session>>> collector =
-                Collectors.groupingBy(o -> LocalDate.from(o.getSessionStart()));
-
-        Map<Cinema, Map<LocalDate, List<Session>>> grouped =
-                preGrouped.entrySet().stream()
-                        .collect(Collectors.toMap(Map.Entry::getKey,
-                                t -> t.getValue().stream()
-                                        .collect(collector)));
-
-        modelAndView.addObject("cinemaSessionMap", grouped);
         return modelAndView;
     }
 
@@ -91,11 +69,11 @@ public class MovieController {
      */
     @PostMapping("/movies")
     public ResponseEntity addMovie(@RequestParam("name")
-                                  final String name,
+                                    final String name,
                                    @RequestParam("duration")
-                                   final int duration,
+                                    final int duration,
                                    @RequestParam("annotation")
-                                   final String annotation) {
+                                    final String annotation) {
         Movie movie = new Movie(name, duration, annotation);
         movieService.add(movie);
         return new ResponseEntity(HttpStatus.NO_CONTENT);

@@ -19,4 +19,9 @@ public final class SessionDAOHibernate
     public String getEntityName() {
         return "Session";
     }
+
+    @Override
+    public String getOrderColumn() {
+        return "sessionStart";
+    }
 }
