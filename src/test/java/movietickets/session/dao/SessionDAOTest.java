@@ -12,6 +12,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import javax.transaction.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import static org.junit.Assert.*;
 
@@ -48,6 +50,7 @@ public class SessionDAOTest {
                 new Session(LocalDateTime.of(2017, 7, 7, 10, 0)),
                 new Session(LocalDateTime.of(2017, 7, 8, 12, 20)),
                 new Session(LocalDateTime.of(2017, 7, 9, 14, 15))};
+        Arrays.sort(sessions, Comparator.comparing(Session::getSessionStart));
         for (Session session : sessions) {
             sessionDAO.add(session);
         }

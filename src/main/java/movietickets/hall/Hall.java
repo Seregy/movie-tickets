@@ -20,13 +20,13 @@ public class Hall {
     private UUID id;
 
     private String name;
+    @Embedded
+    private Layout layout;
 
     @ManyToOne
     private Cinema cinema;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "hall")
     private Set<Session> sessions = new HashSet<>();
-    @OneToOne
-    private Layout layout;
 
     /**
      * Constructor for JPA.

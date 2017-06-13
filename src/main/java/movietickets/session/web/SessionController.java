@@ -39,27 +39,23 @@ public class SessionController {
         this.sessionService = sessionService;
     }
 
-
-    /**
-     * Shows main sessions' page.
-     *
-     * @return name of jsp-page
-     */
-    @GetMapping("/session")
-    public String showSessionsPages() {
-        return "admin/session";
-    }
-
     /**
      * Shows seats selection block for given session.
      *
      * @param id session's identifier
-     * @return name of jsp-page
+     * @return name of the view
      */
     @GetMapping("/session/{id}")
     public ModelAndView selectSeats(@PathVariable("id") final String id) {
-        ModelAndView modelAndView = new ModelAndView("admin/seats_selection");
-        Seat[][] seats = sessionService.getDisplayedSeats(UUID.fromString(id));
+        ModelAndView modelAndView = new ModelAndView("session");
+        UUID sessionId = UUID.fromString(id);
+        modelAndView.addObject("movieSession",
+                sessionService.get(sessionId));
+        modelAndView.addObject("movie",
+                sessionService.get(sessionId).getMovie());
+        modelAndView.addObject("cinema",
+                sessionService.get(sessionId).getHall().getCinema());
+        Seat[][] seats = sessionService.getDisplayedSeats(sessionId);
         modelAndView.addObject("seats", seats);
         return modelAndView;
     }

@@ -48,18 +48,6 @@ public class MovieController {
     }
 
     /**
-     * Shows table, filled with movies.
-     *
-     * @return name of jsp-page
-     */
-    @GetMapping("/movies")
-    public ModelAndView showMovies() {
-        ModelAndView modelAndView = new ModelAndView("admin/movies_table");
-        modelAndView.addObject("movies", movieService.getAll());
-        return modelAndView;
-    }
-
-    /**
      * Adds new movie with given name, duration and annotation.
      *
      * @param name movie's title

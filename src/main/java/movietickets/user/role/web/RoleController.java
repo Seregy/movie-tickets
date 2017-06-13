@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -32,28 +31,6 @@ public class RoleController {
     @Autowired
     public RoleController(final RoleService roleService) {
         this.roleService = roleService;
-    }
-
-    /**
-     * Shows page with roles.
-     *
-     * @return name of jsp-page
-     */
-    @GetMapping("/role")
-    public String showRolesPage() {
-        return "admin/role";
-    }
-
-    /**
-     * Shows table, filled with roles.
-     *
-     * @return name of jsp-page
-     */
-    @GetMapping("/roles")
-    public ModelAndView showRoles() {
-        ModelAndView modelAndView = new ModelAndView("admin/roles_table");
-        modelAndView.addObject("roles", roleService.getAll());
-        return modelAndView;
     }
 
     /**

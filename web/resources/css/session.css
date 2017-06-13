@@ -1,0 +1,55 @@
+.screen {
+    height: 6em;
+    border: solid 0.3em;
+    border-color: #7E6A83 transparent transparent transparent;
+    border-radius: 75%;
+}
+
+.screen > p {
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.seats {
+    text-align: center;
+    margin: 0 auto;
+    padding: 0.5em;
+}
+
+.seats-row {
+    display: block;
+    margin: 0 auto;
+}
+
+.seat {
+    display: inline-block;
+    border: 0.15em solid #7E6A83;
+    border-radius: 20%;
+    height: 3.5em;
+    width: 2em;
+    margin: 0.05em;
+    vertical-align: top;
+    line-height: 3.5em;
+}
+
+.seat.empty {
+    border: none;
+    background-color: transparent;
+}
+
+.seat.available:hover {
+    background-color: #7E6A83;
+}
+
+.seat.unavailable {
+    border-color: #777;
+}
+
+.seat.occupied {
+    border-color: #777;
+    color: #777;
+}
+
+.session-info {
+    padding: 0.5em;
+}

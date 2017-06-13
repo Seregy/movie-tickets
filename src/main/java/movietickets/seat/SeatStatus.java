@@ -21,7 +21,12 @@ public enum SeatStatus implements Serializable {
     /**
      * Represents a seat, that was reserved, but not yet purchased.
      */
-    RESERVED(2);
+    RESERVED(2),
+
+    /**
+     * Represents an empty seat, unavailable for purchase or reservation.
+     */
+    UNAVAILABLE(3);
 
     private final int id;
 

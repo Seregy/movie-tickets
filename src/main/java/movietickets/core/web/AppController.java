@@ -67,46 +67,6 @@ public class AppController {
     }
 
     /**
-     * Shows admin web-page.
-     *
-     * @return name of jsp-page
-     */
-    @RequestMapping("/admin")
-    public String showAdminPage() {
-        return "admin/index";
-    }
-
-    /**
-     * Shows cinema web-page.
-     *
-     * @return name of jsp-page
-     */
-    @RequestMapping("/m/cinema")
-    public String showCinemaPage() {
-        return "cinema";
-    }
-
-    /**
-     * Shows web-page with list of cinemas.
-     *
-     * @return name of jsp-page
-     */
-    @RequestMapping("/m/cinemas")
-    public String showCinemaListPage() {
-        return "cinema_list";
-    }
-
-    /**
-     * Shows film web-page.
-     *
-     * @return name of jsp-page
-     */
-    @RequestMapping("/m/film")
-    public String showFilmPage() {
-        return "movie";
-    }
-
-    /**
      * Shows profile web-page.
      *
      * @return name of jsp-page

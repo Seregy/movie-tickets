@@ -26,6 +26,7 @@ public class Session {
 
     private LocalDateTime sessionStart;
     private String technology;
+    private int defaultPrice;
 
     @ManyToOne
     private Movie movie;
@@ -56,11 +57,14 @@ public class Session {
      * @param sessionStart {@link LocalDateTime} date-time of the session
      * beginning in the ISO-8601 calendar system
      * @param technology film's display technology
+     * @param defaultPrice default price for seats in this session
 
      */
-    public Session(final LocalDateTime sessionStart, final String technology) {
+    public Session(final LocalDateTime sessionStart,
+                   final String technology, final int defaultPrice) {
         this.sessionStart = sessionStart;
         this.technology = technology;
+        this.defaultPrice = defaultPrice;
     }
 
     /**
@@ -107,6 +111,24 @@ public class Session {
      */
     public void setTechnology(final String technology) {
         this.technology = technology;
+    }
+
+    /**
+     * Gets default price for seats for this session.
+     *
+     * @return default seat price
+     */
+    public int getDefaultPrice() {
+        return defaultPrice;
+    }
+
+    /**
+     * Sets default price for seats for this session.
+     *
+     * @param defaultPrice default seat price
+     */
+    public void setDefaultPrice(final int defaultPrice) {
+        this.defaultPrice = defaultPrice;
     }
 
     /**

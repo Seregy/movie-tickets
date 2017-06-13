@@ -1,6 +1,7 @@
 package movietickets.hall.dao;
 
 import movietickets.hall.Hall;
+import movietickets.hall.layout.Layout;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,10 @@ public class HallDAOTest {
                 new Hall("Second"),
                 new Hall("Third")};
         for (Hall hall : halls) {
+            hall.setLayout(new Layout(5, 5));
+        }
+
+        for (Hall hall : halls) {
             hallDAO.add(hall);
         }
 
@@ -47,6 +52,10 @@ public class HallDAOTest {
                 new Hall("Third"),
                 new Hall("Fourth")};
         for (Hall hall : halls) {
+            hall.setLayout(new Layout(5, 5));
+        }
+
+        for (Hall hall : halls) {
             hallDAO.add(hall);
         }
 
@@ -56,6 +65,7 @@ public class HallDAOTest {
     @Test
     public void addHall() {
         Hall hall = new Hall("name");
+        hall.setLayout(new Layout(1, 1));
 
         assertTrue(hallDAO.add(hall));
         assertEquals(hall, hallDAO.find(hall.getId()));
@@ -64,6 +74,7 @@ public class HallDAOTest {
     @Test
     public void updateHall() {
         Hall hall = new Hall("name");
+        hall.setLayout(new Layout(1, 1));
         hallDAO.add(hall);
         hall.setName("another name");
 
@@ -75,6 +86,7 @@ public class HallDAOTest {
     @Test
     public void deleteHall() {
         Hall hall = new Hall("name");
+        hall.setLayout(new Layout(1, 1));
         hallDAO.add(hall);
 
         assertTrue(hallDAO.delete(hall.getId()));

@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -31,28 +30,6 @@ public class UserController {
     @Autowired
     public UserController(final UserService userService) {
         this.userService = userService;
-    }
-
-    /**
-     * Shows page with users.
-     *
-     * @return name of jsp-page
-     */
-    @GetMapping("/user")
-    public String showUsersPage() {
-        return "admin/user";
-    }
-
-    /**
-     * Shows table, filled with users.
-     *
-     * @return name of jsp-page
-     */
-    @GetMapping("/users")
-    public ModelAndView showUsers() {
-        ModelAndView modelAndView = new ModelAndView("admin/users_table");
-        modelAndView.addObject("users", userService.getAll());
-        return modelAndView;
     }
 
     /**

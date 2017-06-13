@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
 import java.util.UUID;
@@ -31,29 +30,6 @@ public class HallController {
     @Autowired
     public HallController(final HallService hallService) {
         this.hallService = hallService;
-    }
-
-
-    /**
-     * Shows main halls' page.
-     *
-     * @return name of jsp-page
-     */
-    @GetMapping("/hall")
-    public String showHallsPages() {
-        return "admin/hall";
-    }
-
-    /**
-     * Shows table, filled with halls.
-     *
-     * @return name of jsp-page
-     */
-    @GetMapping("/halls")
-    public ModelAndView showHalls() {
-        ModelAndView modelAndView = new ModelAndView("admin/halls_table");
-        modelAndView.addObject("halls", hallService.getAll());
-        return modelAndView;
     }
 
     /**

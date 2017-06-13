@@ -1,6 +1,5 @@
 package movietickets.seat.web;
 
-import movietickets.seat.Seat;
 import movietickets.seat.service.SeatService;
 import movietickets.ticket.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.UUID;
@@ -39,45 +37,6 @@ public class SeatController {
                           final TicketService ticketService) {
         this.seatService = seatService;
         this.ticketService = ticketService;
-    }
-
-    /**
-     * Shows main seats' page.
-     *
-     * @return name of jsp-page
-     */
-    @GetMapping("/seat")
-    public String showSeatsPages() {
-        return "admin/seat";
-    }
-
-    /**
-     * Shows table, filled with seats.
-     *
-     * @return name of jsp-page
-     */
-    @GetMapping("/seats")
-    public ModelAndView showSeats() {
-        ModelAndView modelAndView = new ModelAndView("admin/seats_table");
-        modelAndView.addObject("seats", seatService.getAll());
-        return modelAndView;
-    }
-
-    /**
-     * Adds new seat with given row and seat number.
-     *
-     * @param rowNumber  number of row
-     * @param seatNumber number of seat
-     * @return response code
-     */
-    @PostMapping("/seats")
-    public ResponseEntity addSeat(@RequestParam("row_number")
-                                    final int rowNumber,
-                                  @RequestParam("seat_number")
-                                    final int seatNumber) {
-        Seat seat = new Seat(rowNumber, seatNumber);
-        seatService.add(seat);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     /**

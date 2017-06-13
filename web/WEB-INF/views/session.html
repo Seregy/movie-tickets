@@ -1,0 +1,74 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <title>Session</title>
+    <link rel="stylesheet" type="text/css"
+          href="../../resources/css/bootstrap/bootstrap.css" th:href="@{/resources/css/bootstrap/bootstrap.css}" >
+    <link rel="stylesheet" type="text/css"
+          href="../../resources/css/font-awesome.css" th:href="@{/resources/css/font-awesome.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../resources/css/main.css" th:href="@{/resources/css/main.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../resources/css/session.css" th:href="@{/resources/css/session.css}">
+    <link href='https://fonts.googleapis.com/css?family=Cormorant' rel='stylesheet' type='text/css'>
+    <script src="../../resources/scripts/jquery/jquery-3.2.1.js"
+            th:src="@{/resources/scripts/jquery/jquery-3.2.1.js}"></script>
+    <script src="../../resources/scripts/bootstrap/bootstrap.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap.js}"></script>
+</head>
+<body>
+<div class="container" th:include="fragments/navbar :: navbar"></div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-7">
+            <div class="thumbnail hall">
+                <div class="screen">
+                    <p class="text-muted">Screen</p>
+                </div>
+                <div class="seats" th:each="seatRow : ${seats}">
+                    <div class="seats-row">
+                        <th:block th:each="seat : ${seatRow}">
+                            <div th:unless="${seat}" class="seat empty"></div>
+                            <div th:if="${seat.seatType == T(movietickets.hall.layout.SeatType).UNAVAILABLE
+                                or seat.seatStatus == T(movietickets.seat.SeatStatus).UNAVAILABLE}"
+                                 class="seat unavailable"></div>
+                            <th:block
+                                    th:if="${seat != null and seat.seatType != T(movietickets.hall.layout.SeatType).EMPTY}"
+                                    th:switch="${seat.seatStatus}">
+                                <div th:case="${T(movietickets.seat.SeatStatus).AVAILABLE}" class="seat available"></div>
+                                <div th:case="${T(movietickets.seat.SeatStatus).PURCHASED
+                                    or T(movietickets.seat.SeatStatus).RESERVED}"
+                                     class="seat occupied">
+                                    <span class="fa fa-user fa-2x" aria-hidden="true"></span>
+                                </div>
+                            </th:block>
+                        </th:block>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="thumbnail session-info">
+                <h3 th:text="${movie.name}">Movie name</h3>
+                <h4 th:text="${cinema.name + ', ' + cinema.city.name}" class="small">Cinema, city</h4>
+                <p th:text="${#temporals.format(movieSession.sessionStart, 'd MMMM yyyy, HH:mm')}">Session datetime</p>
+                <p th:text="${movieSession.technology}">Session technology</p>
+                <div>
+                    Seat info
+                </div>
+                <br>
+                <button class="btn btn-primary">Buy</button>
+                <button class="btn btn-primary">Reserve</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer" th:include="fragments/footer :: footer"></div>
+</body>
+</html>

@@ -1,5 +1,6 @@
 package movietickets.ticket.dao;
 
+import movietickets.hall.layout.SeatType;
 import movietickets.seat.Seat;
 import movietickets.seat.dao.SeatDAO;
 import movietickets.ticket.Ticket;
@@ -58,9 +59,9 @@ public class TicketDAOTest {
         }
 
         Seat[] seats = {
-                new Seat(1, 1),
-                new Seat(2, 2),
-                new Seat(3, 3)};
+                new Seat(1, 1, SeatType.REGULAR, 1),
+                new Seat(2, 2, SeatType.REGULAR, 2),
+                new Seat(3, 3, SeatType.REGULAR, 3)};
         for (Seat seat : seats) {
             seatDAO.add(seat);
         }
@@ -97,10 +98,10 @@ public class TicketDAOTest {
         }
 
         Seat[] seats = {
-                new Seat(1, 1),
-                new Seat(2, 2),
-                new Seat(3, 3),
-                new Seat(4, 4)};
+                new Seat(1, 1, SeatType.REGULAR, 1),
+                new Seat(2, 2, SeatType.REGULAR, 2),
+                new Seat(3, 3, SeatType.REGULAR, 3),
+                new Seat(4, 4, SeatType.REGULAR, 4)};
         for (Seat seat : seats) {
             seatDAO.add(seat);
         }
@@ -125,7 +126,7 @@ public class TicketDAOTest {
         User user = new User("Name", "Password", role, "Email");
         userDAO.add(user);
 
-        Seat seat = new Seat(7, 7);
+        Seat seat = new Seat(7, 7, SeatType.REGULAR, 10);
         seatDAO.add(seat);
 
         Ticket ticket = new Ticket(seat, user);
@@ -143,7 +144,7 @@ public class TicketDAOTest {
         userDAO.add(user1);
         userDAO.add(user2);
 
-        Seat seat = new Seat(7, 7);
+        Seat seat = new Seat(7, 7, SeatType.REGULAR, 10);
         seatDAO.add(seat);
 
         Ticket ticket = new Ticket(seat, user1);
@@ -163,7 +164,7 @@ public class TicketDAOTest {
         User user = new User("Name", "Password", role, "Email");
         userDAO.add(user);
 
-        Seat seat = new Seat(7, 7);
+        Seat seat = new Seat(7, 7, SeatType.REGULAR, 10);
         seatDAO.add(seat);
 
         Ticket ticket = new Ticket(seat, user);

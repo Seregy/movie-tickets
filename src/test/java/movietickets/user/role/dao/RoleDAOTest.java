@@ -11,6 +11,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.Transactional;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 import static org.junit.Assert.*;
 
 /**
@@ -47,10 +50,10 @@ public class RoleDAOTest {
                 new Role("Second"),
                 new Role("Third"),
                 new Role("Fourth")};
+        Arrays.sort(roles, Comparator.comparing(Role::getName));
         for (Role role : roles) {
             roleDAO.add(role);
         }
-
         assertArrayEquals(roles, roleDAO.findAll().toArray(new Role[0]));
     }
 

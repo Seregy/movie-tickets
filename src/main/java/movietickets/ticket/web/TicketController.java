@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -33,28 +32,6 @@ public class TicketController {
     @Autowired
     public TicketController(final TicketService ticketService) {
         this.ticketService = ticketService;
-    }
-
-    /**
-     * Shows page with cinemas.
-     *
-     * @return name of jsp-page
-     */
-    @GetMapping("/ticket")
-    public String showTicketsPages() {
-        return "admin/ticket";
-    }
-
-    /**
-     * Shows table, filled with tickets.
-     *
-     * @return name of jsp-page
-     */
-    @GetMapping("/tickets")
-    public ModelAndView showTickets() {
-        ModelAndView modelAndView = new ModelAndView("admin/tickets_table");
-        modelAndView.addObject("tickets", ticketService.getAll());
-        return modelAndView;
     }
 
     /**

@@ -1,32 +1,21 @@
 package movietickets.hall.layout;
 
-import movietickets.hall.Hall;
-
 import javax.persistence.*;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.UUID;
 
 /**
  * Model that represents hall's layout.
  *
  * @author Seregy
  */
-@Entity
+@Embeddable
 public class Layout {
-    @SuppressWarnings("checkstyle:MagicNumber")
-    @Id
-    @GeneratedValue
-    @Column(columnDefinition = "BINARY(16)", length = 16)
-    private UUID id;
-
     private int rowsAmount;
     private int seatsAmount;
     @Lob
-    private byte[] seatsStatuses;
-    @OneToOne
-    private Hall hall;
+    private byte[] seatTypes;
 
     /**
      * Constructs new {@code Layout} with specified amounts of rows and seats
@@ -38,10 +27,10 @@ public class Layout {
     public Layout(final int rowsAmount, final int seatsAmount) {
         this.rowsAmount = rowsAmount;
         this.seatsAmount = seatsAmount;
-        SeatStatus[][] array = new SeatStatus[rowsAmount][seatsAmount];
+        SeatType[][] array = new SeatType[rowsAmount][seatsAmount];
         for (int i = 0; i < rowsAmount; i++) {
             for (int j = 0; j < seatsAmount; j++) {
-                array[i][j] = SeatStatus.REGULAR;
+                array[i][j] = SeatType.REGULAR;
             }
         }
         setSeats(array);
@@ -51,24 +40,6 @@ public class Layout {
      * Constructor for JPA.
      */
     protected Layout() { }
-
-    /**
-     * Gets unique identifier of the layout.
-     *
-     * @return unique identifier
-     */
-    public UUID getId() {
-        return id;
-    }
-
-    /**
-     * Sets unique identifier of the layout.
-     *
-     * @param id unique identifier
-     */
-    public void setId(final UUID id) {
-        this.id = id;
-    }
 
     /**
      * Gets the amount of rows in the hall.
@@ -107,19 +78,19 @@ public class Layout {
     }
 
     /**
-     * Gets the array of {@link SeatStatus} objects.
+     * Gets the array of {@link SeatType} objects.
      * The array is two-dimensional, first dimension is rows,
-     * second - seats. Value of {@code SeatStatus} indicate the status of
+     * second - seats. Value of {@code SeatType} indicate the type of
      * the seat in the hall.
      *
-     * @return array of seats statuses
+     * @return array of seats types
      */
-    public SeatStatus[][] getSeatsStatuses() {
-        SeatStatus[][] deserialized = null;
+    public SeatType[][] getSeatsTypes() {
+        SeatType[][] deserialized = null;
         try (ByteArrayInputStream byteIn =
-                     new ByteArrayInputStream(seatsStatuses);
-            ObjectInputStream in = new ObjectInputStream(byteIn)) {
-            deserialized = (SeatStatus[][]) in.readObject();
+                     new ByteArrayInputStream(seatTypes);
+             ObjectInputStream in = new ObjectInputStream(byteIn)) {
+            deserialized = (SeatType[][]) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -128,43 +99,23 @@ public class Layout {
     }
 
     /**
-     * Sets the array of {@link SeatStatus} objects.
+     * Sets the array of {@link SeatType} objects.
      * The array is two-dimensional, first dimension is rows,
-     * second - seatStatuses. Value of {@code SeatStatus} indicate the status of
+     * second - seatTypes. Value of {@code SeatType} indicate the type of
      * the seat in the hall.
      *
-     * @param seatStatuses array of seats statuses
+     * @param newSeatTypes array of seats types
      */
-    public void setSeats(final SeatStatus[][] seatStatuses) {
+    public void setSeats(final SeatType[][] newSeatTypes) {
         byte[] serialized = null;
         try (ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
              ObjectOutputStream out = new ObjectOutputStream(byteOut)) {
-            out.writeObject(seatStatuses);
+            out.writeObject(newSeatTypes);
             serialized = byteOut.toByteArray();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.seatsStatuses = serialized;
-    }
-
-    /**
-     * Gets the {@link Hall} object,
-     * associated with this layout.
-     *
-     * @return hall object
-     */
-    public Hall getHall() {
-        return hall;
-    }
-
-    /**
-     * Sets the {@link Hall} object,
-     * associated with this layout.
-     *
-     * @param hall hall object
-     */
-    public void setHall(final Hall hall) {
-        this.hall = hall;
+        this.seatTypes = serialized;
     }
 
     /**
@@ -188,7 +139,7 @@ public class Layout {
         Layout layout = (Layout) o;
         return rowsAmount == layout.rowsAmount
                 && seatsAmount == layout.seatsAmount
-                && Arrays.equals(seatsStatuses, layout.seatsStatuses);
+                && Arrays.equals(seatTypes, layout.seatTypes);
     }
 
     /**
@@ -196,7 +147,7 @@ public class Layout {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(rowsAmount, seatsAmount, seatsStatuses);
+        return Objects.hash(rowsAmount, seatsAmount, seatTypes);
     }
 
     /**
@@ -208,10 +159,9 @@ public class Layout {
     @Override
     public String toString() {
         return "Layout{"
-                + "id=" + id
                 + ", rowsAmount=" + rowsAmount
                 + ", seatsAmount=" + seatsAmount
-                + ", seats statuses=" + Arrays.toString(getSeatsStatuses())
+                + ", seats statuses=" + Arrays.toString(getSeatsTypes())
                 + '}';
     }
 }

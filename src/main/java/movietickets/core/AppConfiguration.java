@@ -6,8 +6,6 @@ import movietickets.city.dao.CityDAO;
 import movietickets.city.dao.CityDAOHibernate;
 import movietickets.hall.dao.HallDAO;
 import movietickets.hall.dao.HallDAOHibernate;
-import movietickets.hall.layout.dao.LayoutDAO;
-import movietickets.hall.layout.dao.LayoutDAOHibernate;
 import movietickets.movie.dao.MovieDAO;
 import movietickets.movie.dao.MovieDAOHibernate;
 import movietickets.session.dao.SessionDAO;
@@ -75,17 +73,6 @@ public class AppConfiguration {
     @Bean
     public HallDAO getHibernateHallDAO() {
         return new HallDAOHibernate();
-    }
-
-    /**
-     * Gets an instance of {@link LayoutDAOHibernate} object.
-     *
-     * @return layout dao object
-     */
-    @Primary
-    @Bean
-    public LayoutDAO getHibernateLayoutDAO() {
-        return new LayoutDAOHibernate();
     }
 
     /**

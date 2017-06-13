@@ -11,6 +11,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.Transactional;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 import static org.junit.Assert.*;
 
 /**
@@ -46,6 +49,7 @@ public class CinemaDAOTest {
                 new Cinema("Second", "second"),
                 new Cinema("Third", "third"),
                 new Cinema("Fourth", "fourth")};
+        Arrays.sort(cinemas, Comparator.comparing(Cinema::getName));
         for (Cinema cinema : cinemas) {
             cinemaDAO.add(cinema);
         }

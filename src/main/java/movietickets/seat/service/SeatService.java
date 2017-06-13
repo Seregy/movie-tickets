@@ -47,4 +47,12 @@ public interface SeatService {
      * @param id id of the seat to delete
      */
     void delete(UUID id);
+
+    /**
+     * Changes the price of the seat.
+     *
+     * @param seatId seat's id
+     * @param newPrice new price
+     */
+    void changePrice(UUID seatId, int newPrice);
 }

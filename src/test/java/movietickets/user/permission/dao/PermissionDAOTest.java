@@ -11,6 +11,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.Transactional;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 import static org.junit.Assert.*;
 
 /**
@@ -47,6 +50,7 @@ public class PermissionDAOTest {
                 new Permission("PM_2"),
                 new Permission("PM_3"),
                 new Permission("PM_4")};
+        Arrays.sort(permissions, Comparator.comparing(Permission::getName));
         for (Permission permission : permissions) {
             permissionDAO.add(permission);
         }

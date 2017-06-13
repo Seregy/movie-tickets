@@ -4,7 +4,7 @@ import movietickets.cinema.Cinema;
 import movietickets.hall.Hall;
 import movietickets.hall.dao.HallDAO;
 import movietickets.hall.layout.Layout;
-import movietickets.hall.layout.SeatStatus;
+import movietickets.hall.layout.SeatType;
 import movietickets.movie.Movie;
 import movietickets.movie.dao.MovieDAO;
 import movietickets.seat.Seat;
@@ -59,19 +59,20 @@ public class SessionServiceDAO implements SessionService {
                     final UUID movieId) {
         Hall hall = hallDAO.find(hallId);
         Layout layout = hall.getLayout();
-        SeatStatus[][] seatStatuses = layout.getSeatsStatuses();
+        SeatType[][] seatTypes = layout.getSeatsTypes();
 
         boolean rowChanged = false;
         int actualRow = 1;
-        for (SeatStatus[] seatsRow : seatStatuses) {
+        for (SeatType[] typeRow : seatTypes) {
             int actualSeat = 1;
-            for (SeatStatus seatStatus : seatsRow) {
-                if (seatStatus == SeatStatus.REGULAR) {
+            for (SeatType seatType : typeRow) {
+                if (seatType == SeatType.REGULAR) {
                     if (rowChanged) {
                         actualRow++;
                         rowChanged = false;
                     }
-                    session.addSeat(new Seat(actualRow, actualSeat++));
+                    session.addSeat(new Seat(actualRow, actualSeat++,
+                            seatType, session.getDefaultPrice()));
                 }
             }
             rowChanged = true;
@@ -198,7 +199,7 @@ public class SessionServiceDAO implements SessionService {
         Layout layout = session.getHall().getLayout();
         Seat[][] seats =
                 new Seat[layout.getRowsAmount()][layout.getSeatsAmount()];
-        SeatStatus[][] seatStatuses = layout.getSeatsStatuses();
+        SeatType[][] seatTypes = layout.getSeatsTypes();
 
         boolean rowChanged = false;
         int actualRow = 1;
@@ -211,8 +212,8 @@ public class SessionServiceDAO implements SessionService {
             for (int displayedSeat = 0;
                  displayedSeat < seats[displayedRow].length;
                  displayedSeat++) {
-                if (seatStatuses[displayedRow][displayedSeat]
-                        == SeatStatus.REGULAR) {
+                if (seatTypes[displayedRow][displayedSeat]
+                        == SeatType.REGULAR) {
                     if (rowChanged) {
                         actualRow++;
                         rowChanged = false;

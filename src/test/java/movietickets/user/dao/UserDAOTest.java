@@ -13,6 +13,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.Transactional;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
 import static org.junit.Assert.*;
 
 /**
@@ -59,6 +62,7 @@ public class UserDAOTest {
                 new Role("Second"),
                 new Role("Third"),
                 new Role("Fourth")};
+        Arrays.sort(roles, Comparator.comparing(Role::getName));
         for (Role role : roles) {
             roleDAO.add(role);
         }
@@ -68,6 +72,7 @@ public class UserDAOTest {
                 new User("second", "second", roles[1], "second"),
                 new User("third", "third", roles[2], "third"),
                 new User("fourth", "fourth", roles[3], "fourth")};
+        Arrays.sort(users, Comparator.comparing(User::getName));
         for (User user : users) {
             userDAO.add(user);
         }

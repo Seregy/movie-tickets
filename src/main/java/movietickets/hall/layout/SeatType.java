@@ -7,7 +7,7 @@ import java.io.Serializable;
  *
  * @author Seregy
  */
-public enum SeatStatus implements Serializable {
+public enum SeatType implements Serializable {
     /**
      * Represents empty seat in the layout.
      */
@@ -17,21 +17,27 @@ public enum SeatStatus implements Serializable {
      * Represents regular seat, available for purchase, reservation
      * and other operations.
      */
-    REGULAR(1);
+    REGULAR(1),
+
+    /**
+     * Represents seat, unavailable for purchase, reservation
+     * and other operations.
+     */
+    UNAVAILABLE(2);
 
     private final int id;
 
     /**
-     * Constructs new SeatStatus object with given id.
+     * Constructs new SeatType object with given id.
      *
      * @param id unique identifier
      */
-    SeatStatus(final int id) {
+    SeatType(final int id) {
         this.id = id;
     }
 
     /**
-     * Gets unique identifier of the seat status.
+     * Gets unique identifier of the seat type.
      *
      * @return unique identifier
      */

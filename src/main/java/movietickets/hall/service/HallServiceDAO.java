@@ -5,7 +5,6 @@ import movietickets.cinema.dao.CinemaDAO;
 import movietickets.hall.Hall;
 import movietickets.hall.dao.HallDAO;
 import movietickets.hall.layout.Layout;
-import movietickets.hall.layout.dao.LayoutDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,6 @@ import java.util.UUID;
 @Service
 public class HallServiceDAO implements HallService {
     private final HallDAO hallDAO;
-    private final LayoutDAO layoutDAO;
     private final CinemaDAO cinemaDAO;
 
     /**
@@ -30,15 +28,12 @@ public class HallServiceDAO implements HallService {
      * Layout DAO and Cinema DAO.
      *
      * @param hallDAO cinema data access object
-     * @param layoutDAO layout data access object
      * @param cinemaDAO cinema data access object
      */
     @Autowired
     public HallServiceDAO(final HallDAO hallDAO,
-                          final LayoutDAO layoutDAO,
                           final CinemaDAO cinemaDAO) {
         this.hallDAO = hallDAO;
-        this.layoutDAO = layoutDAO;
         this.cinemaDAO = cinemaDAO;
     }
 
@@ -52,7 +47,6 @@ public class HallServiceDAO implements HallService {
         Cinema cinema = cinemaDAO.find(cinemaId);
         hall.setLayout(layout);
         cinema.addHall(hall);
-        layoutDAO.add(layout);
         hallDAO.add(hall);
         cinemaDAO.update(cinema);
     }

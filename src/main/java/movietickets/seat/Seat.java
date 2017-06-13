@@ -1,5 +1,6 @@
 package movietickets.seat;
 
+import movietickets.hall.layout.SeatType;
 import movietickets.session.Session;
 import movietickets.ticket.Ticket;
 
@@ -23,6 +24,8 @@ public class Seat {
     private int rowNumber;
     private int seatNumber;
     private SeatStatus seatStatus;
+    private SeatType seatType;
+    private int price;
 
     @ManyToOne
     private Session session;
@@ -35,11 +38,16 @@ public class Seat {
      *
      * @param rowNumber seat's row number
      * @param seatNumber seat's number
+     * @param seatType seat's layout type
+     * @param price seat's price
      */
-    public Seat(final int rowNumber, final int seatNumber) {
+    public Seat(final int rowNumber, final int seatNumber,
+                final SeatType seatType, final int price) {
         this.rowNumber = rowNumber;
         this.seatNumber = seatNumber;
         seatStatus = SeatStatus.AVAILABLE;
+        this.seatType = seatType;
+        this.price = price;
     }
 
     /**
@@ -148,6 +156,42 @@ public class Seat {
     }
 
     /**
+     * Gets {@link SeatType} of this seat.
+     *
+     * @return layout type of the seat
+     */
+    public SeatType getSeatType() {
+        return seatType;
+    }
+
+    /**
+     * Sets {@link SeatType} of this seat.
+     *
+     * @param seatType layout type of the seat
+     */
+    public void setSeatType(final SeatType seatType) {
+        this.seatType = seatType;
+    }
+
+    /**
+     * Gets price of the seat.
+     *
+     * @return price
+     */
+    public int getPrice() {
+        return price;
+    }
+
+    /**
+     * Sets price of the seat.
+     *
+     * @param price price
+     */
+    public void setPrice(final int price) {
+        this.price = price;
+    }
+
+    /**
      * Indicates whether some other object is "equal to" this one.
      * This method accepts subclasses as parameters to work with Proxy
      * objects.
@@ -168,9 +212,7 @@ public class Seat {
         Seat seat1 = (Seat) o;
         return rowNumber == seat1.rowNumber
                 && seatNumber == seat1.seatNumber
-                && Objects.equals(session, seat1.session)
-                && Objects.equals(ticket, seat1.ticket)
-                && seatStatus == seat1.seatStatus;
+                && Objects.equals(session, seat1.session);
     }
 
     /**
@@ -178,7 +220,7 @@ public class Seat {
      */
     @Override
     public int hashCode() {
-        return Objects.hash(rowNumber, seatNumber, session, seatStatus);
+        return Objects.hash(rowNumber, seatNumber, session);
     }
 
     /**
@@ -196,6 +238,8 @@ public class Seat {
                 + ", session=" + session
                 + ", ticket=" + ticket
                 + ", seatStatus=" + seatStatus
+                + ", seatType=" + seatType
+                + ", price=" + price
                 + '}';
     }
 }

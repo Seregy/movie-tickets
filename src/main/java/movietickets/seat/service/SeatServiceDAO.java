@@ -76,4 +76,16 @@ public class SeatServiceDAO implements SeatService {
     public void delete(final UUID id) {
         seatDAO.delete(id);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    @PreAuthorize("hasAuthority('PM_EDIT_SEAT')")
+    public void changePrice(final UUID seatId, final int newPrice) {
+        Seat seat = seatDAO.find(seatId);
+        seat.setPrice(newPrice);
+        seatDAO.update(seat);
+    }
 }

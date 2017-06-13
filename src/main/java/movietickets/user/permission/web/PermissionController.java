@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -33,28 +32,6 @@ public class PermissionController {
     @Autowired
     public PermissionController(final PermissionService permissionService) {
         this.permissionService = permissionService;
-    }
-
-    /**
-     * Shows page with permissions.
-     *
-     * @return name of jsp-page
-     */
-    @GetMapping("/permission")
-    public String showPermissionsPage() {
-        return "admin/permission";
-    }
-
-    /**
-     * Shows table, filled with permissions.
-     *
-     * @return name of jsp-page
-     */
-    @GetMapping("/permissions")
-    public ModelAndView showPermissions() {
-        ModelAndView modelAndView = new ModelAndView("admin/permissions_table");
-        modelAndView.addObject("permissions", permissionService.getAll());
-        return modelAndView;
     }
 
     /**
