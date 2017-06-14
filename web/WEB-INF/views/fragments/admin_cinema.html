@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width = device-width, initial-scale = 1">
+	<title>Admin Cinema</title>
+	<link rel="stylesheet" type="text/css" href="../../../../../../../Desktop/cinemasite/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="../../../../../../../Desktop/cinemasite/css/font-awesome.css">
+	<link rel="stylesheet" type="text/css" href="../../../../../../../Desktop/cinemasite/css/main.css">
+		<link rel="stylesheet" type="text/css" href="../../../../../../../Desktop/cinemasite/css/admin_cinema.css">
+	<link rel="stylesheet" type="text/css" href="../../../../../../../Desktop/cinemasite/css/bootstrap-select.min.css">
+	<link href='https://fonts.googleapis.com/css?family=Cormorant' rel='stylesheet' type='text/css'>
+	<script src="../../../../../../../Desktop/cinemasite/js/jquery-3.1.1.min.js"></script>
+	<script src="../../../../../../../Desktop/cinemasite/js/bootstrap.min.js"></script>
+	<script src="../../../../../../../Desktop/cinemasite/js/bootstrap-select.min.js"></script>
+</head>
+
+
+
+<body>
+ 
+  <div class="container">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#collapsed-menu" aria-expanded="false">
+            <span class="sr-only"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="collapse navbar-collapse" id="collapsed-menu">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Кинотеатры<span class="sr-only">(current)</span></a></li>
+            <li><a href="#">Кнопка1</a></li>
+            <li><a href="#">Кнопка2</a></li>
+            <li><a href="#">Кнопка3</a></li>        
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <p class="navbar-text"> Имя пользователя <a href="#"  class="navbar-link"> [Выход]</a></p>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+ 
+   <div class="container"> 
+	    <div class="jumbotron">
+	    	<h2>Список кинотеатров</h2>
+	  		<div class="row">
+		       <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+		         <div class="input-group input-group-sm">
+		           <input type="text" class="form-control" placeholder="Название кинотеатра" maxlength="20">
+		           <span class="input-group-btn">
+		             <button class="btn btn-default btn-xs" type="button"> <span class="glyphicon glyphicon-search"></span> </button>
+		           </span>
+		         </div> 
+		       </div>
+		    </div>
+	  		<hr />
+	      
+			<div class="row">    
+		        <div class="col-md-10 col-md-offset-1">
+		            <div class="panel panel-default panel-table">
+		              	<div class="panel-heading">
+			                <div class="row">
+			                    <div class="col col-xs-6">
+			                  		<a class="btn btn-sm btn-primary btn-create" data-toggle="collapse" href='#addCinema'><i class="fa fa-plus" aria-hidden="true"></i> Добавить кинотеатр</a>   
+			        			</div>
+			        		</div>
+			        		<br>
+			        		<div class="row">
+			    				<div class="tab-content col-lg-6">
+						            <div id="addCinema" class=" collapse">
+							            <form role="form" action="" id="session-form" onsubmit="return false;">
+							               <div class ="menu">
+								                <input type="text" class="form-control data-input" placeholder="Название кинотеатра" maxlength="50" required>
+								                <select class="selectpicker data-input" multiple title="Город" data-live-search="true"  data-width="auto">
+													<option>Город1</option>
+													<option>Город2</option>
+													<option>Город3</option>
+												</select>
+								                <input type="text" class="form-control data-input" placeholder="Адрес" maxlength="50">
+								                <input type="text" class="form-control data-input" placeholder="Телефон" maxlength="20">
+								                <input type="text" class="form-control data-input" placeholder="Сайт"maxlength="50">
+								                Логотип:<input type="file" accept=".jpeg,.gif,.jpg" class="data-input" />
+								             	<button class="btn btn-success data-input" type="submit">Сохранить</button>                     
+							               </div>
+							            </form>
+						            </div>
+					            </div>
+			                </div>
+			            </div>
+		              	<div class="panel-body">
+		              		<div class="table-responsive">
+				                <table class="table table-striped table-bordered table-list" id="cinemaTable">
+				                    <thead>
+				                    <tr>               
+				                        <th class="hidden-xs">№</th>
+				                        <th>Название</th>
+				                        <th>Город</th>
+				                        <th>Адрес</th>
+				                        <th>Телефон</th>
+				                        <th>Сайт</th>
+				                        <th>Залы</th>
+				                        <th>Сеансы</th>
+				                        <th align="center"><em class="fa fa-cog"></em></th>
+				                    </tr> 
+				                  </thead>
+				                  <tbody>
+				                          <tr>
+				                            <td class="hidden-xs">1</td>
+				                            <td id='cinemaName'>Баттерфляй DeLuxe</td>
+				                            <td>Киев</td>
+				                            <td>ул. Горького, 50</td>
+				                            <td>(044) 206 13 20</td>
+				                            <td>www.kino-butterfly.com.ua</td>
+				                            <td><a class="btn btn-primary">Залы</a></td>
+				                            <td><a class="btn btn-primary">Сеансы</a></td>
+				                            <td align="center">
+				                              <a class="btn btn-default" id='editbtn'  onclick="createTextField()"><em class="fa fa-pencil"></em></a>
+				                              <a class="btn btn-danger" id='delbtn'><em class="fa fa-trash"></em></a>
+				                            </td>
+				                          </tr>
+				                           <tr>
+				                            <td class="hidden-xs">2</td>
+				                            <td>Баттерфляй DeLuxe</td>
+				                            <td>Киев</td>
+				                            <td>ул. Горького, 50</td>
+				                            <td>(044) 206 13 20</td>
+				                            <td>www.kino-butterfly.com.ua</td>
+				                            <td><a class="btn btn-primary">Залы</a></td>
+				                            <td><a class="btn btn-primary">Сеансы</a></td>
+				                            <td align="center">
+				                              <a class="btn btn-default"><em class="fa fa-pencil"></em></a>
+				                              <a class="btn btn-danger"><em class="fa fa-trash"></em></a>
+				                            </td>
+				                          </tr>
+				                            <tr>
+				                            <td class="hidden-xs">3</td>
+				                            <td>Баттерфляй DeLuxe</td>
+				                            <td>Киев</td>
+				                            <td>ул. Горького, 50</td>
+				                            <td>(044) 206 13 20</td>
+				                            <td>www.kino-butterfly.com.ua</td>
+				                            <td><a class="btn btn-primary">Залы</a></td>
+				                            <td><a class="btn btn-primary">Сеансы</a></td>
+				                            <td align="center">
+				                              <a class="btn btn-default"><em class="fa fa-pencil"></em></a>
+				                              <a class="btn btn-danger"><em class="fa fa-trash"></em></a>
+				                            </td>
+				                          </tr>
+				                    </tbody>
+				                </table>
+		                	</div>
+		            	</div>
+			            <div class="panel-footer">
+			                <div class="row">
+			                  	<div class="col col-xs-7">Страница 1 из 5</div>
+				                <div class="col col-xs-5">
+				                    <ul class="pagination hidden-xs pull-right">
+					                    <li>
+							                <a href="#" aria-label="Previous pull-center">
+							                  	<span aria-hidden="true">&laquo;</span>
+							                </a>
+					              		</li>
+					                    <li><a href="#">1</a></li>
+					                    <li><a href="#">2</a></li>
+					                    <li><a href="#">3</a></li>
+					                    <li><a href="#">4</a></li>
+					                    <li><a href="#">5</a></li>
+					                    <li>
+							                <a href="#" aria-label="Next">
+							                  <span aria-hidden="true">&raquo;</span>
+							                </a>
+					              		</li>
+				                    </ul>
+				                    <ul class="pagination visible-xs pull-right">
+				                        <li><a href="#">«</a></li>
+				                        <li><a href="#">»</a></li>
+				                    </ul>
+				                </div>
+			                </div>
+			            </div>
+		            </div>
+				</div>
+			</div>
+		</div>
+   </div>
+
+<script>
+ 
+$(document).ready(function () {
+    $('#editbtn').click(edit);
+});
+ 
+function edit(event) {
+    var textArray = [];
+    var clickedElement = $(this);
+    var currentTD = clickedElement.parents('tr').find('td');
+    var firstIcon = clickedElement.children().eq(0);
+    var secondIcon = clickedElement.next().children().eq(0);
+    if (firstIcon.hasClass("fa-pencil")) {
+        for (var i = 1; i < 6; i++) {
+            var cell = currentTD.eq(i);
+            textArray.push(cell.text());
+            var input = $('<input/>').val(cell.text());
+            input.width(getTextWidth(cell.text(),"14px Helvetica Neue") + 17);
+            cell.html(input);
+        }
+        firstIcon.attr('class',"fa fa-floppy-o");
+        secondIcon.attr('class',"fa fa-ban");
+       
+       $('#editbtn').off('click').on('click', apply);
+       $('#delbtn').off('click').on('click', apply);
+    }
+    return;
+   
+    function apply(event) {
+        if ($(this).is('#editbtn')) {
+            for (var i = 1; i < 6; i++) {
+                var cell = currentTD.eq(i);
+                var input = cell.find("input");
+                cell.text(input.val());
+                input.remove();
+            }
+            firstIcon.attr('class',"fa fa-pencil");
+            secondIcon.attr('class',"fa fa-trash"); 
+           
+        } else if ($(this).is('#delbtn')) {
+            for (var i = 1; i < 6; i++) {
+                var cell = currentTD.eq(i);
+                var input = cell.find("input");
+                cell.text(textArray[i-1]);
+                input.remove();
+            }
+            firstIcon.attr('class',"fa fa-pencil");
+            secondIcon.attr('class',"fa fa-trash");           
+        }
+
+       $('#editbtn').off('click').on('click', edit);
+       $('#delbtn').off('click').on('click', edit);
+        return;
+    }
+}
+
+
+function getTextWidth(text, font) {
+    var canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
+    var context = canvas.getContext("2d");
+    context.font = font;
+    var metrics = context.measureText(text);
+    return metrics.width;
+}
+</script>
+
+</body>
+
+</html>
