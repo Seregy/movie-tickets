@@ -1,11 +1,11 @@
 package movietickets.user;
 
-import movietickets.ticket.Ticket;
 import movietickets.user.role.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.*;
 
 import java.util.Collection;
+import java.util.UUID;
 
 /**
  * Model that represents information about {@link User},
@@ -15,30 +15,40 @@ import java.util.Collection;
  */
 public class CustomUserDetails
         extends org.springframework.security.core.userdetails.User {
+    private final UUID id;
     private final Role role;
-    private final String email;
-    private final Collection<Ticket> tickets;
+    private String email;
 
     /**
      * Constructs new CustomUserDetails.
      *
+     * @param id user's id
      * @param username user's name
      * @param password user's password
      * @param role user's role
      * @param email user's email
-     * @param tickets user's tickets
      * @param authorities user's authorities
      */
-    public CustomUserDetails(final String username, final String password,
+    public CustomUserDetails(final UUID id,
+                             final String username,
+                             final String password,
                              final Role role,
                              final String email,
-                             final Collection<Ticket> tickets,
                              final Collection<? extends GrantedAuthority>
                                      authorities) {
         super(username, password, authorities);
+        this.id = id;
         this.role = role;
         this.email = email;
-        this.tickets = tickets;
+    }
+
+    /**
+     * Gets user's identifier.
+     *
+     * @return user's id
+     */
+    public UUID getId() {
+        return id;
     }
 
     /**
@@ -60,11 +70,11 @@ public class CustomUserDetails
     }
 
     /**
-     * Get's user's tickets.
+     * Sets user's email.
      *
-     * @return user's tickets
+     * @param email user's email
      */
-    public Collection<Ticket> getTickets() {
-        return tickets;
+    public void setEmail(final String email) {
+        this.email = email;
     }
 }

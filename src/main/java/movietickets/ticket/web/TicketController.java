@@ -1,12 +1,15 @@
 package movietickets.ticket.web;
 
 import movietickets.ticket.service.TicketService;
+import movietickets.user.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -32,6 +35,60 @@ public class TicketController {
     @Autowired
     public TicketController(final TicketService ticketService) {
         this.ticketService = ticketService;
+    }
+
+    /**
+     * Buys ticket for current user.
+     *
+     * @param ids tickets' identifiers
+     * @return http status
+     */
+    @PostMapping("/buy")
+    public ResponseEntity buyTickets(@RequestParam("ids[]")
+                                         final List<UUID> ids) {
+        CustomUserDetails userDetails = (CustomUserDetails)
+                SecurityContextHolder.getContext()
+                        .getAuthentication().getPrincipal();
+        for (UUID seatId : ids) {
+            ticketService.buy(seatId, userDetails.getId());
+        }
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    /**
+     * Reserves ticket for current user.
+     *
+     * @param ids tickets' identifiers
+     * @return http status
+     */
+    @PostMapping("/reserve")
+    public ResponseEntity reserveTickets(@RequestParam("ids[]")
+                                             final List<UUID> ids) {
+        CustomUserDetails userDetails = (CustomUserDetails)
+                SecurityContextHolder.getContext()
+                        .getAuthentication().getPrincipal();
+        for (UUID seatId : ids) {
+            ticketService.reserve(seatId, userDetails.getId());
+        }
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    /**
+     * Returns ticket, canceling ticket purchase/reservation.
+     *
+     * @param id ticket's identifiers
+     * @return http status
+     */
+    @PostMapping("/return")
+    public ResponseEntity returnTicket(@RequestParam("ticket_id")
+                                           final UUID id) {
+        CustomUserDetails userDetails = (CustomUserDetails)
+                SecurityContextHolder.getContext()
+                        .getAuthentication().getPrincipal();
+        ticketService.cancel(id, userDetails.getId());
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
     /**

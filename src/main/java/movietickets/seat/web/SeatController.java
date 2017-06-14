@@ -45,7 +45,7 @@ public class SeatController {
      * @param ids list of cinemas' identifiers
      * @return response code
      */
-    @GetMapping("/seat/buy")
+    @GetMapping("/buy")
     public ResponseEntity buySeats(@RequestParam("ids[]")
                                        final List<String> ids) {
         for (String id : ids) {
@@ -60,7 +60,7 @@ public class SeatController {
      * @param ids list of cinemas' identifiers
      * @return response code
      */
-    @GetMapping("/seat/reserve")
+    @GetMapping("/reserve")
     public ResponseEntity reserveSeats(@RequestParam("ids[]")
                                            final String[] ids) {
         for (String id : ids) {

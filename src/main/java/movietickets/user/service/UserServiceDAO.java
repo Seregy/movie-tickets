@@ -1,5 +1,6 @@
 package movietickets.user.service;
 
+import movietickets.ticket.Ticket;
 import movietickets.user.User;
 import movietickets.user.dao.UserDAO;
 import movietickets.user.role.Role;
@@ -9,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -100,6 +102,15 @@ public class UserServiceDAO implements UserService {
      */
     @Transactional
     @Override
+    public List<Ticket> getTickets(final UUID userId) {
+        return new ArrayList<>(userDAO.find(userId).getTickets());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
     public void delete(final User user) {
         delete(user.getId());
     }
@@ -131,7 +142,7 @@ public class UserServiceDAO implements UserService {
     @Override
     public void changePassword(final UUID userId, final String newPassword) {
         User user = userDAO.find(userId);
-        user.setPassword(newPassword);
+        user.setPassword(passwordEncoder.encode(newPassword));
         userDAO.update(user);
     }
 

@@ -1,3 +1,7 @@
+.form-control {
+    color: lightgrey;
+}
+
 .vertical-align {
     display: flex;
     align-items: center;
@@ -7,7 +11,6 @@
     background-color: white;
     padding: 30pt;
     border-radius: 0em 0.5em 0.5em 0.5em;
-
 }
 
 .nav-tabs {

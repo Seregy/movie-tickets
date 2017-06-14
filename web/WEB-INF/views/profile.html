@@ -1,10 +1,13 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Profile</title>
     <link rel="stylesheet" type="text/css"
           href="../../resources/css/bootstrap/bootstrap.css" th:href="@{/resources/css/bootstrap/bootstrap.css}" >
@@ -25,8 +28,8 @@
 
 <div class="container">
     <ul class="nav nav-tabs ">
-        <li class="active"><a data-toggle="tab" href="#tickets">Билеты</a></li>
-        <li><a data-toggle="tab" href="#menu1">Персональные данные</a></li>
+        <li class="active"><a data-toggle="tab" href="#tickets">Tickets</a></li>
+        <li><a data-toggle="tab" href="#menu1">Account settings</a></li>
     </ul>
     <div class="tab-content main-canvas">
         <div id="tickets" class="tab-pane fade in active">
@@ -34,7 +37,7 @@
                 <li class="image-container">
                     <img class="img-responsive" src="" th:src="@{/resources/images/involved-icon-tix.png}">
                 </li>
-                <li><h2>Мои билеты</h2></li>
+                <li><h2>My tickets</h2></li>
             </ul>
             <br>
             <div class="table-responsive">
@@ -42,166 +45,61 @@
                     <thead>
                     <tr>
                         <th class="first-column">№</th>
-                        <th>Фильм</th>
-                        <th>Кинотеатр</th>
-                        <th>Дата</th>
-                        <th>Время</th>
-                        <th>Цена</th>
-                        <th>Ряд</th>
-                        <th>Место</th>
-                        <th>Статус</th>
+                        <th>Movie</th>
+                        <th>Cinema</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Price</th>
+                        <th>Row</th>
+                        <th>Seat</th>
+                        <th>Status</th>
                         <th></th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="table-tickets" th:each="ticket : ${tickets}">
                     <tr>
-                        <td class="first-column">1</td>
-                        <td>Король Артур</td>
-                        <td>Баттерфляй Космополит</td>
-                        <td>10.11.17</td>
-                        <td>10:00</td>
-                        <td>120 грн</td>
-                        <td>6</td>
-                        <td>8</td>
-                        <td>Забронировано</td>
+                        <td th:text="${ticketStat.count}" class="first-column">Number</td>
+                        <td th:text="${ticket.seat.session.movie.name}">Movie name</td>
+                        <td th:text="${ticket.seat.session.hall.cinema.name}">Cinema name</td>
+                        <td th:text="${#temporals.format(ticket.seat.session.sessionStart, 'dd.MM.yy')}">Date</td>
+                        <td th:text="${#temporals.format(ticket.seat.session.sessionStart, 'HH:mm')}">Time</td>
+                        <td th:text="${ticket.seat.price}">Price</td>
+                        <td th:text="${ticket.seat.rowNumber}">Row number</td>
+                        <td th:text="${ticket.seat.seatNumber}">Seat number</td>
+                        <td th:text="${ticket.seat.seatStatus}">Status</td>
                         <td>
-                            <button type="button" class="btn btn-info btn-block">Снять бронь</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="first-column">2</td>
-                        <td>Король Артур</td>
-                        <td>Баттерфляй Космополит</td>
-                        <td>10.11.17</td>
-                        <td>10:00</td>
-                        <td>120 грн</td>
-                        <td>6</td>
-                        <td>8</td>
-                        <td>Забронировано</td>
-                        <td>
-                            <button type="button" class="btn btn-info btn-block">Снять бронь</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="first-column">3</td>
-                        <td>Король Артур</td>
-                        <td>Баттерфляй Космополит</td>
-                        <td>10.11.17</td>
-                        <td>10:00</td>
-                        <td>120 грн</td>
-                        <td>6</td>
-                        <td>8</td>
-                        <td>Куплено</td>
-                        <td>
-                            <button type="button" class="btn btn-primary btn-block">Вернуть</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="first-column">4</td>
-                        <td>Король Артур</td>
-                        <td>Баттерфляй Космополит</td>
-                        <td>10.11.17</td>
-                        <td>10:00</td>
-                        <td>120 грн</td>
-                        <td>6</td>
-                        <td>8</td>
-                        <td>Куплено</td>
-                        <td>
-                            <button type="button" class="btn btn-primary btn-block">Вернуть</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="first-column">5</td>
-                        <td>Король Артур</td>
-                        <td>Баттерфляй Космополит</td>
-                        <td>10.11.17</td>
-                        <td>10:00</td>
-                        <td>120 грн</td>
-                        <td>6</td>
-                        <td>8</td>
-                        <td>Забронировано</td>
-                        <td>
-                            <button type="button" class="btn btn-info btn-block">Снять бронь</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="first-column">6</td>
-                        <td>Король Артур</td>
-                        <td>Баттерфляй Космополит</td>
-                        <td>10.11.17</td>
-                        <td>10:00</td>
-                        <td>120 грн</td>
-                        <td>6</td>
-                        <td>8</td>
-                        <td>Забронировано</td>
-                        <td>
-                            <button type="button" class="btn btn-info btn-block">Снять бронь</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="first-column">7</td>
-                        <td>Король Артур</td>
-                        <td>Баттерфляй Космополит</td>
-                        <td>10.11.17</td>
-                        <td>10:00</td>
-                        <td>120 грн</td>
-                        <td>6</td>
-                        <td>8</td>
-                        <td>Куплено</td>
-                        <td>
-                            <button type="button" class="btn btn-primary btn-block">Вернуть</button>
+                            <button th:attr="data-ticket-id=${ticket.id}"
+                                    type="button" class="return btn btn-info btn-block">Return</button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-
-            <div class="container">
-                <nav style="text-align:center;">
-                    <ul class="pagination">
-                        <li>
-                            <a href="#" aria-label="Previous pull-center">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        <li class="active"><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li>
-                            <a href="#" aria-label="Next">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
         </div>
         <div id="menu1" class="tab-pane fade">
-            <h2>Персональные данные</h2><br>
+            <h2>Account Information</h2><br>
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-9 col-xs-12">
                         <div class="input-group input-group-lg">
                             <span class="input-group-addon">Email</span>
-                            <label class="form-control" style="color:lightgrey;"> mail@mail.com</label>
+                            <label id="email" th:text="${user.email}" class="form-control">Email</label>
                         </div>
                         <br>
                     </div>
                     <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                         <ul>
-                            <li class="change-info-lable"><a data-toggle="collapse" href='#mailMenu'>Изменить...</a>
+                            <li class="change-info-lable"><a data-toggle="collapse" href='#mail-menu'>Edit...</a>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div class="tab-content col-lg-6">
-                    <div id="mailMenu" class=" collapse">
-                        <div class=" menu">
-                            <input type="text" class="form-control" placeholder="Введите e-mail">
+                    <div id="mail-menu" class=" collapse">
+                        <div class="menu">
+                            <input id="new-email" type="text" class="form-control" placeholder="Type new email">
                             <br>
-                            <button class="btn btn-primary" type="button">Изменить</button>
+                            <button id="edit-email" class="btn btn-primary" type="button">Edit</button>
                         </div>
                     </div>
                 </div>
@@ -210,24 +108,32 @@
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-9 col-xs-12">
                         <div class="input-group input-group-lg">
-                            <span class="input-group-addon">Пароль</span>
-                            <label class="form-control" style="color:lightgrey;"> *********</label>
+                            <span class="input-group-addon">Password</span>
+                            <label class="form-control">*********</label>
                         </div>
                         <br>
                     </div>
                     <div class="col-lg-1 col-md-1 col-sm-12 col-xs-12">
                         <ul>
-                            <li class="change-info-lable"><a data-toggle="collapse" href='#passMenu'>Изменить...</a>
+                            <li class="change-info-lable"><a data-toggle="collapse" href='#pass-menu'>Edit...</a>
                             </li>
                         </ul>
                     </div>
                 </div>
                 <div class="tab-content col-lg-6">
-                    <div id="passMenu" class="collapse">
+                    <div id="pass-menu" class="collapse">
                         <div class="menu">
-                            <input type="text" class="form-control" placeholder="Введите пароль"><br>
-                            <input type="text" class="form-control" placeholder="Введите пароль повторно"><br>
-                            <button class="btn btn-primary" type="button">Изменить</button>
+                            <div id="password-alert" class="alert alert-danger alert-dismissible" role="alert">
+                                <button type="button" class="close" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <strong>Error!</strong> Passwords don't match!
+                            </div>
+                            <input id="new-password" type="password" class="form-control"
+                                   placeholder="Type new password"><br>
+                            <input id="new-password-confirmation" type="password" class="form-control"
+                                   placeholder="Type password again"><br>
+                            <button id="edit-password" class="btn btn-primary" type="button">Edit</button>
                         </div>
                     </div>
                 </div>
@@ -238,12 +144,54 @@
 
 <div class="footer" th:include="fragments/footer :: footer"></div>
 
-<script>
+<script th:inline="javascript">
+    (function () {
+        var passwordAlert = $('#password-alert');
 
-    $("#button").click(function () {
-        $("p").toggle();
-    });
+        $(document).ready(function () {
+            $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="_csrf"]').attr('content') } });
+            passwordAlert.hide();
+            $('.return').on('click', returnTicket);
+            $('#edit-email').on('click', changeEmail);
+            $('#edit-password').on('click', changePassword);
+            $('#password-alert').on('click', '.close', function () {
+                passwordAlert.hide();
+            })
+        });
 
+        function returnTicket() {
+            var returnPath = /*[[@{@{/return}} ]]*/'../return';
+            var profilePath = /*[[@{@{/profile}} ]]*/'../profile';
+            var id = $(this).data('ticket-id');
+            $.post(returnPath, {"ticket_id": id}).done(function () {
+                window.location.replace(profilePath);
+            });
+        }
+
+        function changeEmail() {
+            var path = /*[[@{@{/change_email}} ]]*/'../change_email';
+            var newEmail = $('#new-email').val();
+            $.post(path, {"email": newEmail}).done(function () {
+                $('#email').text(newEmail);
+                $('#mail-menu').collapse('hide');
+            });
+        }
+
+        function changePassword() {
+            passwordAlert.hide();
+            passwordAlert.alert();
+            var path = /*[[@{@{/change_password}} ]]*/'../change_password';
+            var password = $('#new-password').val();
+            var passwordConfirmation = $('#new-password-confirmation').val();
+            if (password === passwordConfirmation) {
+                $.post(path, {"password": password}).done(function () {
+                    $('#pass-menu').collapse('hide');
+                });
+            } else {
+                passwordAlert.show();
+            }
+        }
+    })();
 </script>
 </body>
 </html>

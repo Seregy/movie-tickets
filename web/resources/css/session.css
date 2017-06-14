@@ -43,6 +43,7 @@
 
 .seat.unavailable {
     border-color: #777;
+    background-color: #c0c0c0;
 }
 
 .seat.occupied {
@@ -50,6 +51,28 @@
     color: #777;
 }
 
+.seat.selected {
+    background-color: #8b7690;
+}
+
 .session-info {
     padding: 0.5em;
+}
+
+.cart-item-data {
+    display: inline-block;
+    margin: 0 0.5em;
+}
+
+.cart-item-data > .name {
+    font-size: 0.9em;
+
+}
+
+.cart-item-data > .value {
+    font-size: 1.5em;
+}
+
+.total-price-value {
+    font-size: 1.5em;
 }

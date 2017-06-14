@@ -1,5 +1,6 @@
 package movietickets.user.service;
 
+import movietickets.ticket.Ticket;
 import movietickets.user.User;
 
 import java.util.List;
@@ -52,6 +53,14 @@ public interface UserService {
      * @return list of users
      */
     List<User> getAll();
+
+    /**
+     * Gets all user's tickets.
+     *
+     * @param userId user's id
+     * @return list of tickets
+     */
+    List<Ticket> getTickets(UUID userId);
 
     /**
      * Deletes user.

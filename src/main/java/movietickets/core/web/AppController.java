@@ -4,7 +4,11 @@ import com.google.common.collect.Lists;
 import movietickets.city.City;
 import movietickets.movie.Movie;
 import movietickets.movie.service.MovieService;
+import movietickets.ticket.Ticket;
+import movietickets.user.CustomUserDetails;
+import movietickets.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,15 +35,19 @@ public class AppController {
     private static Logger log = Logger.getLogger(AppController.class.getName());
 
     private final MovieService movieService;
+    private final UserService userService;
 
     /**
      * Constructs new app controller.
      *
      * @param movieService movie service
+     * @param userService user service
      */
     @Autowired
-    public AppController(final MovieService movieService) {
+    public AppController(final MovieService movieService,
+                         final UserService userService) {
         this.movieService = movieService;
+        this.userService = userService;
     }
 
     /**
@@ -72,7 +80,14 @@ public class AppController {
      * @return name of jsp-page
      */
     @RequestMapping("/profile")
-    public String showProfilePage() {
-        return "profile";
+    public ModelAndView showProfilePage() {
+        ModelAndView modelAndView = new ModelAndView("profile");
+        CustomUserDetails userDetails =
+                (CustomUserDetails) SecurityContextHolder.getContext()
+                        .getAuthentication().getPrincipal();
+        modelAndView.addObject("user", userDetails);
+        List<Ticket> tickets = userService.getTickets(userDetails.getId());
+        modelAndView.addObject("tickets", tickets);
+        return modelAndView;
     }
 }

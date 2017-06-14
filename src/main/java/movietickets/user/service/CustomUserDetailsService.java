@@ -61,8 +61,8 @@ public class CustomUserDetailsService implements UserDetailsService {
                     new SimpleGrantedAuthority(permission.getAuthority()));
         }
 
-        return new CustomUserDetails(user.getName(), user.getPassword(),
-                user.getRole(), user.getEmail(),
-                user.getTickets(), grantedAuthorities);
+        return new CustomUserDetails(user.getId(), user.getName(),
+                user.getPassword(), user.getRole(), user.getEmail(),
+                grantedAuthorities);
     }
 }

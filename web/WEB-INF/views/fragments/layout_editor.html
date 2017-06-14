@@ -41,126 +41,128 @@
     </div>
     <button id="create">Create</button>
 </div>
-<script>
-    var array;
+<script th:inline="javascript">
+    (function () {
+        var array;
 
-    $(document).ready(function () {
-        $('.seats').on('click', '.seat', seatClicked);
-        $('#create').on('click', createLayout);
-        array = initElementsArray();
-    });
-    
-    function createLayout() {
-        var result = [];
-        var regular = /*[[@{${T(movietickets.hall.layout.SeatType.REGULAR).name()}} ]]*/'REGULAR';
-        var unavailable = /*[[@{${T(movietickets.hall.layout.SeatType.UNAVAILABLE).name()}} ]]*/'UNAVAILABLE';
-        var empty = /*[[@{${T(movietickets.hall.layout.SeatType.EMPTY).name()}} ]]*/'EMPTY';
+        $(document).ready(function () {
+            $('.seats').on('click', '.seat', seatClicked);
+            $('#create').on('click', createLayout);
+            array = initElementsArray();
+        });
 
-        for (var row = 0; row < array.length; row++) {
-            var newRow = [];
-            for (var index = 0; index < array[row].length; index++) {
-                if ($(array[row][index]).hasClass('regular')) {
-                    newRow.push(regular);
-                } else if ($(array[row][index]).hasClass('unavailable')) {
-                    newRow.push(unavailable);
-                } else {
-                    newRow.push(empty);
+        function createLayout() {
+            var result = [];
+            var regular = /*[[@{${T(movietickets.hall.layout.SeatType.REGULAR).name()}} ]]*/'REGULAR';
+            var unavailable = /*[[@{${T(movietickets.hall.layout.SeatType.UNAVAILABLE).name()}} ]]*/'UNAVAILABLE';
+            var empty = /*[[@{${T(movietickets.hall.layout.SeatType.EMPTY).name()}} ]]*/'EMPTY';
+
+            for (var row = 0; row < array.length; row++) {
+                var newRow = [];
+                for (var index = 0; index < array[row].length; index++) {
+                    if ($(array[row][index]).hasClass('regular')) {
+                        newRow.push(regular);
+                    } else if ($(array[row][index]).hasClass('unavailable')) {
+                        newRow.push(unavailable);
+                    } else {
+                        newRow.push(empty);
+                    }
+                }
+                result.push(newRow);
+            }
+
+            var text = '';
+            for (var i = 0; i < result.length; i++) {
+                for (var j = 0; j < result[i].length; j++) {
+                    text+=result[i][j]+' ';
+                }
+                console.log(text);
+                text='';
+            }
+        }
+
+        function seatClicked() {
+            var info = getRowAndIndex($(this));
+            var element = $(array[info.row][info.index]);
+            if (element.hasClass('possible')) {
+                $(array[info.row][info.index]).removeClass('possible').addClass('regular');
+
+                if (info.index === array[info.row].length - 1) {
+                    appendColumn();
+                } else if (info.index === 0) {
+                    preAppendColumn();
+                } else if (info.row === array.length - 1) {
+                    appendRow();
+                } else if (info.row === 0) {
+                    preAppendRow();
+                }
+
+            } else if (element.hasClass('regular')) {
+                $(array[info.row][info.index]).removeClass('regular').addClass('unavailable');
+            } else if (element.hasClass('unavailable')) {
+                $(array[info.row][info.index]).removeClass('unavailable').addClass('possible');
+            }
+        }
+
+        function getRowAndIndex(element) {
+            for (var row = 0; row < array.length; row++) {
+                for (var index = 0; index < array[row].length; index++) {
+                    if (element.get(0) === (array[row][index])) {
+                        return {row: row, index: index};
+                    }
                 }
             }
-            result.push(newRow);
         }
 
-        var text = '';
-        for (var i = 0; i < result.length; i++) {
-            for (var j = 0; j < result[i].length; j++) {
-                text+=result[i][j]+' ';
-            }
-            console.log(text);
-            text='';
-        }
-    }
-
-    function seatClicked() {
-        var info = getRowAndIndex($(this));
-        var element = $(array[info.row][info.index]);
-        if (element.hasClass('possible')) {
-            $(array[info.row][info.index]).removeClass('possible').addClass('regular');
-
-            if (info.index === array[info.row].length - 1) {
-                appendColumn();
-            } else if (info.index === 0) {
-                preAppendColumn();
-            } else if (info.row === array.length - 1) {
-                appendRow();
-            } else if (info.row === 0) {
-                preAppendRow();
-            }
-
-        } else if (element.hasClass('regular')) {
-            $(array[info.row][info.index]).removeClass('regular').addClass('unavailable');
-        } else if (element.hasClass('unavailable')) {
-            $(array[info.row][info.index]).removeClass('unavailable').addClass('possible');
-        }
-    }
-
-    function getRowAndIndex(element) {
-        for (var row = 0; row < array.length; row++) {
-            for (var index = 0; index < array[row].length; index++) {
-                if (element.get(0) === (array[row][index])) {
-                    return {row: row, index: index};
-                }
+        function appendColumn() {
+            for (var row = 0; row < array.length; row++) {
+                var newElement = $('<div class="seat possible"></div>');
+                $(array[row][array[row].length - 1]).after(newElement);
+                array[row].push(newElement.get(0));
             }
         }
-    }
 
-    function appendColumn() {
-        for (var row = 0; row < array.length; row++) {
-            var newElement = $('<div class="seat possible"></div>');
-            $(array[row][array[row].length - 1]).after(newElement);
-            array[row].push(newElement.get(0));
+        function preAppendColumn() {
+            for (var row = 0; row < array.length; row++) {
+                var newElement = $('<div class="seat possible"></div>');
+                $(array[row][0]).before(newElement);
+                array[row].unshift(newElement.get(0));
+            }
         }
-    }
 
-    function preAppendColumn() {
-        for (var row = 0; row < array.length; row++) {
-            var newElement = $('<div class="seat possible"></div>');
-            $(array[row][0]).before(newElement);
-            array[row].unshift(newElement.get(0));
+        function appendRow() {
+            var newRow = $('<div class="seats-row"></div>');
+            $('.seats-row').last().after(newRow);
+            var arrayElements = [];
+            for (var index = 0; index < array[array.length - 1].length; index++) {
+                var newElement = $('<div class="seat possible"></div>');
+                newRow.append(newElement);
+                arrayElements.push(newElement.get(0));
+            }
+            array.push(arrayElements);
         }
-    }
 
-    function appendRow() {
-        var newRow = $('<div class="seats-row"></div>');
-        $('.seats-row').last().after(newRow);
-        var arrayElements = [];
-        for (var index = 0; index < array[array.length - 1].length; index++) {
-            var newElement = $('<div class="seat possible"></div>');
-            newRow.append(newElement);
-            arrayElements.push(newElement.get(0));
+        function preAppendRow() {
+            var newRow = $('<div class="seats-row"></div>');
+            $('.seats-row').first().before(newRow);
+            var arrayElements = [];
+            for (var index = 0; index < array[array.length - 1].length; index++) {
+                var newElement = $('<div class="seat possible"></div>');
+                newRow.append(newElement);
+                arrayElements.push(newElement.get(0));
+            }
+            array.unshift(arrayElements);
         }
-        array.push(arrayElements);
-    }
 
-    function preAppendRow() {
-        var newRow = $('<div class="seats-row"></div>');
-        $('.seats-row').first().before(newRow);
-        var arrayElements = [];
-        for (var index = 0; index < array[array.length - 1].length; index++) {
-            var newElement = $('<div class="seat possible"></div>');
-            newRow.append(newElement);
-            arrayElements.push(newElement.get(0));
+        function initElementsArray() {
+            var elements = $('.seat.possible').get();
+            var result = [];
+            while (elements.length) {
+                result.push(elements.splice(0, 3));
+            }
+            return result;
         }
-        array.unshift(arrayElements);
-    }
-
-    function initElementsArray() {
-        var elements = $('.seat.possible').get();
-        var result = [];
-        while (elements.length) {
-            result.push(elements.splice(0, 3));
-        }
-        return result;
-    }
+    })();
 </script>
 </body>
 </html>

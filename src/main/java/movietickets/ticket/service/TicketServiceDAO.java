@@ -89,21 +89,17 @@ public class TicketServiceDAO implements TicketService {
     @Override
     public Ticket buy(final UUID seatId, final UUID userId) {
         Seat seat = seatDao.find(seatId);
-        User user = null;
-        if (userId != null) {
-            user = userDAO.find(userId);
-        }
+        User user = userDAO.find(userId);
 
         if (seat.getSeatStatus() == SeatStatus.AVAILABLE) {
             Ticket ticket = new Ticket(seat, user);
             seat.setTicket(ticket);
             seat.setSeatStatus(SeatStatus.PURCHASED);
-            seatDao.update(seat);
-            if (user != null) {
-                user.addTicket(ticket);
-                userDAO.update(user);
-            }
+
+            user.addTicket(ticket);
             ticketDAO.add(ticket);
+            userDAO.update(user);
+            seatDao.update(seat);
             return ticket;
         }
         return null;
@@ -116,21 +112,17 @@ public class TicketServiceDAO implements TicketService {
     @Override
     public Ticket reserve(final UUID seatId, final UUID userId) {
         Seat seat = seatDao.find(seatId);
-        User user = null;
-        if (userId != null) {
-            user = userDAO.find(userId);
-        }
+        User user = userDAO.find(userId);
 
         if (seat.getSeatStatus() == SeatStatus.AVAILABLE) {
             Ticket ticket = new Ticket(seat, user);
             seat.setTicket(ticket);
             seat.setSeatStatus(SeatStatus.RESERVED);
-            seatDao.update(seat);
-            if (user != null) {
-                user.addTicket(ticket);
-                userDAO.update(user);
-            }
+
+            user.addTicket(ticket);
             ticketDAO.add(ticket);
+            userDAO.update(user);
+            seatDao.update(seat);
             return ticket;
         }
         return null;
@@ -141,11 +133,17 @@ public class TicketServiceDAO implements TicketService {
      */
     @Transactional
     @Override
-    public void cancel(final UUID ticketId) {
+    public void cancel(final UUID ticketId,
+                       final UUID userId) {
         Ticket ticket = ticketDAO.find(ticketId);
-
-        ticketDAO.delete(ticket.getId());
-        ticket.getSeat().setSeatStatus(SeatStatus.AVAILABLE);
-        seatDao.update(ticket.getSeat());
+        User user = userDAO.find(userId);
+        if (ticket.getUser().equals(user)) {
+            ticket.getSeat().setSeatStatus(SeatStatus.AVAILABLE);
+            ticketDAO.delete(ticket.getId());
+            ticket.getSeat().setTicket(null);
+            seatDao.update(ticket.getSeat());
+            user.removeTicket(ticket);
+            userDAO.update(user);
+        }
     }
 }

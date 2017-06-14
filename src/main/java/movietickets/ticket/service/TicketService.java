@@ -70,6 +70,7 @@ public interface TicketService {
      * ticket.
      *
      * @param ticketId ticket's id
+     * @param userId user's id
      */
-    void cancel(UUID ticketId);
+    void cancel(UUID ticketId, UUID userId);
 }

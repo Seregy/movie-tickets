@@ -1,6 +1,7 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 <div th:fragment="navbar">
     <nav class="navbar navbar-default">
@@ -46,7 +47,7 @@
                             <!--/*@thymesVar id="cityList" type="java.util.List<movietickets.city.City>"*/-->
                             <th:block th:each="city : ${cityList}">
                                 <li>
-                                    <a th:text="${city.name}" th:href="@{city/{id}/(id=${city.id})}"
+                                    <a th:text="${city.name}" th:href="@{/city/{id}/(id=${city.id})}"
                                        href="#">
                                         City name
                                     </a>
@@ -54,8 +55,22 @@
                             </th:block>
                         </ul>
                     </li>
-                    <li><a href="#">Вход</a></li>
-                    <li><a href="#">Регистрация</a></li>
+                    <li>
+                        <a sec:authorize="isAuthenticated()"
+                           th:text="${#authentication.name}" th:href="@{/profile}">User name</a>
+                        <a class="navbar-link"
+                           sec:authorize="isAnonymous()" th:href="@{/login}" href="#">Login</a>
+                    </li>
+                    <li>
+
+                        <form sec:authorize="isAuthenticated()" name="logout" th:action="@{/logout}" method="post">
+                            <div class="form-logout">
+                                <button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button>
+                            </div>
+                        </form>
+                        <a class="navbar-link"
+                            sec:authorize="isAnonymous()" th:href="@{/register}" href="#">Register</a>
+                    </li>
                 </ul>
             </div>
         </div>

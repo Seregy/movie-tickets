@@ -1,10 +1,13 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Session</title>
     <link rel="stylesheet" type="text/css"
           href="../../resources/css/bootstrap/bootstrap.css" th:href="@{/resources/css/bootstrap/bootstrap.css}" >
@@ -23,6 +26,22 @@
 <body>
 <div class="container" th:include="fragments/navbar :: navbar"></div>
 
+<div class="modal fade" id="modal-login" tabindex="-1" role="dialog" aria-labelledby="login">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Please, login</h4>
+            </div>
+            <div class="modal-body">
+                <div th:replace="login :: login-form"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="container">
     <div class="row">
         <div class="col-md-7">
@@ -40,9 +59,15 @@
                             <th:block
                                     th:if="${seat != null and seat.seatType != T(movietickets.hall.layout.SeatType).EMPTY}"
                                     th:switch="${seat.seatStatus}">
-                                <div th:case="${T(movietickets.seat.SeatStatus).AVAILABLE}" class="seat available"></div>
-                                <div th:case="${T(movietickets.seat.SeatStatus).PURCHASED
-                                    or T(movietickets.seat.SeatStatus).RESERVED}"
+                                <div th:case="${T(movietickets.seat.SeatStatus).AVAILABLE}"
+                                     th:attr="data-id=${seat.id}, data-price=${seat.price},
+                                      data-seat=${seat.seatNumber}, data-row=${seat.rowNumber}"
+                                     class="seat available"></div>
+                                <div th:case="${T(movietickets.seat.SeatStatus).PURCHASED}"
+                                     class="seat occupied">
+                                    <span class="fa fa-user fa-2x" aria-hidden="true"></span>
+                                </div>
+                                <div th:case="${T(movietickets.seat.SeatStatus).RESERVED}"
                                      class="seat occupied">
                                     <span class="fa fa-user fa-2x" aria-hidden="true"></span>
                                 </div>
@@ -57,18 +82,117 @@
                 <h3 th:text="${movie.name}">Movie name</h3>
                 <h4 th:text="${cinema.name + ', ' + cinema.city.name}" class="small">Cinema, city</h4>
                 <p th:text="${#temporals.format(movieSession.sessionStart, 'd MMMM yyyy, HH:mm')}">Session datetime</p>
-                <p th:text="${movieSession.technology}">Session technology</p>
-                <div>
-                    Seat info
+                <p th:text="${'Technology: ' + movieSession.technology}">Session technology</p>
+                <div class="cart">
+                    <div class="cart-item">Seat</div>
                 </div>
                 <br>
-                <button class="btn btn-primary">Buy</button>
-                <button class="btn btn-primary">Reserve</button>
+                <button id="buy" class="btn btn-primary">Buy</button>
+                <button id="reserve" class="btn btn-primary">Reserve</button>
             </div>
         </div>
     </div>
 </div>
 
 <div class="footer" th:include="fragments/footer :: footer"></div>
+
+<script th:inline="javascript">
+    (function () {
+        var cartItems = [];
+        var loggedIn = false;
+        /*[# sec:authorize="isAuthenticated()"]*/
+        loggedIn = true;
+        /*[/]*/
+
+        $(document).ready(function () {
+            $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="_csrf"]').attr('content') } });
+            $('#buy').on('click', buy);
+            $('#reserve').on('click', reserve);
+            $('.seats').on('click', '.seat', seatClicked);
+        });
+
+        function seatClicked(event) {
+            var element = $(event.target);
+            if (element.hasClass('available')) {
+                element.removeClass('available').addClass('selected');
+                cartItems.push(element.get(0));
+            } else if (element.hasClass('selected')) {
+                element.removeClass('selected').addClass('available');
+                var index = $.inArray(element.get(0), cartItems);
+                if (index !== -1) {
+                    cartItems.splice(index, 1);
+                }
+            }
+
+            updateCart();
+        }
+
+        function updateCart() {
+            var cartElement = $('.cart');
+            cartElement.empty();
+            if (cartItems.length > 0) {
+                var totalPrice = 0;
+                for (var i = 0; i < cartItems.length; i++) {
+                    var seat = $(cartItems[i]);
+                    var item = $('<div class="cart-item"></div>');
+
+                    var rowNumberElement = $('<div class="cart-item-data row-number"></div>');
+                    rowNumberElement.append($('<div class="name">Row:</div>'));
+                    rowNumberElement.append($('<div class="value">' + seat.data('row') +'</div>'));
+                    item.append(rowNumberElement);
+
+                    var seatNumberElement = $('<div class="cart-item-data seat-number"></div>');
+                    seatNumberElement.append($('<div class="name">Seat:</div>'));
+                    seatNumberElement.append($('<div class="value">' + seat.data('seat') +'</div>'));
+                    item.append(seatNumberElement);
+
+                    var price = seat.data('price');
+                    var priceElement = $('<div class="cart-item-data price"></div>');
+                    priceElement.append($('<div class="name">Price:</div>'));
+                    priceElement.append($('<div class="value">' + price +'</div>'));
+                    item.append(priceElement);
+                    totalPrice += price;
+
+                    cartElement.append(item);
+                }
+                cartElement.append('<br>');
+                cartElement.append('<p class="total-price">Total price:</p>');
+                cartElement.append('<div class="total-price-value">' + totalPrice + '</div>');
+            }
+        }
+
+        function buy() {
+            var profilePath = /*[[@{@{/profile}} ]]*/'../profile';
+            var buyPath = /*[[@{@{/buy}} ]]*/'../buy';
+            var ids = [];
+            for (var i = 0; i < cartItems.length; i++) {
+                ids.push($(cartItems[i]).data('id'));
+            }
+            if (loggedIn) {
+                $.post(buyPath, {"ids": ids}).done(function () {
+                    window.location.replace(profilePath);
+                });
+            } else {
+                $('#modal-login').modal();
+            }
+        }
+
+        function reserve() {
+            var profilePath = /*[[@{@{/profile}} ]]*/'../profile';
+            var reservePath = /*[[@{@{/reserve}} ]]*/'../reserve';
+            var ids = [];
+            for (var i = 0; i < cartItems.length; i++) {
+                ids.push($(cartItems[i]).data('id'));
+            }
+            if (loggedIn) {
+                $.post(reservePath, {"ids": ids}).done(function () {
+                    window.location.replace(profilePath);
+                });
+            } else {
+                $('#modal-login').modal();
+            }
+        }
+    })();
+</script>
 </body>
 </html>

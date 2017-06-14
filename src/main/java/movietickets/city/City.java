@@ -3,6 +3,7 @@ package movietickets.city;
 import movietickets.cinema.Cinema;
 
 import javax.persistence.*;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,7 +17,7 @@ import java.util.UUID;
  * @author Seregy
  */
 @Entity
-public class City {
+public class City implements Serializable {
     @SuppressWarnings("checkstyle:MagicNumber")
     @Id
     @GeneratedValue
@@ -143,5 +144,32 @@ public class City {
                 + "id=" + id
                 + ", name='" + name + '\''
                 + '}';
+    }
+
+    /**
+     * Custom serialization method.
+     * Serializes only id and name.
+     *
+     * @param out output stream
+     * @throws IOException when serialization fails
+     */
+    private void writeObject(final ObjectOutputStream out)
+            throws IOException {
+        out.writeObject(id);
+        out.writeObject(name);
+    }
+
+    /**
+     * Custom deserization method.
+     * Deserializes only id and name.
+     *
+     * @param in input stream
+     * @throws IOException when deserization fails
+     * @throws ClassNotFoundException when class can't be found
+     */
+    private void readObject(final ObjectInputStream in)
+            throws IOException, ClassNotFoundException {
+        id = (UUID) in.readObject();
+        name = (String) in.readObject();
     }
 }
