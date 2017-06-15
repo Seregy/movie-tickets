@@ -11,7 +11,6 @@ import movietickets.seat.Seat;
 import movietickets.session.Session;
 import movietickets.session.dao.SessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +50,6 @@ public class SessionServiceDAO implements SessionService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_ADD')")
     @Transactional
     @Override
     public void add(final Session session,
@@ -109,6 +107,18 @@ public class SessionServiceDAO implements SessionService {
      */
     @Transactional
     @Override
+    public List<Session> getAll(final UUID cinemaId) {
+        return sessionDAO.findAll().stream()
+                .filter(session -> session.getHall()
+                        .getCinema().getId().equals(cinemaId))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
     public List<Session> getAllFuture() {
         return sessionDAO.findAll().stream()
                 .filter(session -> session.getSessionStart()
@@ -147,7 +157,6 @@ public class SessionServiceDAO implements SessionService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_DELETE')")
     @Transactional(propagation = Propagation.MANDATORY)
     @Override
     public void delete(final Session session) {
@@ -157,7 +166,6 @@ public class SessionServiceDAO implements SessionService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_DELETE')")
     @Transactional
     @Override
     public void delete(final UUID id) {
@@ -167,7 +175,6 @@ public class SessionServiceDAO implements SessionService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_EDIT')")
     @Transactional
     @Override
     public void changeTime(final UUID sessionId, final LocalDateTime newTime) {
@@ -179,7 +186,6 @@ public class SessionServiceDAO implements SessionService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_EDIT')")
     @Transactional
     @Override
     public void changeHall(final UUID sessionId, final UUID newHallId) {
@@ -248,11 +254,37 @@ public class SessionServiceDAO implements SessionService {
      */
     @Transactional
     @Override
+    public Map<Movie, List<Session>> groupByMovie(
+            final Collection<Session> sessions) {
+        return sessions.stream()
+                .collect(Collectors.groupingBy(Session::getMovie,
+                        LinkedHashMap::new,
+                        Collectors.toList()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
     public Map<LocalDate, List<Session>> groupByDate(
             final Collection<Session> sessions) {
         return sessions.stream()
                 .collect(Collectors.groupingBy(s ->
                         LocalDate.from(s.getSessionStart()),
+                        LinkedHashMap::new,
+                        Collectors.toList()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    public Map<Hall, List<Session>> groupByHall(
+            final Collection<Session> sessions) {
+        return sessions.stream()
+                .collect(Collectors.groupingBy(Session::getHall,
                         LinkedHashMap::new,
                         Collectors.toList()));
     }

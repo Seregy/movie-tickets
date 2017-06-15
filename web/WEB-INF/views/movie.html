@@ -94,69 +94,71 @@
 <div class="footer" th:include="fragments/footer :: footer"></div>
 
 <script th:inline="javascript">
-    var sessions = $(".session-block");
-    var spinner = $(".spinner");
+    (function () {
+        var sessions = $(".session-block");
+        var spinner = $(".spinner");
 
-    $(document).ready(function () {
-        var picker = $('.input-group.date');
-        picker.datepicker({
-            autoclose: true,
-            format: "d M D",
-            startDate: new Date(),
-            todayHighlight: true
-        });
-        picker.datepicker('setDate', new Date());
-        spinner.hide();
-        picker.on('changeDate', getSessions);
-        getSessions();
-    });
-
-    function getSessions(event) {
-        var movie =  /*[[@{${movie.id}} ]]*/undefined;
-        var params = {movie: movie};
-
-        var cinema =  /*[[@{${param.cinema}} ]]*/undefined;
-        if (cinema) {
-            params.cinema = cinema;
-        }
-
-        var date = event ? event.date : undefined;
-        if (date) {
-            params.date = date.getFullYear() +
-                '-' + pad(date.getMonth() + 1) +
-                '-' + pad(date.getDate());
-        }
-
-        var path = /*[[@{@{/sessions}} ]]*/'/sessions';
-        showSpinner();
-        $.get(path, params)
-            .done(function (data) {
-                sessions.html(data);
-            })
-            .fail(function () {
-                sessions.html("<p class='bg-danger'>Something went wrong</p>");
-            })
-            .always(function () {
-                hideSpinner();
+        $(document).ready(function () {
+            var picker = $('.input-group.date');
+            picker.datepicker({
+                autoclose: true,
+                format: "d M D",
+                startDate: new Date(),
+                todayHighlight: true
             });
-    }
+            picker.datepicker('setDate', new Date());
+            spinner.hide();
+            picker.on('changeDate', getSessions);
+            getSessions();
+        });
 
-    function pad(number) {
-        if (number < 10) {
-            return '0' + number;
+        function getSessions(event) {
+            var movie =  /*[[@{${movie.id}} ]]*/undefined;
+            var params = {movie: movie};
+
+            var cinema =  /*[[@{${param.cinema}} ]]*/undefined;
+            if (cinema) {
+                params.cinema = cinema;
+            }
+
+            var date = event ? event.date : undefined;
+            if (date) {
+                params.date = date.getFullYear() +
+                    '-' + pad(date.getMonth() + 1) +
+                    '-' + pad(date.getDate());
+            }
+
+            var path = /*[[@{@{/sessions}} ]]*/'/sessions';
+            showSpinner();
+            $.get(path, params)
+                .done(function (data) {
+                    sessions.html(data);
+                })
+                .fail(function () {
+                    sessions.html("<p class='bg-danger'>Something went wrong</p>");
+                })
+                .always(function () {
+                    hideSpinner();
+                });
         }
-        return number;
-    }
 
-    function showSpinner() {
-        sessions.addClass("disabled-block");
-        spinner.show();
-    }
+        function pad(number) {
+            if (number < 10) {
+                return '0' + number;
+            }
+            return number;
+        }
 
-    function hideSpinner() {
-        sessions.removeClass("disabled-block");
-        spinner.hide();
-    }
+        function showSpinner() {
+            sessions.addClass("disabled-block");
+            spinner.show();
+        }
+
+        function hideSpinner() {
+            sessions.removeClass("disabled-block");
+            spinner.hide();
+        }
+    })();
 </script>
 </body>
 </html>

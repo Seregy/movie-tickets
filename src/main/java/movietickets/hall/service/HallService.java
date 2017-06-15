@@ -38,6 +38,14 @@ public interface HallService {
     List<Hall> getAll();
 
     /**
+     * Gets all halls of the cinema.
+     *
+     * @param cinemaId cinema's id
+     * @return list of halls
+     */
+    List<Hall> getAll(UUID cinemaId);
+
+    /**
      * Deletes hall.
      *
      * @param hall hall to delete

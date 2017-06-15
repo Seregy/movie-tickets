@@ -2,6 +2,7 @@ package movietickets.core.web;
 
 import com.google.common.collect.Lists;
 import movietickets.city.City;
+import movietickets.hall.service.HallService;
 import movietickets.movie.Movie;
 import movietickets.movie.service.MovieService;
 import movietickets.ticket.Ticket;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
@@ -36,25 +38,29 @@ public class AppController {
 
     private final MovieService movieService;
     private final UserService userService;
+    private final HallService hallService;
 
     /**
      * Constructs new app controller.
      *
      * @param movieService movie service
      * @param userService user service
+     * @param hallService hall service
      */
     @Autowired
     public AppController(final MovieService movieService,
-                         final UserService userService) {
+                         final UserService userService,
+                         final HallService hallService) {
         this.movieService = movieService;
         this.userService = userService;
+        this.hallService = hallService;
     }
 
     /**
      * Shows main web-page.
      *
      * @param city current city
-     * @return name of the view
+     * @return model and view
      */
     @RequestMapping({"/index", "/"})
     public ModelAndView showHomePage(@ModelAttribute("currentCity")
@@ -77,7 +83,7 @@ public class AppController {
     /**
      * Shows profile web-page.
      *
-     * @return name of jsp-page
+     * @return model and view
      */
     @RequestMapping("/profile")
     public ModelAndView showProfilePage() {
@@ -88,6 +94,32 @@ public class AppController {
         modelAndView.addObject("user", userDetails);
         List<Ticket> tickets = userService.getTickets(userDetails.getId());
         modelAndView.addObject("tickets", tickets);
+        return modelAndView;
+    }
+
+    /**
+     * Shows cinema page for admin.
+     *
+     * @return model and view
+     */
+    @RequestMapping("/admin/cinema")
+    public ModelAndView showAdminCinemasPage() {
+        return new ModelAndView("admin/cinema");
+    }
+
+    /**
+     * Show session page for admin.
+     *
+     * @param cinemaId id of the cinema
+     * @return model and view
+     */
+    @RequestMapping("/admin/cinema/{id}/session")
+    public ModelAndView showAdminSessionPage(@PathVariable("id")
+                                                 final UUID cinemaId) {
+        ModelAndView modelAndView = new ModelAndView("admin/session");
+        modelAndView.addObject("movies", movieService.getAll());
+        modelAndView.addObject("halls", hallService.getAll(cinemaId));
+        modelAndView.addObject("cinemaId", cinemaId);
         return modelAndView;
     }
 }

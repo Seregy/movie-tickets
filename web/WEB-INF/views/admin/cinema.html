@@ -1,0 +1,286 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Admin Cinema</title>
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/bootstrap/bootstrap.css" th:href="@{/resources/css/bootstrap/bootstrap.css}" >
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/font-awesome.css" th:href="@{/resources/css/font-awesome.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/main.css" th:href="@{/resources/css/main.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/admin/cinema.css" th:href="@{/resources/css/admin/cinema.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/bootstrap/bootstrap-select.min.css"
+          th:href="@{/resources/css/bootstrap/bootstrap-select.min.css}">
+    <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Cormorant' >
+    <script src="../../../resources/scripts/jquery/jquery-3.2.1.js"
+            th:src="@{/resources/scripts/jquery/jquery-3.2.1.js}"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap.js}"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap-select.min.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap-select.min.js}"></script>
+</head>
+<body>
+<div class="container" th:include="fragments/navbar :: navbar"></div>
+
+<div class="container">
+    <div class="jumbotron">
+        <h2>Cinemas</h2>
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="input-group input-group-sm">
+                    <input id="cinema-name-filter" type="text" class="form-control" placeholder="Cinema name..." maxlength="20">
+                    <span class="input-group-btn">
+                        <button id="cinema-filter-button" class="btn btn-default btn-xs" type="button">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+		           </span>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="panel panel-default panel-table">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col col-xs-6">
+                                <a class="btn btn-sm btn-primary btn-create" data-toggle="collapse" href='#add-cinema'>
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                    Add cinema
+                                </a>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="row">
+                            <div class="tab-content col-lg-6">
+                                <div id="add-cinema" class="collapse">
+                                    <form role="form" action="" id="session-form" onsubmit="return false;">
+                                        <div class="menu">
+                                            <input id="cinema-name" type="text" class="form-control data-input"
+                                                   placeholder="Cinema name..." maxlength="50" required>
+                                            <!--/*@thymesVar id="cityList" type="java.util.List<movietickets.city.City>"*/-->
+                                            <select id="cinema-city" class="selectpicker data-input"
+                                                    title="City..."
+                                                    data-live-search="true" data-width="auto">
+                                                <option th:each="city : ${cityList}"
+                                                        th:text="${city.name}">City option</option>
+                                            </select>
+                                            <input id="cinema-address" type="text" class="form-control data-input"
+                                                   placeholder="Address..."
+                                                   maxlength="50">
+                                            <input id="cinema-phone" type="text" class="form-control data-input"
+                                                   placeholder="Phone..."
+                                                   maxlength="20">
+                                            <input id="cinema-website" type="text" class="form-control data-input"
+                                                   placeholder="Website..."
+                                                   maxlength="50">
+                                            Logo:
+                                            <input type="file" accept=".jpeg,.png,.jpg" class="data-input"/>
+                                            <button id="save-cinema"
+                                                    class="btn btn-success data-input" type="submit">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="spinner" th:replace="fragments/spinner :: spinner"></div>
+                    <div class="cinema-block"></div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="col col-xs-7">Page 1 of 5</div>
+                            <div class="col col-xs-5">
+                                <ul class="pagination hidden-xs pull-right">
+                                    <li>
+                                        <a href="#" aria-label="Previous pull-center">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li><a href="#">1</a></li>
+                                    <li><a href="#">2</a></li>
+                                    <li><a href="#">3</a></li>
+                                    <li><a href="#">4</a></li>
+                                    <li><a href="#">5</a></li>
+                                    <li>
+                                        <a href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="pagination visible-xs pull-right">
+                                    <li><a href="#">«</a></li>
+                                    <li><a href="#">»</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer" th:include="fragments/footer :: footer"></div>
+
+<script th:inline="javascript">
+    (function () {
+        var cinemas = $(".cinema-block");
+        var spinner = $(".spinner");
+
+        $(document).ready(function () {
+            $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="_csrf"]').attr('content') } });
+            spinner.hide();
+            cinemas.on('click', '.edit', editCinema);
+            cinemas.on('click', '.delete', deleteCinema);
+            $('#save-cinema').on('click', addCinema);
+            $('#cinema-filter-button').on('click', getCinemas);
+            getCinemas();
+        });
+
+        function getCinemas() {
+            var path = /*[[@{@{/admin/cinemas}} ]]*/'/admin/cinemas';
+            var data = {};
+            var name = $('#cinema-name-filter').val();
+            if (name && name.length > 0) {
+                data.name = name;
+            }
+            showSpinner();
+            $.get(path, data)
+                .done(function (data) {
+                    cinemas.html(data);
+                })
+                .fail(function () {
+                    cinemas.html("<p class='bg-danger'>Something went wrong</p>");
+                })
+                .always(function () {
+                    hideSpinner();
+                });
+        }
+
+        function editCinema(event) {
+            var textArray = [];
+            var clickedElement = $(this);
+            var currentTD = clickedElement.parents('tr').find('td');
+            var firstIcon = clickedElement.children().eq(0);
+            var secondIcon = clickedElement.next().children().eq(0);
+            if (firstIcon.hasClass("fa-pencil")) {
+                for (var i = 1; i < 6; i++) {
+                    var cell = currentTD.eq(i);
+                    textArray.push(cell.text());
+                    var input = $('<input/>').val(cell.text());
+                    input.width(getTextWidth(cell.text(), "14px Helvetica Neue") + 17);
+                    cell.html(input);
+                }
+                firstIcon.attr('class', "fa fa-floppy-o");
+                secondIcon.attr('class', "fa fa-ban");
+
+                cinemas.off('click');
+                $(currentTD.children('.edit').get(0)).on('click', apply);
+                $(currentTD.children('.delete').get(0)).on('click', apply);
+            }
+
+            function apply(event) {
+                if ($(this).hasClass('edit')) {
+                    var data = [];
+                    for (var i = 1; i < 6; i++) {
+                        var cell = currentTD.eq(i);
+                        var input = cell.find("input");
+                        cell.text(input.val());
+                        data.push(input.val());
+                        input.remove();
+                    }
+                    firstIcon.attr('class', "fa fa-pencil");
+                    secondIcon.attr('class', "fa fa-trash");
+
+                    var editPath = /*[[@{@{/cinema/}} ]]*/'../cinema/';
+                    editPath = editPath + $(this).data('cinema-id');
+                    $.ajax({
+                        url: editPath,
+                        type: 'POST',
+                        data: {"name": data[0], "city": data[1],
+                            "address": data[2], "phone": data[3],
+                            "website": data[4]},
+                        success: function() {
+                            getCinemas();
+                        }
+                    });
+                } else if ($(this).hasClass('delete')) {
+                    for (var i = 1; i < 6; i++) {
+                        var cell = currentTD.eq(i);
+                        var input = cell.find("input");
+                        cell.text(textArray[i - 1]);
+                        input.remove();
+                    }
+                    firstIcon.attr('class', "fa fa-pencil");
+                    secondIcon.attr('class', "fa fa-trash");
+                }
+
+                $(currentTD.children('.edit').get(0)).off('click');
+                $(currentTD.children('.delete').get(0)).off('click');
+                cinemas.on('click', '.edit', editCinema);
+                cinemas.on('click', '.delete', deleteCinema);
+                event.stopPropagation();
+            }
+        }
+
+        function deleteCinema() {
+            var deletePath = /*[[@{@{/cinema/}} ]]*/'../cinema/';
+            deletePath = deletePath + $(this).data('cinema-id');
+            $.ajax({
+                url: deletePath,
+                type: 'DELETE',
+                success: function() {
+                    getCinemas();
+                }
+            });
+        }
+
+        function addCinema() {
+            var addPath = /*[[@{@{/cinema}} ]]*/'../cinema';
+            var name = $('#cinema-name').val();
+            var city = $('#cinema-city').val();
+            var address = $('#cinema-address').val();
+            var phone = $('#cinema-phone').val();
+            var website = $('#cinema-website').val();
+            $.ajax({
+                url: addPath,
+                type: 'POST',
+                data: {"name": name, "city": city,
+                    "address": address, "phone": phone,
+                    "website": website},
+                success: function() {
+                    getCinemas();
+                }
+            });
+        }
+
+        function getTextWidth(text, font) {
+            var canvas = getTextWidth.canvas || (getTextWidth.canvas = document.createElement("canvas"));
+            var context = canvas.getContext("2d");
+            context.font = font;
+            var metrics = context.measureText(text);
+            return metrics.width;
+        }
+
+        function showSpinner() {
+            cinemas.addClass("disabled-block");
+            spinner.show();
+        }
+
+        function hideSpinner() {
+            cinemas.removeClass("disabled-block");
+            spinner.hide();
+        }
+    })();
+</script>
+
+</body>
+
+</html>

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <body>
-<div th:each="cinemaEntry : ${cinemaSessionMap}">
+<div th:each="cinemaEntry : ${cinemaSessionMap}" th:fragment="session_block">
     <div class="cinema-block">
         <p th:text="${cinemaEntry.key.name}">Cinema name</p>
         <ul class="list-group">

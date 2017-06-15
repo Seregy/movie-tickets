@@ -1,6 +1,8 @@
 package movietickets.session.service;
 
 import movietickets.cinema.Cinema;
+import movietickets.hall.Hall;
+import movietickets.movie.Movie;
 import movietickets.seat.Seat;
 import movietickets.session.Session;
 
@@ -41,6 +43,15 @@ public interface SessionService {
      * @return list of sessions
      */
     List<Session> getAll();
+
+    /**
+     * Gets all sessions of the cinema
+     * as list.
+     *
+     * @param cinemaId cinema's id
+     * @return list of sessions
+     */
+    List<Session> getAll(UUID cinemaId);
 
     /**
      * Gets all sessions that will
@@ -125,10 +136,26 @@ public interface SessionService {
     Map<Cinema, List<Session>> groupByCinema(Collection<Session> sessions);
 
     /**
+     * Groups given sessions by movie they belong to.
+     *
+     * @param sessions sessions to be grouped
+     * @return map with sessions, grouped by movie
+     */
+    Map<Movie, List<Session>> groupByMovie(Collection<Session> sessions);
+
+    /**
      * Groups given sessions by their starting date.
      *
      * @param sessions sessions to be grouped
      * @return map with sessions, grouped by starting date
      */
     Map<LocalDate, List<Session>> groupByDate(Collection<Session> sessions);
+
+    /**
+     * Groups given sessions by hall they belong to.
+     *
+     * @param sessions sessions to be grouped
+     * @return map with sessions, grouped by hall
+     */
+    Map<Hall, List<Session>> groupByHall(Collection<Session> sessions);
 }

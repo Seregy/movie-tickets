@@ -27,7 +27,7 @@
     <div class="page-header">
         <ul class="list-inline vertical-align">
             <li class="image-container">
-                <img class="img-responsive" src=""
+                <img class="img-responsive" src="" th:if="${cinema.pathToLogo}"
                      th:src="@{/resources/images/cinemas/{logo}(logo=${cinema.pathToLogo})}"></li>
             <li><h1 th:text="${cinema.name}">Cinema name</h1></li>
         </ul>

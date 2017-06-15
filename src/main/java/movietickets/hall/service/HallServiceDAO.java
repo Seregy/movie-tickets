@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Hall's service object, uses DAO.
@@ -67,6 +68,18 @@ public class HallServiceDAO implements HallService {
     @Override
     public List<Hall> getAll() {
         return hallDAO.findAll();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    public List<Hall> getAll(final UUID cinemaId) {
+        return hallDAO.findAll().stream()
+                .filter(hall -> hall.getCinema()
+                        .getId().equals(cinemaId))
+                .collect(Collectors.toList());
     }
 
     /**

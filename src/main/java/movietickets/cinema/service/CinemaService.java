@@ -16,8 +16,9 @@ public interface CinemaService {
      * Adds new cinema.
      *
      * @param cinema new cinema
+     * @param cityId city's id
      */
-    void add(Cinema cinema);
+    void add(Cinema cinema, UUID cityId);
 
     /**
      * Gets cinema with specified id.
@@ -66,10 +67,34 @@ public interface CinemaService {
     void changeName(UUID cinemaId, String newName);
 
     /**
-     * Changes the location of the cinema.
+     * Changes cinema's city.
      *
      * @param cinemaId cinema's id
-     * @param newLocation new location
+     * @param newCityId new city's id
      */
-    void changeLocation(UUID cinemaId, String newLocation);
+    void changeCity(UUID cinemaId, UUID newCityId);
+
+    /**
+     * Changes the address of the cinema.
+     *
+     * @param cinemaId cinema's id
+     * @param newAddress new address
+     */
+    void changeAddress(UUID cinemaId, String newAddress);
+
+    /**
+     * Changes cinema's phone.
+     *
+     * @param cinemaId cinema's id
+     * @param newPhone new phone
+     */
+    void changePhone(UUID cinemaId, String newPhone);
+
+    /**
+     * Changes cinema's website.
+     *
+     * @param cinemaId cinema's id
+     * @param newWebsite new website
+     */
+    void changeWebsite(UUID cinemaId, String newWebsite);
 }

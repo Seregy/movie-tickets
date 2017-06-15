@@ -41,9 +41,28 @@ public class Cinema {
      * @param name full name of the cinema
      * @param address cinema's address in format [City, street, building]
      */
-    public Cinema(final String name, final String address) {
+    public Cinema(final String name,
+                  final String address) {
         this.name = name;
         this.address = address;
+    }
+
+    /**
+     * Constructs new cinema.
+     *
+     * @param name full name of the cinema
+     * @param address cinema's address in format [City, street, building]
+     * @param phone cinema's phone
+     * @param website cinema's website
+     */
+    public Cinema(final String name,
+                  final String address,
+                  final String phone,
+                  final String website) {
+        this.name = name;
+        this.address = address;
+        this.phone = phone;
+        this.website = website;
     }
 
     /**

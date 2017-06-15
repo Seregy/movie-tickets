@@ -1,0 +1,243 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Admin Session</title>
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/bootstrap/bootstrap.css" th:href="@{/resources/css/bootstrap/bootstrap.css}" >
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/bootstrap/bootstrap-datepicker.css" th:href="@{/resources/css/bootstrap/bootstrap-datepicker.css}" >
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/font-awesome.css" th:href="@{/resources/css/font-awesome.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/main.css" th:href="@{/resources/css/main.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/admin/session.css" th:href="@{/resources/css/admin/session.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/bootstrap/bootstrap-select.min.css"
+          th:href="@{/resources/css/bootstrap/bootstrap-select.min.css}">
+    <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Cormorant' >
+    <script src="../../../resources/scripts/jquery/jquery-3.2.1.js"
+            th:src="@{/resources/scripts/jquery/jquery-3.2.1.js}"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap.js}"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap-datepicker.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap-datepicker.js}"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap-select.min.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap-select.min.js}"></script>
+    <script src="../../../resources/scripts/jquery/jquery.maskedinput.js"
+            th:src="@{/resources/scripts/jquery/jquery.maskedinput.js}"></script>
+</head>
+<body>
+<div class="container" th:include="fragments/navbar :: navbar"></div>
+
+<div class="container">
+    <div class="jumbotron">
+        <h2>Sessions</h2>
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="input-group input-group-sm">
+                    <input id="search-filter" type="text" class="form-control" placeholder="Movie \ Hall" maxlength="20">
+                    <span class="input-group-btn">
+              <button id="filter-search" class="btn btn-default btn-xs" type="button"> <span
+                      class="glyphicon glyphicon-search"></span> </button>
+            </span>
+                </div>
+            </div>
+            <div class="col-sm-3 pull-right">
+                <div class="input-group pull-right ">
+                    <input id="filter-datepicker" class="form-control" type="text">
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <br>
+            <div class="col col-xs-6">
+                <a class="btn btn-sm btn-primary btn-create" data-toggle="collapse" href='#add-cinema'>
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                    Add session
+                </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="tab-content">
+                    <div id="add-cinema" class="collapse">
+                        <form role="form" action="" id="session-form" onsubmit="return false;">
+                            <div class="menu">
+                                <div class="row">
+                                    <select id="session-movie" class="selectpicker data-input" title="Movie"
+                                            data-live-search="true" data-width="auto">
+                                        <option th:each="movie : ${movies}"
+                                                th:text="${movie.name}">Movie</option>
+                                    </select>
+                                </div>
+                                <div class="row">
+                                    <select id="session-hall" class="selectpicker data-input" title="Hall" data-width="auto">
+                                        <option th:each="hall : ${halls}"
+                                                th:text="${hall.name}">Hall</option>
+                                    </select>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 data-input">
+                                        <div class="input-group">
+                                            <input id="session-date" class="movie-datepicker form-control" type="text">
+                                            <div class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 data-input">
+                                        <input id="session-time" class="form-control timeMask" type="text"
+                                               placeholder="Time" pattern='([01]?[0-9]|2[0-3]):[0-5][0-9]' autofocus
+                                               required title="Enter time in range from 00:00 to 23:59">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6 data-input">
+                                        <input id="session-technology" class="form-control" type="text"
+                                               placeholder="Technology" required
+                                               title="Enter display technology">
+                                    </div>
+                                </div>
+                                <button id="save-session" type="submit" class="btn btn-success">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <div class="session-block"></div>
+    </div>
+</div>
+<div class="footer" th:include="fragments/footer :: footer"></div>
+<script th:inline="javascript">
+    (function () {
+        var sessions = $(".session-block");
+        var spinner = $(".spinner");
+        var moviePicker = $('.movie-datepicker');
+        var filterPicker = $('#filter-datepicker');
+        var cinemaId = /*[[ @{${cinemaId}} ]]*/undefined;
+
+        $(document).ready(function () {
+            $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="_csrf"]').attr('content') } });
+            moviePicker.datepicker({
+                format: "dd-mm-yyyy",
+                autoclose: true,
+                todayHighlight: true,
+                startDate: new Date()
+            });
+            moviePicker.datepicker('setDate', new Date());
+
+            filterPicker.datepicker({
+                format: "dd-mm-yyyy",
+                autoclose: true,
+                todayHighlight: true,
+                startDate: new Date()
+            });
+            filterPicker.datepicker('setDate', new Date());
+            filterPicker.datepicker().on('changeDate', getSessions);
+
+            jQuery(function () {
+                jQuery(".timeMask").mask("99:99");
+            });
+
+            $('#save-session').on('click', addSession);
+            $('#filter-search').on('click', getSessions);
+            sessions.on('').on('click', '.button-cancel', deleteSession);
+            getSessions();
+        });
+
+        function addSession() {
+            var addPath = /*[[@{@{/session}} ]]*/'../session';
+            var movie = $('#session-movie').val();
+            var hall = $('#session-hall').val();
+
+            var date = moviePicker.datepicker('getDate');
+            var dateTime = date.getFullYear() +
+                '-' + pad(date.getMonth() + 1) +
+                '-' + pad(date.getDate());
+            dateTime += ('T' + $('#session-time').val() + ':00');
+            var technology = $('#session-technology').val();
+
+            $.ajax({
+                url: addPath,
+                type: 'POST',
+                data: {"cinema": cinemaId, "date_time": dateTime,
+                    "movie": movie, "hall": hall, "technology": technology},
+                success: function() {
+                    getSessions();
+                }
+            });
+        }
+
+        function deleteSession() {
+            var deletePath = /*[[@{@{/session/}} ]]*/undefined;
+            deletePath = deletePath + $(this).data('session-id');
+            $.ajax({
+                url: deletePath,
+                type: 'DELETE',
+                success: function() {
+                    getSessions();
+                }
+            });
+        }
+
+        function getSessions() {
+            var path = /*[[@{@{/admin/cinema/{id}/sessions(id=${cinemaId})}} ]]*/undefined;
+            var data = {};
+
+            var search = $('#search-filter').val();
+            if (search && search.length > 0) {
+                data.search = search;
+            }
+
+            var date = filterPicker.datepicker('getDate');
+            data.date = date.getFullYear() +
+                '-' + pad(date.getMonth() + 1) +
+                '-' + pad(date.getDate());
+
+            showSpinner();
+            $.get(path, data)
+                .done(function (data) {
+                    sessions.html(data);
+                })
+                .fail(function () {
+                    sessions.html("<p class='bg-danger'>Something went wrong</p>");
+                })
+                .always(function () {
+                    hideSpinner();
+                });
+        }
+
+        function pad(number) {
+            if (number < 10) {
+                return '0' + number;
+            }
+            return number;
+        }
+
+        function showSpinner() {
+            sessions.addClass("disabled-block");
+            spinner.show();
+        }
+
+        function hideSpinner() {
+            sessions.removeClass("disabled-block");
+            spinner.hide();
+        }
+    })();
+</script>
+</body>
+</html>

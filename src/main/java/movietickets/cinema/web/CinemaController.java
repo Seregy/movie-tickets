@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import movietickets.cinema.Cinema;
 import movietickets.cinema.service.CinemaService;
 import movietickets.city.City;
+import movietickets.city.service.CityService;
 import movietickets.core.web.AppController;
 import movietickets.movie.Movie;
 import movietickets.movie.service.MovieService;
@@ -35,18 +36,22 @@ public class CinemaController {
 
     private final CinemaService cinemaService;
     private final MovieService movieService;
+    private final CityService cityService;
 
     /**
      * Constructs new cinema controller.
      *
      * @param cinemaService cinema service
      * @param movieService movie service
+     * @param cityService city service
      */
     @Autowired
     public CinemaController(final CinemaService cinemaService,
-                            final MovieService movieService) {
+                            final MovieService movieService,
+                            final CityService cityService) {
         this.cinemaService = cinemaService;
         this.movieService = movieService;
+        this.cityService = cityService;
     }
 
     /**
@@ -92,19 +97,91 @@ public class CinemaController {
     }
 
     /**
-     * Adds new cinema with given name and location.
+     * Shows list of all cinemas for admin panel.
+     *
+     * @param name cinema's name filter
+     * @return name the view
+     */
+    @GetMapping("/admin/cinemas")
+    public ModelAndView showAdminCinemas(@RequestParam(value = "name",
+                                                        required = false)
+                                             final String name) {
+        ModelAndView modelAndView =
+                new ModelAndView("fragments/admin/cinema_block");
+        List<Cinema> cinemas = cinemaService.getAll();
+        if (name != null) {
+            cinemas = cinemas.stream()
+                    .filter(c -> c.getName().contains(name))
+                    .collect(Collectors.toList());
+        }
+
+        modelAndView.addObject("cinemas", cinemas);
+        return modelAndView;
+    }
+
+    /**
+     * Adds new cinema.
      *
      * @param name name of the cinema
-     * @param location location of the cinema
+     * @param city cinema's city name
+     * @param address cinema's address
+     * @param phone cinema's phone number
+     * @param website cinema's website
      * @return response code
      */
-    @PostMapping("/cinemas")
+    @PostMapping("/cinema")
     public ResponseEntity addCinema(@RequestParam("name")
                                         final String name,
-                                    @RequestParam("location")
-                                        final String location) {
-        Cinema cinema = new Cinema(name, location);
-        cinemaService.add(cinema);
+                                    @RequestParam("city")
+                                        final String city,
+                                    @RequestParam("address")
+                                        final String address,
+                                    @RequestParam("phone")
+                                        final String phone,
+                                    @RequestParam("website")
+                                        final String website) {
+        Cinema cinema = new Cinema(name, address, phone, website);
+        UUID cityId = cityService.getAll().stream()
+                .filter(c -> c.getName().equals(city))
+                .findAny()
+                .get().getId();
+        cinemaService.add(cinema, cityId);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    /**
+     * Edits existing cinema.
+     *
+     * @param id cinema's id
+     * @param name cinema's name
+     * @param city city's name
+     * @param address cinema's address
+     * @param phone cinema's phone
+     * @param website cinema's website
+     * @return response entity
+     */
+    @PostMapping("/cinema/{id}")
+    public ResponseEntity editCinema(@PathVariable("id")
+                                        final UUID id,
+                                     @RequestParam("name")
+                                        final String name,
+                                     @RequestParam("city")
+                                        final String city,
+                                     @RequestParam("address")
+                                        final String address,
+                                     @RequestParam("phone")
+                                        final String phone,
+                                     @RequestParam("website")
+                                        final String website) {
+        UUID cityId = cityService.getAll().stream()
+                .filter(c -> c.getName().equals(city))
+                .findAny()
+                .get().getId();
+        cinemaService.changeName(id, name);
+        cinemaService.changeCity(id, cityId);
+        cinemaService.changeAddress(id, address);
+        cinemaService.changePhone(id, phone);
+        cinemaService.changeWebsite(id, website);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -114,7 +191,7 @@ public class CinemaController {
      * @param id identifier of the cinema
      * @return response code
      */
-    @DeleteMapping("/cinemas/{id}")
+    @DeleteMapping("/cinema/{id}")
     public ResponseEntity deleteCinema(@PathVariable("id") final String id) {
         cinemaService.delete(UUID.fromString(id));
         return new ResponseEntity(HttpStatus.NO_CONTENT);

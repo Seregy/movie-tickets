@@ -1,0 +1,26 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="session_block">
+    <div class="movie-block" th:each="movieEntry : ${movieSessionMap}">
+        <p th:text="${movieEntry.key.name}" class="movie-name">Movie name</p>
+        <th:block th:each="hallEntry : ${movieEntry.value}">
+            <h4 th:text="${hallEntry.key.name}" class="hall-name">Зал "Hall name"</h4>
+            <ul class="list-inline session-time">
+                <li th:each="movieSession : ${hallEntry.value}">
+                    <span th:text="${#temporals.format(movieSession.sessionStart, 'HH:mm')}"></span>
+                    <a th:attr="data-session-id=${movieSession.id}" class="btn btn-xs button-style">
+                        <em class="fa fa-pencil"></em>
+                    </a>
+                    <a th:attr="data-session-id=${movieSession.id}" class="btn btn-xs button-style button-cancel">
+                        <em class="fa fa-times"></em>
+                    </a>
+                </li>
+            </ul>
+        </th:block>
+        <hr/>
+    </div>
+</div>
+</body>
+</html>

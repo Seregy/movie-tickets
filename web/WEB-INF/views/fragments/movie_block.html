@@ -4,7 +4,7 @@
 <body>
 <!--/*@thymesVar id="movieList" type="java.util.List<movietickets.movie.Movie>"*/-->
 <!--/*@thymesVar id="cinemaId" type="java.util.UUID"*/-->
-<div th:fragment="movie_block (movieLists)" th:each="movieList : ${movieLists}" class="row">
+<div class="row" th:fragment="movie_block (movieLists)" th:each="movieList : ${movieLists}">
     <!--/*@thymesVar id="movie" type="movietickets.movie.Movie"*/-->
     <div th:each="movie : ${movieList}" class="col-lg-2 col-md-4 col-sm-4 col-xs-12">
         <div class="thumbnail">

@@ -1,6 +1,10 @@
 package movietickets.session.web;
 
 import movietickets.cinema.Cinema;
+import movietickets.hall.Hall;
+import movietickets.hall.service.HallService;
+import movietickets.movie.Movie;
+import movietickets.movie.service.MovieService;
 import movietickets.seat.Seat;
 import movietickets.session.Session;
 import movietickets.session.service.SessionService;
@@ -28,15 +32,23 @@ import java.util.stream.Collectors;
 @Controller
 public class SessionController {
     private final SessionService sessionService;
+    private final HallService hallService;
+    private final MovieService movieService;
 
     /**
      * Constructs new session controller with given Session Service.
      *
      * @param sessionService session service
+     * @param hallService hall service
+     * @param movieService movie service
      */
     @Autowired
-    public SessionController(final SessionService sessionService) {
+    public SessionController(final SessionService sessionService,
+                             final HallService hallService,
+                             final MovieService movieService) {
         this.sessionService = sessionService;
+        this.hallService = hallService;
+        this.movieService = movieService;
     }
 
     /**
@@ -117,24 +129,96 @@ public class SessionController {
     }
 
     /**
-     * Adds new session with given date-time of its beginning.
+     * Shows list of all cinema's sessions
+     * for admin panel.
      *
-     * @param dateTime session's beginning time
-     * @param movieId movie's id, associated with this session
-     * @param hallId hall's id, associated with this session
-     * @return response code
+     * @param cinemaId cinema's id
+     * @param search search query(for movie or hall names)
+     * @param date date filter
+     * @return model and view
      */
-    @PostMapping("/sessions")
-    public ResponseEntity addSession(@RequestParam("date_time")
-                                  final String dateTime,
-                                     @RequestParam("movie_id")
-                                     final String movieId,
-                                     @RequestParam("hall_id")
-                                     final String hallId) {
+    @GetMapping("/admin/cinema/{id}/sessions")
+    public ModelAndView showAdminSessions(@PathVariable("id")
+                                            final UUID cinemaId,
+                                          @RequestParam(value = "search",
+                                                  required = false)
+                                            final String search,
+                                          @RequestParam(value = "date")
+                                              @DateTimeFormat(iso =
+                                                      DateTimeFormat.ISO.DATE)
+                                            final LocalDate date) {
+        ModelAndView modelAndView =
+                new ModelAndView("fragments/admin/session_block");
+        List<Session> sessions = sessionService.getAll(cinemaId).stream()
+                .filter(session -> LocalDate.from(session.getSessionStart())
+                        .isEqual(date))
+                .collect(Collectors.toList());
+
+        if (search != null) {
+            List<Session> filtered = sessions.stream()
+                    .filter(session -> session.getMovie()
+                            .getName().contains(search))
+                    .collect(Collectors.toList());
+
+            if (filtered.isEmpty()) {
+                filtered = sessions.stream()
+                        .filter(session -> session.getHall()
+                                .getName().contains(search))
+                        .collect(Collectors.toList());
+            }
+
+            sessions = filtered;
+        }
+
+
+        final Map<Movie, List<Session>> byMovie;
+        Map<Movie, Map<Hall, List<Session>>> byMovieAndHall;
+        if (sessions.isEmpty()) {
+            byMovieAndHall = null;
+        } else {
+            byMovie = sessionService.groupByMovie(sessions);
+
+            byMovieAndHall = byMovie.entrySet().stream()
+                    .collect(Collectors.toMap(Map.Entry::getKey,
+                            t -> sessionService
+                                    .groupByHall(t.getValue())));
+        }
+
+
+        modelAndView.addObject("movieSessionMap", byMovieAndHall);
+        return modelAndView;
+    }
+
+    /**
+     * Adds new session.
+     *
+     * @param cinemaId cinema's id
+     * @param dateTime session's beginning time
+     * @param movieName movie's name
+     * @param hallName hall's name
+     * @param technology display technology
+     * @return response entity
+     */
+    @PostMapping("/session")
+    public ResponseEntity addSession(@RequestParam("cinema")
+                                        final UUID cinemaId,
+                                     @RequestParam("date_time")
+                                        final String dateTime,
+                                     @RequestParam("movie")
+                                        final String movieName,
+                                     @RequestParam("hall")
+                                        final String hallName,
+                                     @RequestParam("technology")
+                                        final String technology) {
         Session session = new Session(LocalDateTime.parse(dateTime));
-        sessionService.add(session,
-                UUID.fromString(hallId),
-                UUID.fromString(movieId));
+        session.setTechnology(technology);
+        Movie movie = movieService.getAll().stream()
+                .filter(m -> m.getName().equals(movieName))
+                .findFirst().get();
+        Hall hall = hallService.getAll(cinemaId).stream()
+                .filter(h -> h.getName().equals(hallName))
+                .findFirst().get();
+        sessionService.add(session, hall.getId(), movie.getId());
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -144,7 +228,7 @@ public class SessionController {
      * @param id identifier of the session
      * @return response code
      */
-    @DeleteMapping("/sessions/{id}")
+    @DeleteMapping("/session/{id}")
     public ResponseEntity deleteSession(@PathVariable("id") final String id) {
         sessionService.delete(UUID.fromString(id));
         return new ResponseEntity(HttpStatus.NO_CONTENT);
