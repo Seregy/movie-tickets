@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width = device-width, initial-scale = 1">
+	<title>Admin Movie</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="css/font-awesome.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<link rel="stylesheet" type="text/css" href="css/admin_movie.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css">
+	<link href='https://fonts.googleapis.com/css?family=Cormorant' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-editable.css">
+	<link href="css/datetimepicker.css" rel="stylesheet" type="text/css"></link> 
+	<script src="js/jquery-3.1.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/bootstrap-select.min.js"></script>
+	<script src="js/bootstrap-editable.min.js"></script>
+	<script src="js/bootstrap-datetimepicker.js"></script>
+</head>
+
+<body>
+ 
+  <div class="container">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#collapsed-menu" aria-expanded="false">
+            <span class="sr-only"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <div class="collapse navbar-collapse" id="collapsed-menu">
+          <ul class="nav navbar-nav">
+            <li ><a href="#">Кинотеатры<span class="sr-only">(current)</span></a></li>
+            <li class="active"><a href="#">Фильмы</a></li>
+            <li><a href="#">Кнопка2</a></li>
+            <li><a href="#">Кнопка3</a></li>        
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <p class="navbar-text"> Имя пользователя <a href="#"  class="navbar-link"> [Выход]</a></p>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </div>
+ 
+   <div class="container"> 
+	    <div class="jumbotron">
+	    	<h2>Список фильмов</h2>
+	  		<div class="row">
+		       <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+		         <div class="input-group input-group-sm">
+		           <input type="text" class="form-control" placeholder="Название кинотеатра" maxlength="20">
+		           <span class="input-group-btn">
+		             <button class="btn btn-default btn-xs" type="button"> <span class="glyphicon glyphicon-search"></span> </button>
+		           </span>
+		         </div> 
+		       </div>
+		    </div>
+	  		<hr />
+			<ul class="list-unstyled">
+				<li><a data-toggle="collapse" href='#film1'>1. Король артур</a><a class="btn btn-xs button-style  button-cancel" style=' color:#9c5454'><em class="fa fa-times"></em></a>
+				</li>
+		  		<div class="row collapse menu" id ='film1'>
+		  			<div class="col-xs-3">
+		  			  <img class="img-responsive" src="img/film5.jpg" >
+		  			</div>
+		  			<div class="col-xs-6">
+		  				<ul class="list-unstyled">
+		  				<li class='infoHeader'>Название </li>
+			            <li class='filmInfo'>
+			            	<a href="#" id="filmname">Король Артур</a>  <em class="fa fa-pencil"></em>
+			            </li>
+		  				<li class='infoHeader'>Год</li>
+			            <li class='filmInfo'>
+			            	<a href="#" id="year">2017</a> <em class="fa fa-pencil"></em>
+			            </li>
+			            <li class='infoHeader'>Страна</li>
+			            <li class='filmInfo'>
+			            	<a href="#" id="country">США</a> <em class="fa fa-pencil"></em>
+			            </li>
+			            <li class='infoHeader'>Жанр</li>
+			            <li class='filmInfo'>
+			            	<a href="#" id="genre">боевик, драма, приключения, фэнтези</a> <em class="fa fa-pencil"></em>
+			            </li>
+			            <li class='infoHeader'>В главных ролях</li>
+			            <li class='filmInfo'>
+			            	<a href="#" id="actors" data-type="textarea">Чарли Ханнэм, Джуд Лоу, Эрик Бана, Аннабелль Уоллис, Эйден Гиллен, Джимон Хунсу, Микаэл Персбрандт, Фредди Фокс, Нил Мэскелл, Гермиона Корфилд</a> <em class="fa fa-pencil"></em>
+			            </li>
+			            <li class='infoHeader'>Режиссер</li>
+			            <li class='filmInfo'>
+			            	<a href="#" id="director">Гай Ритчи</a> <em class="fa fa-pencil"></em>
+			            </li>
+			            <li class='infoHeader'>Прокат</li>
+			            <li class='filmInfo'>
+			            	<a href="#" id="startingDate" data-type="datetime"  data-pk="1"  data-url="/post">11.05.2017</a> <em class="fa fa-pencil"></em>
+			            </li>
+			            <li class='infoHeader'>Премьерный период ориентировочно до</li>
+			            <li class='filmInfo'>
+			            	<a href="#" id="endDate" data-type="datetime"  data-pk="1"  data-url="/post">24.05.2017</a> <em class="fa fa-pencil"></em>
+			            </li>
+			            <li class='infoHeader'>Продолжительность</li>
+			            <li class='filmInfo'>
+			            	<a href="#" id="duration">126 мин.</a> <em class="fa fa-pencil"></em>
+			            </li>
+			            <li class='infoHeader'>Возрастное ограничение</li>
+			            <li class='filmInfo'>
+			            	<a href="#" id="ageLimit">12+</a> <em class="fa fa-pencil"></em>
+			            </li>
+			            </ul>
+		  			</div>
+	  			</div>
+				<li><a data-toggle="collapse" href=''>2. Мумия</a><a class="btn btn-xs button-style  button-cancel" style=' color:#9c5454'><em class="fa fa-times"></em></a>
+				</li>
+				<li><a data-toggle="collapse" href=''>3. Пираты Карибского моря: Мертвецы не рассказывают сказки</a><a class="btn btn-xs button-style  button-cancel" style=' color:#9c5454'><em class="fa fa-times"></em></a>
+				</li>
+				<li><a data-toggle="collapse" href=''>4. Спасатели Малибу</a><a class="btn btn-xs button-style  button-cancel" style=' color:#9c5454'><em class="fa fa-times"></em></a>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	  
+	  <div class="footer">
+	    <div class = "row">
+	      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg-offset-4 col-md-offset-4 col-sm-offset-4 text-center">
+	        <ul class="list-inline"> 
+	          <li><a href="#">Главная</a></li>    
+	          <li><a href="#">|</a></li>
+	          <li>Перечень:</li>
+	          <li><a href="">Кнопка</a></li>
+	          <li><a href="">Кнопка</a></li>
+	          <li><a href="">Кнопка</a></li>      
+	          <li><a href="">|</a></li>
+	          <li><a href="">Контакты</a></li>
+	        </ul>
+	      </div>
+	      <div class="col-lg-2 col-md-4 col-sm-3 col-xs-9 col-lg-offset-2  col-sm-offset-0 col-xs-offset-3 pull-right">
+	        <span><i class="fa fa-envelope-open" aria-hidden="true" style="line-height:6%;"></i> e-mail: CatReeena@yandex.ru</span>
+	        <p><i class="fa fa-address-book" aria-hidden="true" style="line-height:6%;"></i> тел. +380636125014 </p>
+	      </div>
+	    </div>
+	  </div>
+			
+<script>
+ 
+$(document).ready(function() {
+	$.fn.editable.defaults.mode = 'inline';
+    $('#filmname').editable();
+    $('#year').editable();
+    $('#country').editable();
+    $('#genre').editable();
+    $('#actors').editable();
+    $('#director').editable();
+    $('#startingDate').editable({
+        format: 'yyyy-mm-dd',    
+        viewformat: 'dd.mm.yyyy',    
+        datetimepicker: {
+                weekStart: 1
+            }
+           });
+     $('#endDate').editable({
+        format: 'yyyy-mm-dd',    
+        viewformat: 'dd.mm.yyyy',    
+        datetimepicker: {
+                weekStart: 1
+            }
+           });
+    $('#duration').editable();
+    $('#ageLimit').editable();
+});
+
+
+</script>
+
+</body>
+
+</html>
