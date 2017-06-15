@@ -1,0 +1,19 @@
+.menu {
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-radius: 5px 5px 5px 5px;
+    padding: 10px;
+    margin-bottom: 15pt;
+    margin-right: 15pt;
+    background-color: white;
+}
+
+.list-font {
+	 font-size: 12pt;
+}
+
+.data-input {	
+	margin-bottom: 10px;
+}
