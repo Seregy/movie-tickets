@@ -1,0 +1,26 @@
+.filmInfo {
+  font-size: 10pt; 
+  margin-bottom: 2pt; 
+}
+
+
+.infoHeader {
+  font-size: 10pt;
+  margin-bottom: 0pt;
+}
+
+
+.menu {
+    border-top: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0px 0px 5px 5px;
+    padding: 10px;
+    margin-bottom: 15pt;
+    background-color: white;
+}
+
+li {
+	 font-size: 12pt;
+}
