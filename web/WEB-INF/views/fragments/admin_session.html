@@ -12,12 +12,15 @@
   <link rel="stylesheet" type="text/css" href="css/main.css">
   <link rel="stylesheet" type="text/css" href="css/admin_session.css">
   <link href='https://fonts.googleapis.com/css?family=Cormorant' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="css/bootstrap-editable.css">
   <script src="js/jquery-3.1.1.min.js"></script>
   <script src="js/bootstrap.js"></script>
   <script src="js/bootstrap-datepicker.js"></script>
   <script src="js/bootstrap-datepicker.ru.min.js"></script>
   <script src="js/bootstrap-select.min.js"></script>
   <script src="js/jquery.maskedinput.js"></script>
+  <script src="js/bootstrap-editable.min.js"></script>
+  <script src="js/moment.js"></script>
 
 </head>
 
@@ -142,8 +145,8 @@
         <p class="film-name">КОРОЛЬ АРТУР: ЛЕГЕНДА МЕЧА</p>
         <h4 class="hall-name">Зал "Ультрамарин"</h4>
         <ul class="list-inline session-time">           
-          <li>10:30 
-           <a class="btn btn-xs button-style"><em class="fa fa-pencil"></em></a>
+          <li><a href="#" id="time1" data-type="combodate" data-pk="1" data-url="/post" data-value="10:30" data-title="Select date"></a>
+           <a class="btn btn-xs button-style"><em class="fa fa-pencil" id="editbtn"></em></a>
            <a class="btn btn-xs button-style  button-cancel" style='padding:0px; color:#9c5454'><em class="fa fa-times"></em></a>
          </li>
          <li>14:30 
@@ -258,6 +261,25 @@
   jQuery(function(){
     jQuery(".timeMask").mask("99:99");
   });
+
+
+
+  $.fn.editable.defaults.mode = 'inline';
+    
+    $('#editbtn').click(function(e){    
+       e.stopPropagation();
+       $('#time1').editable('toggle');
+});
+     $('#time1').editable({     
+        format: 'HH:mm',    
+        viewformat: 'HH:mm',  
+        template:"HH : mm",  
+        combodate: {
+                minuteStep: 1
+           }
+      });
+
+
 });
 </script>
 </body>
