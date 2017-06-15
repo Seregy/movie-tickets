@@ -12,12 +12,11 @@
 	<link rel="stylesheet" type="text/css" href="css/bootstrap-select.min.css">
 	<link href='https://fonts.googleapis.com/css?family=Cormorant' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap-editable.css">
-	<link href="css/datetimepicker.css" rel="stylesheet" type="text/css"></link> 
 	<script src="js/jquery-3.1.1.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script src="js/bootstrap-select.min.js"></script>
 	<script src="js/bootstrap-editable.min.js"></script>
-	<script src="js/bootstrap-datetimepicker.js"></script>
+	<script src="js/moment.js"></script>
 </head>
 
 <body>
@@ -97,11 +96,12 @@
 			            </li>
 			            <li class='infoHeader'>Прокат</li>
 			            <li class='filmInfo'>
-			            	<a href="#" id="startingDate" data-type="datetime"  data-pk="1"  data-url="/post">11.05.2017</a> <em class="fa fa-pencil"></em>
+			            	<a href="#" id="startingDate" data-type="combodate"  data-pk="1"  data-url="/post"
+			            	 data-value="11.05.2017"></a> <em class="fa fa-pencil"></em>
 			            </li>
 			            <li class='infoHeader'>Премьерный период ориентировочно до</li>
 			            <li class='filmInfo'>
-			            	<a href="#" id="endDate" data-type="datetime"  data-pk="1"  data-url="/post">24.05.2017</a> <em class="fa fa-pencil"></em>
+			            	<a href="#" id="endDate" data-type="combodate"  data-pk="1"  data-url="/post">24.05.2017</a> <em class="fa fa-pencil"></em>
 			            </li>
 			            <li class='infoHeader'>Продолжительность</li>
 			            <li class='filmInfo'>
@@ -157,19 +157,25 @@ $(document).ready(function() {
     $('#actors').editable();
     $('#director').editable();
     $('#startingDate').editable({
-        format: 'yyyy-mm-dd',    
-        viewformat: 'dd.mm.yyyy',    
-        datetimepicker: {
-                weekStart: 1
-            }
-           });
-     $('#endDate').editable({
-        format: 'yyyy-mm-dd',    
-        viewformat: 'dd.mm.yyyy',    
-        datetimepicker: {
-                weekStart: 1
-            }
-           });
+    	format: 'YYYY-MM-DD',    
+        viewformat: 'DD.MM.YYYY',    
+        template: 'D / MMMM / YYYY',    
+        combodate: {
+                minYear: 2010,
+                maxYear: 3000,            
+           }
+        });
+
+    $('#endDate').editable({
+    	format: 'YYYY-MM-DD',    
+        viewformat: 'DD.MM.YYYY',    
+        template: 'D / MMMM / YYYY',    
+        combodate: {
+                minYear: 2010,
+                maxYear: 3000,              
+           }
+        });
+
     $('#duration').editable();
     $('#ageLimit').editable();
 });
