@@ -9,8 +9,13 @@
             <h4 th:text="${hallEntry.key.name}" class="hall-name">Зал "Hall name"</h4>
             <ul class="list-inline session-time">
                 <li th:each="movieSession : ${hallEntry.value}">
-                    <span th:text="${#temporals.format(movieSession.sessionStart, 'HH:mm')}"></span>
-                    <a th:attr="data-session-id=${movieSession.id}" class="btn btn-xs button-style">
+                    <a href="#" class="time-edit"
+                       data-type="combodate"
+                       data-name="time"
+                       th:attr="data-value=${#temporals.format(movieSession.sessionStart, 'HH:mm')},
+                        data-pk=${movieSession.id}"
+                       data-title="Select date"></a>
+                    <a th:attr="data-session-id=${movieSession.id}" class="btn btn-xs button-style button-edit">
                         <em class="fa fa-pencil"></em>
                     </a>
                     <a th:attr="data-session-id=${movieSession.id}" class="btn btn-xs button-style button-cancel">

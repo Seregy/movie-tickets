@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -219,6 +220,30 @@ public class SessionController {
                 .filter(h -> h.getName().equals(hallName))
                 .findFirst().get();
         sessionService.add(session, hall.getId(), movie.getId());
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    /**
+     * Edits existing session.
+     *
+     * @param id session's id
+     * @param time session's new name
+     * @return response entity
+     */
+    @PostMapping("/session/{id}")
+    public ResponseEntity editSession(@PathVariable("id")
+                                     final UUID id,
+                                     @RequestParam("time")
+                                     final String time) {
+        Session session = sessionService.get(id);
+        LocalTime localTime = LocalTime.parse(time);
+        LocalDateTime previous = session.getSessionStart();
+        LocalDateTime newTime = LocalDateTime.of(previous.getYear(),
+                previous.getMonth(),
+                previous.getDayOfMonth(),
+                localTime.getHour(),
+                localTime.getMinute());
+        sessionService.changeTime(id, newTime);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 

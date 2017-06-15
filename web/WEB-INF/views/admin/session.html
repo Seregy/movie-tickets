@@ -9,18 +9,26 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Admin Session</title>
     <link rel="stylesheet" type="text/css"
-          href="../../../resources/css/bootstrap/bootstrap.css" th:href="@{/resources/css/bootstrap/bootstrap.css}" >
+          href="../../../resources/css/bootstrap/bootstrap.css"
+          th:href="@{/resources/css/bootstrap/bootstrap.css}" >
     <link rel="stylesheet" type="text/css"
-          href="../../../resources/css/bootstrap/bootstrap-datepicker.css" th:href="@{/resources/css/bootstrap/bootstrap-datepicker.css}" >
+          href="../../../resources/css/bootstrap/bootstrap-datepicker.css"
+          th:href="@{/resources/css/bootstrap/bootstrap-datepicker.css}" >
     <link rel="stylesheet" type="text/css"
-          href="../../../resources/css/font-awesome.css" th:href="@{/resources/css/font-awesome.css}">
+          href="../../../resources/css/font-awesome.css"
+          th:href="@{/resources/css/font-awesome.css}">
     <link rel="stylesheet" type="text/css"
-          href="../../../resources/css/main.css" th:href="@{/resources/css/main.css}">
+          href="../../../resources/css/main.css"
+          th:href="@{/resources/css/main.css}">
     <link rel="stylesheet" type="text/css"
-          href="../../../resources/css/admin/session.css" th:href="@{/resources/css/admin/session.css}">
+          href="../../../resources/css/admin/session.css"
+          th:href="@{/resources/css/admin/session.css}">
     <link rel="stylesheet" type="text/css"
           href="../../../resources/css/bootstrap/bootstrap-select.min.css"
           th:href="@{/resources/css/bootstrap/bootstrap-select.min.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/bootstrap/bootstrap-editable.css"
+          th:href="@{/resources/css/bootstrap/bootstrap-editable.css}">
     <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Cormorant' >
     <script src="../../../resources/scripts/jquery/jquery-3.2.1.js"
             th:src="@{/resources/scripts/jquery/jquery-3.2.1.js}"></script>
@@ -32,6 +40,10 @@
             th:src="@{/resources/scripts/bootstrap/bootstrap-select.min.js}"></script>
     <script src="../../../resources/scripts/jquery/jquery.maskedinput.js"
             th:src="@{/resources/scripts/jquery/jquery.maskedinput.js}"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap-editable.min.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap-editable.min.js}"></script>
+    <script src="../../../resources/scripts/moment.js"
+            th:src="@{/resources/scripts/moment.js}"></script>
 </head>
 <body>
 <div class="container" th:include="fragments/navbar :: navbar"></div>
@@ -132,26 +144,33 @@
 
         $(document).ready(function () {
             $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="_csrf"]').attr('content') } });
-            moviePicker.datepicker({
-                format: "dd-mm-yyyy",
-                autoclose: true,
-                todayHighlight: true,
-                startDate: new Date()
-            });
-            moviePicker.datepicker('setDate', new Date());
 
-            filterPicker.datepicker({
+            $.fn.bootstrapDP = $.fn.datepicker.noConflict();
+
+            moviePicker.bootstrapDP({
                 format: "dd-mm-yyyy",
                 autoclose: true,
                 todayHighlight: true,
                 startDate: new Date()
             });
-            filterPicker.datepicker('setDate', new Date());
-            filterPicker.datepicker().on('changeDate', getSessions);
+            moviePicker.bootstrapDP('setDate', new Date());
+
+            filterPicker.bootstrapDP({
+                format: "dd-mm-yyyy",
+                autoclose: true,
+                todayHighlight: true,
+                startDate: new Date()
+            });
+            filterPicker.bootstrapDP('setDate', new Date());
+            filterPicker.bootstrapDP().on('changeDate', getSessions);
 
             jQuery(function () {
                 jQuery(".timeMask").mask("99:99");
             });
+
+            $.fn.editable.defaults.mode = 'inline';
+            sessions.on('click', '.button-edit', editSession);
+            sessions.on('save', '.time-edit', saveSession);
 
             $('#save-session').on('click', addSession);
             $('#filter-search').on('click', getSessions);
@@ -164,7 +183,7 @@
             var movie = $('#session-movie').val();
             var hall = $('#session-hall').val();
 
-            var date = moviePicker.datepicker('getDate');
+            var date = moviePicker.bootstrapDP('getDate');
             var dateTime = date.getFullYear() +
                 '-' + pad(date.getMonth() + 1) +
                 '-' + pad(date.getDate());
@@ -178,6 +197,32 @@
                     "movie": movie, "hall": hall, "technology": technology},
                 success: function() {
                     getSessions();
+                }
+            });
+        }
+
+        function editSession(event) {
+            var parent = $(event.currentTarget).parent();
+            var timeEdit = parent.children('.time-edit');
+            timeEdit.editable('toggle');
+            event.stopPropagation();
+        }
+
+        function saveSession(data) {
+            var id = data.pk;
+            var time = data.value;
+            var editPath = /*[[@{@{/session/}} ]]*/'../session/';
+            editPath = editPath + id;
+            $.ajax({
+                url: editPath,
+                type: 'POST',
+                data: {"time": time},
+                success: function() {
+                    data.promise.resolve();
+                    getSessions();
+                },
+                error : function () {
+                    data.promise.reject();
                 }
             });
         }
@@ -203,7 +248,7 @@
                 data.search = search;
             }
 
-            var date = filterPicker.datepicker('getDate');
+            var date = filterPicker.bootstrapDP('getDate');
             data.date = date.getFullYear() +
                 '-' + pad(date.getMonth() + 1) +
                 '-' + pad(date.getDate());
@@ -212,6 +257,22 @@
             $.get(path, data)
                 .done(function (data) {
                     sessions.html(data);
+                    $('.time-edit').each(function () {
+                        $(this).editable({
+                            format: 'HH:mm',
+                            viewformat: 'HH:mm',
+                            template:"HH : mm",
+                            combodate: {
+                                minuteStep: 1
+                            },
+                            url: function (params) {
+                                var d = new $.Deferred();
+                                params.promise = d;
+                                saveSession(params);
+                                return d.promise();
+                            }
+                        });
+                    })
                 })
                 .fail(function () {
                     sessions.html("<p class='bg-danger'>Something went wrong</p>");
