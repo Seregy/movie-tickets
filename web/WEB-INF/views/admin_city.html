@@ -4,20 +4,19 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width = device-width, initial-scale = 1">
-	<title>Admin Hall</title>
-	<link rel="stylesheet" type="text/css" href="../../../../../../Desktop/cinemasite/css/bootstrap-datepicker.css">
+	<title>Admin City</title>
 	<link rel="stylesheet" type="text/css" href="../../../../../../Desktop/cinemasite/css/font-awesome.css">
 	<link rel="stylesheet" type="text/css" href="../../../../../../Desktop/cinemasite/css/bootstrap.css">
 	<link rel="stylesheet" type="text/css" href="../../../../../../Desktop/cinemasite/css/bootstrap-select.min.css">
 	<link rel="stylesheet" type="text/css" href="../../../../../../Desktop/cinemasite/css/main.css">
 	<link href='https://fonts.googleapis.com/css?family=Cormorant' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" type="text/css" href="../../../../../../Desktop/cinemasite/css/admin_hall.css">
+	<link rel="stylesheet" type="text/css" href="../../../../../../Desktop/cinemasite/css/bootstrap-editable.css">
 	<script src="../../../../../../Desktop/cinemasite/js/jquery-3.1.1.min.js"></script>
 	<script src="../../../../../../Desktop/cinemasite/js/bootstrap.js"></script>
-	<script src="../../../../../../Desktop/cinemasite/js/bootstrap-datepicker.js"></script>
-	<script src="js/bootstrap-datepicker.ru.min.js"></script>
 	<script src="../../../../../../Desktop/cinemasite/js/bootstrap-select.min.js"></script>
 	<script src="../../../../../../Desktop/cinemasite/js/jquery.maskedinput.js"></script>
+	<script src="../../../../../../Desktop/cinemasite/js/bootstrap-editable.min.js"></script>
 
 </head>
 
@@ -36,9 +35,10 @@
         </div>
         <div class="collapse navbar-collapse" id="collapsed-menu">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Кинотеатры</a></li>
+            <li><a href="#">Кинотеатры</a></li>
             <li><a href="#">Фильмы</a></li>
-            <li><a href="#">Кнопка2</a></li>
+            <li><a href="#">Пользователи</a></li>
+            <li class="active"><a href="#">Города</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
@@ -69,11 +69,11 @@
 
   <div class="container"> 
     <div class="jumbotron">
-      <h2>Список залов кинотеатра Баттерфляй De Luxe</h2>
+      <h2>Список городов</h2>
 	    <div class="row">
 	    <br>
 	        <div class="col col-xs-6">
-	      	<a class="btn btn-sm btn-primary btn-create" data-toggle="collapse" href='#addCinema'><i class="fa fa-plus" aria-hidden="true"></i> Добавить зал</a>   
+	      	<a class="btn btn-sm btn-primary btn-create" data-toggle="collapse" href='#addCinema'><i class="fa fa-plus" aria-hidden="true"></i> Добавить город</a>   
 			</div>
 		</div>
 		<div class="row">
@@ -82,7 +82,7 @@
 	            	<div id="addCinema" class="collapse">
 	            		<form role="form" method="post" action="" id="request-form" onsubmit="return false;">
 	              			<div class ="menu">
-				              	 <input type="text" class="form-control data-input" placeholder="Название зала" maxlength="50" required>
+				              	 <input type="text" class="form-control data-input" placeholder="Название города" maxlength="50" required>
 	             				<button type="submit" class="btn btn-success">Сохранить</button>                 
 	              			</div>
 	             		</form>
@@ -92,50 +92,26 @@
 	    </div>
       	<hr />
 	     <ul class="list-unstyled">
-		     <li><a data-toggle="collapse" href='#hall1' class="list-font">1. Ультрамарин</a><a class="btn btn-xs button-style  button-cancel" style=' color:#9c5454'><em class="fa fa-times"></em></a>
-			</li>
-				 <div class="row">
-					<div class="col-lg-8">
-						<div class="tab-content">
-			            	<div id="hall1" class="collapse">
-			            		<div class="menu">
-				            	<div class="row">
-				            		<div class="col-xs-8">		            		
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-									<li>1111111111111111111111111111111111111111111111111111111111</li>
-									<li>1111111111111111111111111111111111111111111111111111111111</li>
-									<li>1111111111111111111111111111111111111111111111111111111111</li>
-									<li>1111111111111111111111111111111111111111111111111111111111</li>
-									<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		</div>
-				            		<div class="col-xs-3">
-				            		<li>Количество рядов: 16</li>
-				            		<li>Мест: 192</li>
-				            		<a class="btn btn-sm btn-default"><em class="fa fa-pencil"> Изменить</em></a>
-						            <a class="btn btn-sm btn-danger"><em class="fa fa-trash"> Удалить</em></a>
-				            		</div>
-				            	</div>
-				            	</div>
-			            	</div>
-			            </div>
-			        </div>
-			    </div>        	
-		     <li><a  class="list-font">2. Аква</a><a class="btn btn-xs button-style  button-cancel" style=' color:#9c5454'><em class="fa fa-times"></em></a></li>
-		     <li><a  class="list-font">3. Оникс</a><a class="btn btn-xs button-style  button-cancel" style=' color:#9c5454'><em class="fa fa-times"></em></a></li>
+		    <li>
+			   1.<a class="list-font" id = "city1"> Киев</a>
+	           <a class="btn btn-xs button-style"><em class="fa fa-pencil" id="editbtn"></em></a>
+	           <a class="btn btn-xs button-style  button-cancel" style='padding:0px; color:#9c5454'><em class="fa fa-times"></em></a>
+			</li>      	
+		    <li>
+			    2.<a class="list-font"> Львов</a>
+			    <a class="btn btn-xs button-style"><em class="fa fa-pencil" id="editbtn"></em></a>
+	            <a class="btn btn-xs button-style  button-cancel" style='padding:0px; color:#9c5454'><em class="fa fa-times"></em></a>
+		    </li>
+		    <li>
+		     	3.<a  class="list-font"> Харьков</a>
+		     	<a class="btn btn-xs button-style"><em class="fa fa-pencil" id="editbtn"></em></a>
+           		<a class="btn btn-xs button-style  button-cancel" style='padding:0px; color:#9c5454'><em class="fa fa-times"></em></a>
+		    </li>
+		    <li>
+			    4.<a  class="list-font"> Херсон</a>
+			    <a class="btn btn-xs button-style"><em class="fa fa-pencil" id="editbtn"></em></a>
+	            <a class="btn btn-xs button-style  button-cancel" style='padding:0px; color:#9c5454'><em class="fa fa-times"></em></a>
+		    </li>
 	    </ul>
     </div>
   </div>
@@ -166,22 +142,12 @@
 
 <script>
  $(document).ready(function () {                                 
-  $('.filmDatepicker').datepicker({
-    format: "dd-mm-yyyy",
-    autoclose: true,
-    todayHighlight: true,
-    language:"ru"
+ 
+$.fn.editable.defaults.mode = 'inline';
+  $('#editbtn').click(function(e){    
+    e.stopPropagation();
+    $('#city1').editable('toggle');
   });
-  var date = new Date();
-  var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());          
-  $('.filmDatepicker').datepicker('setDate', today);
-
-  jQuery(function(){
-  	//$.mask.definitions["2"] = "[0-2]";
-  //	$.mask.definitions["2"] = "[0-2]";
- jQuery(".timeMask").mask("99:99");
-});
-
 
 
 
