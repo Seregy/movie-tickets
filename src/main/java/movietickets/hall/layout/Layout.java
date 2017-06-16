@@ -36,6 +36,24 @@ public class Layout {
         setSeats(array);
     }
 
+    public Layout(final String[][] layout) {
+        this.rowsAmount = layout.length;
+        this.seatsAmount = layout[0].length;
+        SeatType[][] array = new SeatType[rowsAmount][seatsAmount];
+        for (int i = 0; i < rowsAmount; i++) {
+            for (int j = 0; j < seatsAmount; j++) {
+                SeatType type = SeatType.EMPTY;
+                if (layout[i][j].equals(SeatType.REGULAR.name())) {
+                    type = SeatType.REGULAR;
+                } else if (layout[i][j].equals(SeatType.UNAVAILABLE.name())) {
+                    type = SeatType.UNAVAILABLE;
+                }
+                array[i][j] = type;
+            }
+        }
+        setSeats(array);
+    }
+
     /**
      * Constructor for JPA.
      */

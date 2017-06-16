@@ -8,8 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -32,26 +34,38 @@ public class HallController {
         this.hallService = hallService;
     }
 
+    @GetMapping("/admin/cinema/{id}/halls")
+    public ModelAndView showAdminHalls(@PathVariable("id")
+                                           final UUID cinemaId) {
+        ModelAndView modelAndView =
+                new ModelAndView("fragments/admin/hall_block");
+        List<Hall> halls = hallService.getAll(cinemaId);
+        modelAndView.addObject("halls", halls);
+        return modelAndView;
+    }
+
     /**
-     * Adds new hall with given name.
+     * Adds new hall.
      *
      * @param name hall name
      * @param cinemaId cinema identifier
-     * @param rowsAmount amount of rows in the hall
-     * @param seatsAmount amount of seats per row in the hall
      * @return response code
      */
-    @PostMapping("/halls")
+    @PostMapping("/hall")
     public ResponseEntity addHall(@RequestParam("name")
                                   final String name,
-                                  @RequestParam("cinema_id")
+                                  @RequestParam("cinema")
                                   final String cinemaId,
-                                  @RequestParam("rows_amount")
-                                  final int rowsAmount,
-                                  @RequestParam("seats_amount")
-                                  final int seatsAmount) {
+                                  @RequestParam("seats[]")
+                                  final String[] newLayout) {
+        String[][] array
+                = new String[newLayout.length][newLayout[0].split(",").length];
+
+        for (int i = 0; i < newLayout.length; i++) {
+            array[i] = newLayout[i].split(",");
+        }
         Hall hall = new Hall(name);
-        Layout layout = new Layout(rowsAmount, seatsAmount);
+        Layout layout = new Layout(array);
         hallService.add(hall, layout, UUID.fromString(cinemaId));
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -62,7 +76,7 @@ public class HallController {
      * @param id identifier of the hall
      * @return response code
      */
-    @DeleteMapping("/halls/{id}")
+    @DeleteMapping("/hall/{id}")
     public ResponseEntity deleteHall(@PathVariable("id") final String id) {
         hallService.delete(UUID.fromString(id));
         return new ResponseEntity(HttpStatus.NO_CONTENT);

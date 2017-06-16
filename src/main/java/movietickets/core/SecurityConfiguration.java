@@ -80,6 +80,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/city/**").permitAll()
                 .antMatchers("/permission**").permitAll()
                 .antMatchers("/admin**").permitAll()
+                .antMatchers("/register**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/login").permitAll()

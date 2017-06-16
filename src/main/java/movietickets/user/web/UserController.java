@@ -2,6 +2,8 @@ package movietickets.user.web;
 
 import movietickets.user.CustomUserDetails;
 import movietickets.user.User;
+import movietickets.user.role.Role;
+import movietickets.user.role.service.RoleService;
 import movietickets.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,7 @@ public class UserController {
             Logger.getLogger(UserController.class.getName());
 
     private final UserService userService;
+    private final RoleService roleService;
 
     /**
      * Constructs new user controller with given User Service.
@@ -34,8 +37,10 @@ public class UserController {
      * @param userService user service
      */
     @Autowired
-    public UserController(final UserService userService) {
+    public UserController(final UserService userService,
+                          final RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
     /**
@@ -45,8 +50,13 @@ public class UserController {
      */
     @ModelAttribute
     public CustomUserDetails getUserDetails() {
-        return (CustomUserDetails) SecurityContextHolder.getContext()
+        Object principal = SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
+        if (principal instanceof CustomUserDetails) {
+            return (CustomUserDetails) principal;
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -87,22 +97,21 @@ public class UserController {
      *
      * @param name user's name
      * @param password user's password
-     * @param roleId user's role identifier
      * @param email user's email
      * @return response code
      */
-    @PostMapping("/users")
-    public ResponseEntity addUser(@RequestParam("name")
+    @PostMapping("/register")
+    public String addUser(@RequestParam("username")
                                     final String name,
                                   @RequestParam("password")final
                                     String password,
-                                  @RequestParam("role_id")
-                                    final String roleId,
                                   @RequestParam("email")
                                     final String email) {
-        userService.register(name, password, UUID.fromString(roleId),
-                email);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        Role role = roleService.getAll().stream()
+                .filter(r -> r.getName().equals("User"))
+                .findAny().get();
+        userService.register(name, password, role.getId(), email);
+        return "redirect:/";
     }
 
     @GetMapping("/admin/users")

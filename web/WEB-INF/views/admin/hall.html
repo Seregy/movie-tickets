@@ -1,196 +1,315 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-	  xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width = device-width, initial-scale = 1">
-	<meta name="_csrf" th:content="${_csrf.token}"/>
-	<meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-	<title>Admin Hall</title>
-	<link rel="stylesheet" type="text/css" href="../../../../../../Desktop/cinemasite/css/bootstrap-datepicker.css">
-	<link rel="stylesheet" type="text/css" href="../../../../../../Desktop/cinemasite/css/font-awesome.css">
-	<link rel="stylesheet" type="text/css" href="../../../../../../Desktop/cinemasite/css/bootstrap.css">
-	<link rel="stylesheet" type="text/css" href="../../../../../../Desktop/cinemasite/css/bootstrap-select.min.css">
-	<link rel="stylesheet" type="text/css" href="../../../../../../Desktop/cinemasite/css/main.css">
-	<link href='https://fonts.googleapis.com/css?family=Cormorant' rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" type="text/css" href="../../../../../../Desktop/cinemasite/css/admin_hall.css">
-	<script src="../../../../../../Desktop/cinemasite/js/jquery-3.1.1.min.js"></script>
-	<script src="../../../../../../Desktop/cinemasite/js/bootstrap.js"></script>
-	<script src="../../../../../../Desktop/cinemasite/js/bootstrap-datepicker.js"></script>
-	<script src="js/bootstrap-datepicker.ru.min.js"></script>
-	<script src="../../../../../../Desktop/cinemasite/js/bootstrap-select.min.js"></script>
-	<script src="../../../../../../Desktop/cinemasite/js/jquery.maskedinput.js"></script>
-
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Admin Hall</title>
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/bootstrap/bootstrap.css" th:href="@{/resources/css/bootstrap/bootstrap.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/font-awesome.css" th:href="@{/resources/css/font-awesome.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/bootstrap/bootstrap-datepicker.css"
+          th:href="@{/resources/css/bootstrap/bootstrap-datepicker.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/bootstrap/bootstrap-select.min.css"
+          th:href="@{/resources/css/bootstrap/bootstrap-select.min.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/main.css" th:href="@{/resources/css/main.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/admin/hall.css" th:href="@{/resources/css/admin/hall.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/layout_editor.css" th:href="@{/resources/css/layout_editor.css}">
+    <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Cormorant'>
+    <script src="../../../resources/scripts/jquery/jquery-3.2.1.js"
+            th:src="@{/resources/scripts/jquery/jquery-3.2.1.js}"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap.js}"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap-select.min.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap-select.min.js}"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap-datepicker.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap-datepicker.js}"></script>
+    <script src="../../../resources/scripts/jquery/jquery.maskedinput.js"
+            th:src="@{/resources/scripts/jquery/jquery.maskedinput.js}"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap-editable.min.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap-editable.min.js}"></script>
 </head>
-
 <body>
+<div class="container" th:include="fragments/navbar :: navbar"></div>
 
-  <div class="container">
-    <nav class="navbar navbar-default">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#collapsed-menu" aria-expanded="false">
-            <span class="sr-only"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-        </div>
-        <div class="collapse navbar-collapse" id="collapsed-menu">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#">Кинотеатры</a></li>
-            <li><a href="#">Фильмы</a></li>
-            <li><a href="#">Кнопка2</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-map-marker" aria-hidden="true"></i> Киев <span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <form class="navbar-form" role="search">
-                  <div class="input-group input-group-sm">
-                    <input type="text" class="form-control" placeholder="Город" maxlength="20">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default btn-xs" type="button"> <span class="glyphicon glyphicon-search"></span> </button>
-                    </span>
-                  </div>              
-                </form>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Львов</a></li>
-                <li><a href="#">Харьков</a></li>
-                <li><a href="#">Одесса</a></li>
-              </ul>
-            </li>            
-            <li><a href="#">Вход</a></li>
-            <li><a href="#">Регистрация</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </div>
-
-
-  <div class="container"> 
+<div class="container">
     <div class="jumbotron">
-      <h2>Список залов кинотеатра Баттерфляй De Luxe</h2>
-	    <div class="row">
-	    <br>
-	        <div class="col col-xs-6">
-	      	<a class="btn btn-sm btn-primary btn-create" data-toggle="collapse" href='#addCinema'><i class="fa fa-plus" aria-hidden="true"></i> Добавить зал</a>   
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-6">
-				<div class="tab-content">
-	            	<div id="addCinema" class="collapse">
-	            		<form role="form" method="post" action="" id="request-form" onsubmit="return false;">
-	              			<div class ="menu">
-				              	 <input type="text" class="form-control data-input" placeholder="Название зала" maxlength="50" required>
-	             				<button type="submit" class="btn btn-success">Сохранить</button>                 
-	              			</div>
-	             		</form>
-	            	</div>
-	      		</div>
-	    	</div>
-	    </div>
-      	<hr />
-	     <ul class="list-unstyled">
-		     <li><a data-toggle="collapse" href='#hall1' class="list-font">1. Ультрамарин</a><a class="btn btn-xs button-style  button-cancel" style=' color:#9c5454'><em class="fa fa-times"></em></a>
-			</li>
-				 <div class="row">
-					<div class="col-lg-8">
-						<div class="tab-content">
-			            	<div id="hall1" class="collapse">
-			            		<div class="menu">
-				            	<div class="row">
-				            		<div class="col-xs-8">		            		
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		<li>1111111111111111111111111111111111111111111111111111111111</li>
-									<li>1111111111111111111111111111111111111111111111111111111111</li>
-									<li>1111111111111111111111111111111111111111111111111111111111</li>
-									<li>1111111111111111111111111111111111111111111111111111111111</li>
-									<li>1111111111111111111111111111111111111111111111111111111111</li>
-									<li>1111111111111111111111111111111111111111111111111111111111</li>
-				            		</div>
-				            		<div class="col-xs-3">
-				            		<li>Количество рядов: 16</li>
-				            		<li>Мест: 192</li>
-				            		<a class="btn btn-sm btn-default"><em class="fa fa-pencil"> Изменить</em></a>
-						            <a class="btn btn-sm btn-danger"><em class="fa fa-trash"> Удалить</em></a>
-				            		</div>
-				            	</div>
-				            	</div>
-			            	</div>
-			            </div>
-			        </div>
-			    </div>        	
-		     <li><a  class="list-font">2. Аква</a><a class="btn btn-xs button-style  button-cancel" style=' color:#9c5454'><em class="fa fa-times"></em></a></li>
-		     <li><a  class="list-font">3. Оникс</a><a class="btn btn-xs button-style  button-cancel" style=' color:#9c5454'><em class="fa fa-times"></em></a></li>
-	    </ul>
+        <h2 th:text="${cinema.name} + '\'s halls'">Halls</h2>
+        <div class="row">
+            <br>
+            <div class="col col-xs-6">
+                <a class="btn btn-sm btn-primary btn-create" data-toggle="collapse" href='#addHall'><i
+                        class="fa fa-plus" aria-hidden="true"></i> Add hall</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="tab-content">
+                    <div id="addHall" class="collapse">
+                        <form role="form" method="post" action="" id="request-form" onsubmit="return false;">
+                            <div class="menu">
+                                <input id="hall-name" type="text" class="form-control data-input" placeholder="Hall name"
+                                       maxlength="50" required>
+                                <div class="seats">
+                                    <div class="seats-row">
+                                        <div class="seat possible"></div>
+                                        <div class="seat possible"></div>
+                                        <div class="seat possible"></div>
+                                    </div>
+                                    <div class="seats-row">
+                                        <div class="seat possible"></div>
+                                        <div class="seat possible"></div>
+                                        <div class="seat possible"></div>
+                                    </div>
+                                    <div class="seats-row">
+                                        <div class="seat possible"></div>
+                                        <div class="seat possible"></div>
+                                        <div class="seat possible"></div>
+                                    </div>
+                                </div>
+                                <button id="hall-save" type="submit" class="btn btn-success">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <div class="spinner" th:replace="fragments/spinner :: spinner"></div>
+        <div class="hall-block"></div>
     </div>
-  </div>
+</div>
+<div class="footer" th:include="fragments/footer :: footer"></div>
+<script th:inline="javascript">
+    (function () {
+        var halls = $(".hall-block");
+        var spinner = $(".spinner");
+        var cinemaId = /*[[ @{${cinema.id}} ]]*/undefined;
+        var array;
 
-      
+        $(document).ready(function () {
+            $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="_csrf"]').attr('content') } });
 
-  <div class="footer">
-    <div class = "row">
-      <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 col-lg-offset-4 col-md-offset-4 col-sm-offset-4 text-center">
-        <ul class="list-inline"> 
-          <li><a href="#">Главная</a></li>    
-          <li><a href="#">|</a></li>
-          <li>Перечень:</li>
-          <li><a href="">Кнопка</a></li>
-          <li><a href="">Кнопка</a></li>
-          <li><a href="">Кнопка</a></li>      
-          <li><a href="">|</a></li>
-          <li><a href="">Контакты</a></li>
-        </ul>
-      </div>
-      <div class="col-lg-2 col-md-4 col-sm-3 col-xs-9 col-lg-offset-2  col-sm-offset-0 col-xs-offset-3 pull-right">
-        <span><i class="fa fa-envelope-open" aria-hidden="true" style="line-height:6%;"></i> e-mail: CatReeena@yandex.ru</span>
-        <p><i class="fa fa-address-book" aria-hidden="true" style="line-height:6%;"></i> тел. +380636125014 </p>
-      </div>
-    </div>
-  </div>
+            $.fn.editable.defaults.mode = 'inline';
+            halls.on('click', '.button-edit', editHall);
 
+            spinner.hide();
+            halls.on('click', '.button-cancel', deleteHall);
+            halls.on('click', '.delete', deleteHall);
+            $('#hall-save').on('click', addHall);
 
-<script>
- $(document).ready(function () {                                 
-  $('.filmDatepicker').datepicker({
-    format: "dd-mm-yyyy",
-    autoclose: true,
-    todayHighlight: true,
-    language:"ru"
-  });
-  var date = new Date();
-  var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());          
-  $('.filmDatepicker').datepicker('setDate', today);
+            $('.seats').on('click', '.seat', seatClicked);
+            $('#create').on('click', createLayout);
+            array = initElementsArray();
 
-  jQuery(function(){
-  	//$.mask.definitions["2"] = "[0-2]";
-  //	$.mask.definitions["2"] = "[0-2]";
- jQuery(".timeMask").mask("99:99");
-});
+            getHalls();
+        });
 
+        function getHalls() {
+            var path = /*[[@{@{/admin/cinema/{id}/halls(id=${cinema.id})}} ]]*/undefined;
 
+            showSpinner();
+            $.get(path)
+                .done(function (data) {
+                    halls.html(data);
+                    $('.city-name').each(function () {
+                        $(this).editable({
+                            url: editableUrl
+                        });
+                    });
+                })
+                .fail(function () {
+                    halls.html("<p class='bg-danger'>Something went wrong</p>");
+                })
+                .always(function () {
+                    hideSpinner();
+                });
+        }
 
+        function editableUrl(params) {
+            var d = new $.Deferred();
+            params.promise = d;
+            params.root = $(this).parent().parent();
+            saveCity(params);
+            return d.promise();
+        }
 
-});
+        function deleteHall() {
+            var deletePath = /*[[@{@{/hall/}} ]]*/'../hall/';
+            deletePath = deletePath + $(this).data('hall-id');
+            $.ajax({
+                url: deletePath,
+                type: 'DELETE',
+                success: function() {
+                    getHalls();
+                }
+            });
+        }
 
+        function addHall() {
+            var addPath = /*[[@{@{/hall}} ]]*/'../hall';
+            var name = $('#hall-name').val();
+            $.ajax({
+                url: addPath,
+                type: 'POST',
+                data: {"name": name, "seats": createLayout(), "cinema": cinemaId},
+                success: function() {
+                    getHalls();
+                }
+            });
+        }
 
+        function editHall(event) {
+            var parent = $(event.currentTarget).parent();
+            var cityEdit = parent.children('.city-name');
+            cityEdit.editable('toggle');
+            event.stopPropagation();
+        }
+
+        function saveCity(data) {
+            var id = data.pk;
+            var name = data.value;
+            var editPath = /*[[@{@{/city/}} ]]*/'../city/';
+            editPath = editPath + id;
+            $.ajax({
+                url: editPath,
+                type: 'POST',
+                data: {"name": name},
+                success: function() {
+                    data.promise.resolve();
+                    getCities();
+                },
+                error : function () {
+                    data.promise.reject();
+                }
+            });
+        }
+
+        function createLayout() {
+            var result = [];
+            var regular = /*[[@{${T(movietickets.hall.layout.SeatType).REGULAR.name()}} ]]*/'REGULAR';
+            var unavailable = /*[[@{${T(movietickets.hall.layout.SeatType).UNAVAILABLE.name()}} ]]*/'UNAVAILABLE';
+            var empty = /*[[@{${T(movietickets.hall.layout.SeatType).EMPTY.name()}} ]]*/'EMPTY';
+
+            for (var row = 0; row < array.length; row++) {
+                var newRow = '';
+                for (var index = 0; index < array[row].length; index++) {
+                    if ($(array[row][index]).hasClass('regular')) {
+                        newRow += (',' + regular);
+                    } else if ($(array[row][index]).hasClass('unavailable')) {
+                        newRow += (',' + unavailable);
+                    } else {
+                        newRow += (',' + empty);
+                    }
+                }
+                result.push(newRow);
+            }
+
+            return result;
+        }
+
+        function seatClicked() {
+            var info = getRowAndIndex($(this));
+            var element = $(array[info.row][info.index]);
+            if (element.hasClass('possible')) {
+                $(array[info.row][info.index]).removeClass('possible').addClass('regular');
+
+                if (info.index === array[info.row].length - 1) {
+                    appendColumn();
+                } else if (info.index === 0) {
+                    preAppendColumn();
+                } else if (info.row === array.length - 1) {
+                    appendRow();
+                } else if (info.row === 0) {
+                    preAppendRow();
+                }
+
+            } else if (element.hasClass('regular')) {
+                $(array[info.row][info.index]).removeClass('regular').addClass('unavailable');
+            } else if (element.hasClass('unavailable')) {
+                $(array[info.row][info.index]).removeClass('unavailable').addClass('possible');
+            }
+        }
+
+        function getRowAndIndex(element) {
+            for (var row = 0; row < array.length; row++) {
+                for (var index = 0; index < array[row].length; index++) {
+                    if (element.get(0) === (array[row][index])) {
+                        return {row: row, index: index};
+                    }
+                }
+            }
+        }
+
+        function appendColumn() {
+            for (var row = 0; row < array.length; row++) {
+                var newElement = $('<div class="seat possible"></div>');
+                $(array[row][array[row].length - 1]).after(newElement);
+                array[row].push(newElement.get(0));
+            }
+        }
+
+        function preAppendColumn() {
+            for (var row = 0; row < array.length; row++) {
+                var newElement = $('<div class="seat possible"></div>');
+                $(array[row][0]).before(newElement);
+                array[row].unshift(newElement.get(0));
+            }
+        }
+
+        function appendRow() {
+            var newRow = $('<div class="seats-row"></div>');
+            $('.seats-row').last().after(newRow);
+            var arrayElements = [];
+            for (var index = 0; index < array[array.length - 1].length; index++) {
+                var newElement = $('<div class="seat possible"></div>');
+                newRow.append(newElement);
+                arrayElements.push(newElement.get(0));
+            }
+            array.push(arrayElements);
+        }
+
+        function preAppendRow() {
+            var newRow = $('<div class="seats-row"></div>');
+            $('.seats-row').first().before(newRow);
+            var arrayElements = [];
+            for (var index = 0; index < array[array.length - 1].length; index++) {
+                var newElement = $('<div class="seat possible"></div>');
+                newRow.append(newElement);
+                arrayElements.push(newElement.get(0));
+            }
+            array.unshift(arrayElements);
+        }
+
+        function initElementsArray() {
+            var elements = $('.seat.possible').get();
+            var result = [];
+            while (elements.length) {
+                result.push(elements.splice(0, 3));
+            }
+            return result;
+        }
+
+        function showSpinner() {
+            halls.addClass("disabled-block");
+            spinner.show();
+        }
+
+        function hideSpinner() {
+            halls.removeClass("disabled-block");
+            spinner.hide();
+        }
+
+    })();
 </script>
 </body>
 </html>

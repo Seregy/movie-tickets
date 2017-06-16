@@ -27,7 +27,7 @@
                 <td th:text="${cinema.address}">Address</td>
                 <td th:text="${cinema.phone}">Phone</td>
                 <td th:text="${cinema.website}">Website</td>
-                <td><a class="btn btn-primary">Halls</a></td>
+                <td><a th:href="@{/admin/cinema/{id}/hall(id=${cinema.id})}" class="btn btn-primary">Halls</a></td>
                 <td><a th:href="@{/admin/cinema/{id}/session(id=${cinema.id})}" class="btn btn-primary">Sessions</a></td>
                 <td align="center">
                     <a th:attr="data-cinema-id=${cinema.id}" class="btn btn-default edit" ><em class="fa fa-pencil"></em></a>

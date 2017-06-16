@@ -1,0 +1,49 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="hall_block">
+    <ul class="list-unstyled">
+        <th:block th:each="hall : ${halls}">
+            <li><a data-toggle="collapse"
+                   th:text="${hallStat.count} + '. ' + ${hall.name}"
+                   th:href="'#' + ${hall.id}" href='#' class="list-font">Number hall</a>
+                <a th:attr="data-hall-id=${hall.id}"
+                   class="btn btn-xs button-style button-cancel">
+                <em class="fa fa-times"></em></a>
+            </li>
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="tab-content">
+                        <div th:attr="id=${hall.id}" class="collapse">
+                            <div class="menu">
+                                <div class="row">
+                                    <div class="col-xs-8">
+                                        <div class="seats-display-row" th:each="seatRow : ${hall.layout.seatsTypes}">
+                                            <th:block th:each="seat : ${seatRow}">
+                                                <div th:if="${seat == T(movietickets.hall.layout.SeatType).UNAVAILABLE}"
+                                                     class="seat-display unavailable"></div>
+                                                <div th:if="${seat == T(movietickets.hall.layout.SeatType).EMPTY}"
+                                                     class="seat-display empty"></div>
+                                                <div th:if="${seat == T(movietickets.hall.layout.SeatType).REGULAR}"
+                                                     class="seat-display regular"></div>
+                                            </th:block>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <li th:text="'Rows: ' + ${hall.layout.rowsAmount}">Rows</li>
+                                        <li th:text="'Seats: ' + ${hall.layout.seatsAmount}">Seats</li>
+                                        <a th:attr="data-hall-id=${hall.id}"
+                                           class="btn btn-sm btn-danger delete"><em class="fa fa-trash"> Delete</em></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+    </ul>
+</div>
+</body>
+</html>

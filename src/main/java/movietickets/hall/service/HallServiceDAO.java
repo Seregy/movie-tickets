@@ -6,7 +6,6 @@ import movietickets.hall.Hall;
 import movietickets.hall.dao.HallDAO;
 import movietickets.hall.layout.Layout;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,7 +40,6 @@ public class HallServiceDAO implements HallService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_ADD')")
     @Transactional
     @Override
     public void add(final Hall hall, final Layout layout, final UUID cinemaId) {
@@ -85,7 +83,6 @@ public class HallServiceDAO implements HallService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_DELETE')")
     @Transactional
     @Override
     public void delete(final Hall hall) {
@@ -95,7 +92,6 @@ public class HallServiceDAO implements HallService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_DELETE')")
     @Transactional
     @Override
     public void delete(final UUID id) {
@@ -105,7 +101,6 @@ public class HallServiceDAO implements HallService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_EDIT')")
     @Transactional
     @Override
     public void changeName(final UUID hallId, final String newName) {
@@ -117,7 +112,6 @@ public class HallServiceDAO implements HallService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_EDIT')")
     @Transactional
     @Override
     public void changeLayout(final UUID hallId, final Layout newLayout) {

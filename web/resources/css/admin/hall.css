@@ -10,6 +10,10 @@
     background-color: white;
 }
 
+.button-cancel {
+    color: #9c5454
+}
+
 .list-font {
 	 font-size: 12pt;
 }

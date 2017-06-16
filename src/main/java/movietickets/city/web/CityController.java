@@ -50,7 +50,7 @@ public class CityController {
     }
 
     @GetMapping("/admin/cities")
-    public ModelAndView showAdminMovies() {
+    public ModelAndView showAdminCities() {
         ModelAndView modelAndView =
                 new ModelAndView("fragments/admin/city_block");
         List<City> cities = cityService.getAll();

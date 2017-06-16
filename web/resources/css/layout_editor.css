@@ -1,12 +1,10 @@
 .seats {
     text-align: center;
-    /*margin: 0 auto;*/
     padding: 0.5em;
 }
 
 .seats-row {
     display: block;
-    /*margin: 0.5em auto;*/
 }
 
 .seat {
@@ -31,4 +29,42 @@
 
 .seat.unavailable {
     background-color: #8c8c8c;
+}
+
+.seat.empty {
+    border: none;
+    background-color: transparent;
+}
+
+.seats-display-row {
+    display: block;
+}
+
+.seat-display {
+    display: inline-block;
+    border: 0.15em;
+    border-radius: 20%;
+    height: 3.5em;
+    width: 2em;
+    margin: 0.1em;
+    vertical-align: top;
+    line-height: 3.5em;
+}
+
+.seat-display.possible {
+    border-style: dashed;
+}
+
+.seat-display.regular {
+    border-style: solid;
+    background-color: #002a80;
+}
+
+.seat-display.unavailable {
+    background-color: #8c8c8c;
+}
+
+.seat-display.empty {
+    border: none;
+    background-color: transparent;
 }

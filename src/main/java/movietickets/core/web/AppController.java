@@ -1,6 +1,8 @@
 package movietickets.core.web;
 
 import com.google.common.collect.Lists;
+import movietickets.cinema.Cinema;
+import movietickets.cinema.service.CinemaService;
 import movietickets.city.City;
 import movietickets.hall.service.HallService;
 import movietickets.movie.Movie;
@@ -12,10 +14,7 @@ import movietickets.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
@@ -41,6 +40,7 @@ public class AppController {
     private final UserService userService;
     private final HallService hallService;
     private final TicketService ticketService;
+    private final CinemaService cinemaService;
 
     /**
      * Constructs new app controller.
@@ -53,11 +53,13 @@ public class AppController {
     public AppController(final MovieService movieService,
                          final UserService userService,
                          final HallService hallService,
-                         final TicketService ticketService) {
+                         final TicketService ticketService,
+                         final CinemaService cinemaService) {
         this.movieService = movieService;
         this.userService = userService;
         this.hallService = hallService;
         this.ticketService = ticketService;
+        this.cinemaService = cinemaService;
     }
 
     /**
@@ -121,6 +123,11 @@ public class AppController {
         return new ModelAndView("admin/movie");
     }
 
+    @GetMapping("/register")
+    public ModelAndView showRegistrationPage() {
+        return new ModelAndView("register");
+    }
+
     @RequestMapping("/admin/user")
     public ModelAndView showAdminUserPage() {
         return new ModelAndView("admin/user");
@@ -144,6 +151,16 @@ public class AppController {
         modelAndView.addObject("movies", movieService.getAll());
         modelAndView.addObject("halls", hallService.getAll(cinemaId));
         modelAndView.addObject("cinemaId", cinemaId);
+        return modelAndView;
+    }
+
+    @RequestMapping("/admin/cinema/{id}/hall")
+    public ModelAndView showAdminHallPage(@PathVariable("id")
+                                             final UUID cinemaId) {
+        ModelAndView modelAndView = new ModelAndView("admin/hall");
+        Cinema cinema = cinemaService.get(cinemaId);
+        modelAndView.addObject("halls", hallService.getAll(cinemaId));
+        modelAndView.addObject("cinema", cinema);
         return modelAndView;
     }
 
