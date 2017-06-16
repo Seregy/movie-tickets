@@ -3,7 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <body>
 <div th:fragment="session_block">
-    <div class="movie-block" th:each="movieEntry : ${movieSessionMap}">
+    <div th:each="movieEntry : ${movieSessionMap}">
         <p th:text="${movieEntry.key.name}" class="movie-name">Movie name</p>
         <th:block th:each="hallEntry : ${movieEntry.value}">
             <h4 th:text="${hallEntry.key.name}" class="hall-name">Зал "Hall name"</h4>

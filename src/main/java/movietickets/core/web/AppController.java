@@ -103,12 +103,22 @@ public class AppController {
      * @return model and view
      */
     @RequestMapping("/admin/cinema")
-    public ModelAndView showAdminCinemasPage() {
+    public ModelAndView showAdminCinemaPage() {
         return new ModelAndView("admin/cinema");
     }
 
     /**
-     * Show session page for admin.
+     * Shows admin page for movie.
+     *
+     * @return model and view
+     */
+    @RequestMapping("/admin/movie")
+    public ModelAndView showAdminMoviePage() {
+        return new ModelAndView("admin/movie");
+    }
+
+    /**
+     * Show admin page for session.
      *
      * @param cinemaId id of the cinema
      * @return model and view

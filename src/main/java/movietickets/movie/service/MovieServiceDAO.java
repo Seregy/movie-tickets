@@ -4,7 +4,6 @@ import movietickets.city.City;
 import movietickets.movie.Movie;
 import movietickets.movie.dao.MovieDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +35,6 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_ADD')")
     @Transactional
     @Override
     public void add(final Movie movie) {
@@ -96,7 +94,6 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_DELETE')")
     @Transactional
     @Override
     public void delete(final Movie movie) {
@@ -106,7 +103,6 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_DELETE')")
     @Transactional
     @Override
     public void delete(final UUID id) {
@@ -116,7 +112,6 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_EDIT')")
     @Transactional
     @Override
     public void changeName(final UUID movieId, final String newName) {
@@ -128,7 +123,6 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_EDIT')")
     @Transactional
     @Override
     public void changeDuration(final UUID movieId, final int newDuration) {
@@ -140,13 +134,120 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_EDIT')")
     @Transactional
     @Override
     public void changeAnnotation(final UUID movieId,
                                  final String newAnnotation) {
         Movie movie = movieDAO.find(movieId);
         movie.setAnnotation(newAnnotation);
+        movieDAO.update(movie);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    public void changeYear(final UUID movieId,
+                           final int newYear) {
+        Movie movie = movieDAO.find(movieId);
+        movie.setYear(newYear);
+        movieDAO.update(movie);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    public void changeCountry(final UUID movieId,
+                              final String newCountry) {
+        Movie movie = movieDAO.find(movieId);
+        movie.setCountry(newCountry);
+        movieDAO.update(movie);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    public void changeGenres(final UUID movieId,
+                             final String newGenres) {
+        Movie movie = movieDAO.find(movieId);
+        movie.setGenres(newGenres);
+        movieDAO.update(movie);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    public void changeCast(final UUID movieId,
+                           final String newCast) {
+        Movie movie = movieDAO.find(movieId);
+        movie.setCast(newCast);
+        movieDAO.update(movie);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    public void changeDirector(final UUID movieId,
+                               final String newDirector) {
+        Movie movie = movieDAO.find(movieId);
+        movie.setDirector(newDirector);
+        movieDAO.update(movie);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    public void changeScreeningDate(final UUID movieId,
+                                    final LocalDate newDate) {
+        Movie movie = movieDAO.find(movieId);
+        movie.setScreeningDate(newDate);
+        movieDAO.update(movie);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    public void changePremiereEndDate(final UUID movieId,
+                                      final LocalDate newDate) {
+        Movie movie = movieDAO.find(movieId);
+        movie.setPremiereEndDate(newDate);
+        movieDAO.update(movie);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    public void changeContentRating(final UUID movieId,
+                                    final String newRating) {
+        Movie movie = movieDAO.find(movieId);
+        movie.setContentRating(newRating);
+        movieDAO.update(movie);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
+    public void changePathToPoster(final UUID movieId,
+                                   final String newPath) {
+        Movie movie = movieDAO.find(movieId);
+        movie.setPathToPoster(newPath);
         movieDAO.update(movie);
     }
 }

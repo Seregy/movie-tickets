@@ -1,0 +1,110 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="session_block">
+    <ul class="list-unstyled">
+        <th:block th:each="movie : ${movies}">
+            <li class="list-font">
+                <a th:text="${movieStat.count} + ' ' + ${movie.name}" data-toggle="collapse"
+                   href='#' th:href="'#' + ${movie.id}"># Movie</a>
+                <a class="btn btn-xs button-style button-cancel" th:attr="data-movie-id=${movie.id}">
+                    <em class="fa fa-times"></em>
+                </a>
+            </li>
+            <div class="row collapse menu white-bg" th:attr="id=${movie.id}">
+                <div class="col-xs-3">
+                    <div class="itemsContainer">
+                        <div class="image">
+                            <a data-toggle="modal" data-target="#downloadWindow">
+                                <img class="img-thumbnail img-responsive"
+                                     th:src="@{/resources/images/movies/{poster}(poster=${movie.pathToPoster})}"
+                                     th:attr="data-pk=${movie.id}, data-name='poster'"
+                                     src="">
+                            </a>
+                        </div>
+                        <div class="play">
+                            <img th:src="@{/resources/images/download-icon.png}" src=""/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <ul class="list-unstyled">
+                        <li class='info-header'>Name</li>
+                        <li class='film-info'>
+                            <a href="#" th:attr="data-pk=${movie.id}, data-name='name'"
+                               class="movie-name" th:text="${movie.name}">Movie</a>
+                            <em class="fa fa-pencil"></em>
+                        </li>
+                        <li class='info-header'>Year</li>
+                        <li class='film-info'>
+                            <a href="#" th:text="${movie.year}"
+                               th:attr="data-pk=${movie.id}, data-name='year'"
+                               class="movie-year">Year</a>
+                            <em class="fa fa-pencil"></em>
+                        </li>
+                        <li class='info-header'>Country</li>
+                        <li class='film-info'>
+                            <a href="#" th:text="${movie.country}" th:attr="data-pk=${movie.id}, data-name='country'"
+                               class="movie-country">Country</a>
+                            <em class="fa fa-pencil"></em>
+                        </li>
+                        <li class='info-header'>Genres</li>
+                        <li class='film-info'>
+                            <a href="#" th:text="${movie.genres}" th:attr="data-pk=${movie.id}, data-genres='genres'"
+                               class="movie-genres">Genre</a>
+                            <em class="fa fa-pencil"></em>
+                        </li>
+                        <li class='info-header'>Cast</li>
+                        <li class='film-info'>
+                            <a href="#" class="movie-cast" th:text="${movie.cast}"
+                               th:attr="data-pk=${movie.id}, data-name='cast'"
+                               data-type="textarea">Cast</a>
+                            <em class="fa fa-pencil"></em>
+                        </li>
+                        <li class='info-header'>Description</li>
+                        <li class='film-info'>
+                            <a href="#" class="movie-description" th:text="${movie.annotation}"
+                               th:attr="data-pk=${movie.id}, data-name='annotation'"
+                               data-type="textarea">Description</a>
+                            <em class="fa fa-pencil"></em>
+                        </li>
+                        <li class='info-header'>Director</li>
+                        <li class='film-info'>
+                            <a href="#" class="movie-director" th:attr="data-pk=${movie.id}, data-name='director'"
+                               th:text="${movie.director}">Director</a>
+                            <em class="fa fa-pencil"></em>
+                        </li>
+                        <li class='info-header'>Screening date</li>
+                        <li class='film-info'>
+                            <a href="#" class="movie-screening-date"
+                               data-type="combodate"
+                               th:attr="data-value=${movie.screeningDate}, data-pk=${movie.id}, data-name='screeningDate'"></a>
+                            <em class="fa fa-pencil"></em>
+                        </li>
+                        <li class='info-header'>Premiere end date</li>
+                        <li class='film-info'>
+                            <a href="#" class="movie-premiere-date" data-type="combodate"
+                               th:attr="data-value=${movie.premiereEndDate}, data-pk=${movie.id}, data-name='premiereEndDate'"></a>
+                            <em class="fa fa-pencil"></em>
+                        </li>
+                        <li class='info-header'>Duration</li>
+                        <li class='film-info'>
+                            <a href="#" class="movie-duration" th:attr="data-pk=${movie.id}, data-name='duration'"
+                               th:text="${movie.duration}">Duration</a>
+                            <em class="fa fa-pencil"></em>
+                        </li>
+                        <li class='info-header'>Content rating</li>
+                        <li class='film-info'>
+                            <a href="#" class="content-rating" th:attr="data-pk=${movie.id}, data-name='contentRating'"
+                               th:text="${movie.contentRating}"></a>
+                            <em class="fa fa-pencil"></em>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </th:block>
+    </ul>
+</div>
+</body>
+</html>

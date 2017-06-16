@@ -56,8 +56,8 @@
                 <div class="input-group input-group-sm">
                     <input id="search-filter" type="text" class="form-control" placeholder="Movie \ Hall" maxlength="20">
                     <span class="input-group-btn">
-              <button id="filter-search" class="btn btn-default btn-xs" type="button"> <span
-                      class="glyphicon glyphicon-search"></span> </button>
+              <button id="filter-search" class="btn btn-default btn-xs" type="button">
+                  <span class="glyphicon glyphicon-search"></span> </button>
             </span>
                 </div>
             </div>
@@ -128,6 +128,7 @@
                     </div>
                 </div>
             </div>
+            <div class="spinner" th:replace="fragments/spinner :: spinner"></div>
         </div>
         <hr/>
         <div class="session-block"></div>
@@ -175,6 +176,7 @@
             $('#save-session').on('click', addSession);
             $('#filter-search').on('click', getSessions);
             sessions.on('').on('click', '.button-cancel', deleteSession);
+            hideSpinner();
             getSessions();
         });
 

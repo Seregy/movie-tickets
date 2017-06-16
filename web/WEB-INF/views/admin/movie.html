@@ -1,0 +1,401 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Admin Movie</title>
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/bootstrap/bootstrap.css" th:href="@{/resources/css/bootstrap/bootstrap.css}" >
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/font-awesome.css" th:href="@{/resources/css/font-awesome.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/main.css" th:href="@{/resources/css/main.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/admin/movie.css" th:href="@{/resources/css/admin/movie.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/bootstrap/bootstrap-select.min.css"
+          th:href="@{/resources/css/bootstrap/bootstrap-select.min.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/bootstrap/bootstrap-editable.css"
+          th:href="@{/resources/css/bootstrap/bootstrap-editable.css}">
+    <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Cormorant' >
+    <script src="../../../resources/scripts/jquery/jquery-3.2.1.js"
+            th:src="@{/resources/scripts/jquery/jquery-3.2.1.js}"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap.js}"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap-select.min.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap-select.min.js}"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap-editable.min.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap-editable.min.js}"></script>
+    <script src="../../../resources/scripts/moment.js"
+            th:src="@{/resources/scripts/moment.js}"></script>
+    <script src="../../../resources/scripts/combodate.js"
+            th:src="@{/resources/scripts/combodate.js}"></script>
+</head>
+<div class="container" th:include="fragments/navbar :: navbar"></div>
+
+<body>
+<div class="container">
+    <div class="jumbotron">
+        <h2>Movies</h2>
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="input-group input-group-sm">
+                    <input id="search-filter" type="text" class="form-control" placeholder="Cinema name" maxlength="20">
+                    <span class="input-group-btn">
+		             <button id="button-filter" class="btn btn-default btn-xs" type="button">
+                         <span class="glyphicon glyphicon-search"></span>
+                     </button>
+		           </span>
+                </div>
+            </div>
+            <div class="spinner" th:replace="fragments/spinner :: spinner"></div>
+        </div>
+        <div class="row">
+            <br>
+            <div class="col col-xs-6">
+                <a class="btn btn-sm btn-primary btn-create" data-toggle="collapse" href='#add-movie'>
+                    <i class="fa fa-plus" aria-hidden="true"></i> Add film</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="tab-content">
+                    <div id="add-movie" class="collapse">
+                        <div class ="menu">
+                            <form role="form" action="" id="session-form" onsubmit="return false;">
+                                <input id="movie-name" type="text" class="form-control data-input"
+                                       placeholder="Movie name" maxlength="50" required>
+                                <textarea id="movie-description"
+                                          class="form-control data-input" rows="5"  placeholder="Description"></textarea>
+                                <input type="text" id="movie-year"
+                                       class="form-control data-input" pattern="^\d{4}$" placeholder="Year" maxlength="4">
+                                <input type="text" id="movie-country"
+                                       class="form-control data-input" placeholder="Country" maxlength="40">
+                                <input type="text" id="movie-genres"
+                                       class="form-control data-input" placeholder="Genres" maxlength="500">
+                                <input type="text" id="movie-cast"
+                                       class="form-control data-input" placeholder="Cast" maxlength="500">
+                                <input type="text" id="movie-director"
+                                       class="form-control data-input" placeholder="Director" maxlength="60">
+
+                                <div class="input-group data-input">
+                                    <div class="input-group-addon">
+                                        <span>Screening date</span>
+                                    </div>
+                                    <input class="fromDatepicker form-control" type="text">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </div>
+                                </div>
+
+                                <div class="input-group data-input">
+                                    <div class="input-group-addon">
+                                        <span>Premiere end date</span>
+                                    </div>
+                                    <input class="tillDatepicker form-control" type="text">
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-calendar"></span>
+                                    </div>
+                                </div>
+
+                                <input id="movie-duration" type="text"
+                                       class="form-control data-input" placeholder="Duration (min.)" maxlength="5">
+                                <input id="movie-content" type="text"
+                                       class="form-control data-input" placeholder="Content rating" maxlength="5">
+                                <span class="data-input">Poster:<input type="file" accept=".jpeg,.png,.jpg" class="data-input" /></span>
+                                <button id="save-movie" type="submit" class="btn btn-success">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <div class="movie-block"></div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="downloadWindow" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Upload file</h4>
+            </div>
+            <div class="modal-body">
+                Change poster:<input type="file" accept=".jpeg,.gif,.jpg" class="data-input" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="footer" th:include="fragments/footer :: footer"></div>
+
+<script th:inline="javascript">
+    (function() {
+        var movies = $(".movie-block");
+        var spinner = $(".spinner");
+        var screeningPicker = $('.fromDatepicker');
+        var premierePicker = $('.tillDatepicker');
+
+        $(document).ready(function () {
+            $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="_csrf"]').attr('content') } });
+
+            $.fn.editable.defaults.mode = 'inline';
+            $.fn.bootstrapDP = $.fn.datepicker.noConflict();
+
+
+            screeningPicker.bootstrapDP({
+                format: "dd-mm-yyyy",
+                autoclose: true,
+                todayHighlight: true
+            });
+            premierePicker.bootstrapDP({
+                format: "dd-mm-yyyy",
+                autoclose: true,
+                todayHighlight: true
+            });
+
+            var date = new Date();
+            var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
+            screeningPicker.bootstrapDP('setDate', today);
+            premierePicker.bootstrapDP('setDate', today);
+            $('#save-movie').on('click', addMovie);
+            movies.on('click', '.button-cancel', deleteMovie);
+            $('#button-filter').on('click', getMovies);
+
+            hideSpinner();
+            getMovies();
+        });
+
+        function deleteMovie() {
+            var deletePath = /*[[@{@{/movie/}} ]]*/undefined;
+            deletePath = deletePath + $(this).data('movie-id');
+            $.ajax({
+                url: deletePath,
+                type: 'DELETE',
+                success: function() {
+                    getMovies();
+                }
+            });
+        }
+
+        function addMovie() {
+            var addPath = /*[[@{@{/movie}} ]]*/'../movie';
+            var name = $('#movie-name').val();
+            var annotation = $('#movie-description').val();
+            var year = $('#movie-year').val();
+            var country = $('#movie-country').val();
+            var genres = $('#movie-genres').val();
+            var cast = $('#movie-cast').val();
+            var director = $('#movie-director').val();
+
+            var date1 = screeningPicker.bootstrapDP('getDate');
+            var screeningDate = date1.getFullYear() +
+                '-' + pad(date1.getMonth() + 1) +
+                '-' + pad(date1.getDate());
+
+            var date2 = premierePicker.bootstrapDP('getDate');
+            var premiereEndDate = date2.getFullYear() +
+                '-' + pad(date2.getMonth() + 1) +
+                '-' + pad(date2.getDate());
+            var duration = $('#movie-duration').val();
+            var contentRating = $('#movie-content').val();
+
+            $.ajax({
+                url: addPath,
+                type: 'POST',
+                data: {"name": name, "annotation": annotation,
+                    "year": year, "country": country,
+                    "genres": genres, "cast": cast,
+                    "director": director,
+                    "screeningDate": screeningDate,
+                    "premiereEndDate": premiereEndDate,
+                    "duration": duration,
+                    "contentRating": contentRating},
+                success: function() {
+                    getMovies();
+                }
+            });
+        }
+
+        function saveMovie(data) {
+            var id = data.pk;
+            var editPath = /*[[@{@{/movie/}} ]]*/'../movie/';
+
+            var name = data.root.find('.movie-name').text();
+            var annotation = data.root.find('.movie-description').text();
+            var year = data.root.find('.movie-year').text();
+            var country = data.root.find('.movie-country').text();
+            var genres = data.root.find('.movie-genres').text();
+            var cast = data.root.find('.movie-cast').text();
+            var director = data.root.find('.movie-director').text();
+
+            var screeningDate = data.root.find('.movie-screening-date').data('value');
+            var premiereEndDate = data.root.find('.movie-premiere-date').data('value');
+
+            var duration = data.root.find('.movie-duration').text();
+            var contentRating = data.root.find('.content-rating').text();
+
+            var send = {"name": name, "annotation": annotation,
+                "year": year, "country": country,
+                "genres": genres, "cast": cast,
+                "director": director,
+                "screeningDate": screeningDate,
+                "premiereEndDate": premiereEndDate,
+                "duration": duration,
+                "contentRating": contentRating};
+            send[data.name] = data.value;
+
+            editPath = editPath + id;
+            $.ajax({
+                url: editPath,
+                type: 'POST',
+                data: send,
+                success: function() {
+                    data.promise.resolve();
+                    getMovies();
+                },
+                error : function () {
+                    data.promise.reject();
+                }
+            });
+        }
+
+        function getMovies() {
+            var path = /*[[@{@{/admin/movies}} ]]*/undefined;
+            var data = {};
+
+            var name = $('#search-filter').val();
+            if (name && name.length > 0) {
+                data.name = name;
+            }
+
+            showSpinner();
+            $.get(path, data)
+                .done(function (data) {
+                    movies.html(data);
+                    $('.movie-name').each(function () {
+                        $(this).editable({
+                            url: editableUrl
+                        });
+                    });
+                    $('.movie-year').each(function () {
+                        $(this).editable({
+                            url: editableUrl
+                        });
+                    });
+                    $('.movie-country').each(function () {
+                        $(this).editable({
+                            url: editableUrl
+                        });
+                    });
+                    $('.movie-genres').each(function () {
+                        $(this).editable({
+                            url: editableUrl
+                        });
+                    });
+                    $('.movie-cast').each(function () {
+                        $(this).editable({
+                            url: editableUrl
+                        });
+                    });
+                    $('.movie-description').each(function () {
+                        $(this).editable({
+                            url: editableUrl
+                        });
+                    });
+                    $('.movie-director').each(function () {
+                        $(this).editable({
+                            url: editableUrl
+                        });
+                    });
+                    $('.movie-screening-date').each(function () {
+                        $(this).editable({
+                            format: 'YYYY-MM-DD',
+                            viewformat: 'DD.MM.YYYY',
+                            template: 'D / MMMM / YYYY',
+                            combodate: {
+                                minYear: 2010,
+                                maxYear: 3000
+                            }
+                        });
+                    });
+                    $('.movie-premiere-date').each(function () {
+                        $(this).editable({
+                            format: 'YYYY-MM-DD',
+                            viewformat: 'DD.MM.YYYY',
+                            template: 'D / MMMM / YYYY',
+                            combodate: {
+                                minYear: 2010,
+                                maxYear: 3000
+                            }
+                        });
+                    });
+                    $('.movie-duration').each(function () {
+                        $(this).editable({
+                            url: editableUrl
+                        });
+                    });
+                    $('.content-rating').each(function () {
+                        $(this).editable({
+                            url: editableUrl
+                        });
+                    });
+                    $('.file-name').each(function () {
+                        $(this).editable({
+                            url: editableUrl
+                        });
+                    });
+                })
+                .fail(function () {
+                    movies.html("<p class='bg-danger'>Something went wrong</p>");
+                })
+                .always(function () {
+                    hideSpinner();
+                });
+        }
+
+        function editableUrl(params) {
+            var d = new $.Deferred();
+            params.promise = d;
+            params.root = $(this).parent().parent();
+            saveMovie(params);
+            return d.promise();
+        }
+
+        function showSpinner() {
+            movies.addClass("disabled-block");
+            spinner.show();
+        }
+
+        function hideSpinner() {
+            movies.removeClass("disabled-block");
+            spinner.hide();
+        }
+
+        function pad(number) {
+            if (number < 10) {
+                return '0' + number;
+            }
+            return number;
+        }
+    })();
+</script>
+
+</body>
+
+</html>

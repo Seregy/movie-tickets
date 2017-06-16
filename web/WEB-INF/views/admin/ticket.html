@@ -1,0 +1,155 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Admin Ticket</title>
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/bootstrap/bootstrap.css"
+          th:href="@{/resources/css/bootstrap/bootstrap.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/font-awesome.css"
+          th:href="@{/resources/css/font-awesome.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/main.css"
+          th:href="@{/resources/css/main.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/admin/cinema.css"
+          th:href="@{/resources/css/admin/cinema.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/bootstrap/bootstrap-select.min.css"
+          th:href="@{/resources/css/bootstrap/bootstrap-select.min.css}">
+    <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Cormorant'>
+    <script src="../../../resources/scripts/jquery/jquery-3.2.1.js"
+            th:src="@{/resources/scripts/jquery/jquery-3.2.1.js}"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap.js}"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap-select.min.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap-select.min.js}"></script>
+</head>
+<body>
+
+<div class="container" th:include="fragments/navbar :: navbar"></div>
+
+<div class="container">
+    <div class="jumbotron">
+        <h2>Список билетов пользователя Dante</h2>
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" placeholder="Фильм \ Кинотеатр \ Дата" maxlength="20">
+                    <span class="input-group-btn">
+		             <button class="btn btn-default btn-xs" type="button"> <span
+                             class="glyphicon glyphicon-search"></span> </button>
+		           </span>
+                </div>
+            </div>
+        </div>
+        <hr/>
+
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="panel panel-default panel-table">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-bordered table-list" id="cinemaTable">
+                                <thead>
+                                <tr>
+                                    <th class="first-column">№</th>
+                                    <th>Фильм</th>
+                                    <th>Кинотеатр</th>
+                                    <th>Дата</th>
+                                    <th>Время</th>
+                                    <th>Цена</th>
+                                    <th>Ряд</th>
+                                    <th>Место</th>
+                                    <th>Статус</th>
+                                    <th>Удалить</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td class="first-column">1</td>
+                                    <td>Король Артур</td>
+                                    <td>Баттерфляй Космополит</td>
+                                    <td>10.11.17</td>
+                                    <td>10:00</td>
+                                    <td>120 грн</td>
+                                    <td>6</td>
+                                    <td>8</td>
+                                    <td>Забронировано</td>
+                                    <td><a class="btn btn-danger" id='delbtn'><em class="fa fa-trash"></em></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="first-column">1</td>
+                                    <td>Король Артур</td>
+                                    <td>Баттерфляй Космополит</td>
+                                    <td>10.11.17</td>
+                                    <td>10:00</td>
+                                    <td>120 грн</td>
+                                    <td>6</td>
+                                    <td>8</td>
+                                    <td>Забронировано</td>
+                                    <td><a class="btn btn-danger" id='delbtn'><em class="fa fa-trash"></em></a></td>
+                                </tr>
+                                <tr>
+                                    <td class="first-column">1</td>
+                                    <td>Король Артур</td>
+                                    <td>Баттерфляй Космополит</td>
+                                    <td>10.11.17</td>
+                                    <td>10:00</td>
+                                    <td>120 грн</td>
+                                    <td>6</td>
+                                    <td>8</td>
+                                    <td>Забронировано</td>
+                                    <td><a class="btn btn-danger" id='delbtn'><em class="fa fa-trash"></em></a></td>
+                                </tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <div class="col col-xs-7">Page 1 of 5</div>
+                            <div class="col col-xs-5">
+                                <ul class="pagination hidden-xs pull-right">
+                                    <li>
+                                        <a href="#" aria-label="Previous pull-center">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li><a href="#">1</a></li>
+                                    <li><a href="#">2</a></li>
+                                    <li><a href="#">3</a></li>
+                                    <li><a href="#">4</a></li>
+                                    <li><a href="#">5</a></li>
+                                    <li>
+                                        <a href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="pagination visible-xs pull-right">
+                                    <li><a href="#">«</a></li>
+                                    <li><a href="#">»</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="footer" th:include="fragments/footer :: footer"></div>
+
+</body>
+
+</html>

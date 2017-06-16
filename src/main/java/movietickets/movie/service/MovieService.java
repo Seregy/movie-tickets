@@ -3,6 +3,7 @@ package movietickets.movie.service;
 import movietickets.city.City;
 import movietickets.movie.Movie;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -93,4 +94,28 @@ public interface MovieService {
      * @param newAnnotation new annotation
      */
     void changeAnnotation(UUID movieId, String newAnnotation);
+
+    /**
+     * Changes movie's release year.
+     *
+     * @param movieId movie's id
+     * @param newYear new year
+     */
+    void changeYear(UUID movieId, int newYear);
+
+    void changeCountry(UUID movieId, String newCountry);
+
+    void changeGenres(UUID movieId, String newGenres);
+
+    void changeCast(UUID movieId, String newCast);
+
+    void changeDirector(UUID movieId, String newDirector);
+
+    void changeScreeningDate(UUID movieId, LocalDate newDate);
+
+    void changePremiereEndDate(UUID movieId, LocalDate newDate);
+
+    void changeContentRating(UUID movieId, String newRating);
+
+    void changePathToPoster(UUID movieId, String newPath);
 }
