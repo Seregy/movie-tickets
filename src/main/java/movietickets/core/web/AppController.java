@@ -6,6 +6,7 @@ import movietickets.hall.service.HallService;
 import movietickets.movie.Movie;
 import movietickets.movie.service.MovieService;
 import movietickets.ticket.Ticket;
+import movietickets.ticket.service.TicketService;
 import movietickets.user.CustomUserDetails;
 import movietickets.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,7 @@ public class AppController {
     private final MovieService movieService;
     private final UserService userService;
     private final HallService hallService;
+    private final TicketService ticketService;
 
     /**
      * Constructs new app controller.
@@ -50,10 +52,12 @@ public class AppController {
     @Autowired
     public AppController(final MovieService movieService,
                          final UserService userService,
-                         final HallService hallService) {
+                         final HallService hallService,
+                         final TicketService ticketService) {
         this.movieService = movieService;
         this.userService = userService;
         this.hallService = hallService;
+        this.ticketService = ticketService;
     }
 
     /**
@@ -117,6 +121,11 @@ public class AppController {
         return new ModelAndView("admin/movie");
     }
 
+    @RequestMapping("/admin/user")
+    public ModelAndView showAdminUserPage() {
+        return new ModelAndView("admin/user");
+    }
+
     /**
      * Show admin page for session.
      *
@@ -130,6 +139,15 @@ public class AppController {
         modelAndView.addObject("movies", movieService.getAll());
         modelAndView.addObject("halls", hallService.getAll(cinemaId));
         modelAndView.addObject("cinemaId", cinemaId);
+        return modelAndView;
+    }
+
+    @RequestMapping("/admin/user/{id}/ticket")
+    public ModelAndView showAdminTicketPage(@PathVariable("id")
+                                             final UUID userId) {
+        ModelAndView modelAndView = new ModelAndView("admin/ticket");
+        modelAndView.addObject("tickets", ticketService.getAll(userId));
+        modelAndView.addObject("user", userService.get(userId));
         return modelAndView;
     }
 }

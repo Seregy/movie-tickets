@@ -27,6 +27,8 @@ public interface TicketService {
      */
     List<Ticket> getAll();
 
+    List<Ticket> getAll(UUID userId);
+
     /**
      * Deletes ticket.
      *

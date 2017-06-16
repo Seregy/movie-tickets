@@ -37,14 +37,17 @@
 
 <div class="container">
     <div class="jumbotron">
-        <h2>Список билетов пользователя Dante</h2>
+        <h2 th:text="${user.name} + '\'s Tickets'">Tickets</h2>
         <div class="row">
             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
                 <div class="input-group input-group-sm">
-                    <input type="text" class="form-control" placeholder="Фильм \ Кинотеатр \ Дата" maxlength="20">
+                    <input id="search-filter" type="text" class="form-control"
+                           placeholder="Movie \ Cinema \ Date" maxlength="20">
                     <span class="input-group-btn">
-		             <button class="btn btn-default btn-xs" type="button"> <span
-                             class="glyphicon glyphicon-search"></span> </button>
+		             <button id="button-search"
+                             class="btn btn-default btn-xs" type="button"> <span
+                             class="glyphicon glyphicon-search"></span>
+                     </button>
 		           </span>
                 </div>
             </div>
@@ -54,66 +57,8 @@
         <div class="row">
             <div class="col-md-10 col-md-offset-1">
                 <div class="panel panel-default panel-table">
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped table-bordered table-list" id="cinemaTable">
-                                <thead>
-                                <tr>
-                                    <th class="first-column">№</th>
-                                    <th>Фильм</th>
-                                    <th>Кинотеатр</th>
-                                    <th>Дата</th>
-                                    <th>Время</th>
-                                    <th>Цена</th>
-                                    <th>Ряд</th>
-                                    <th>Место</th>
-                                    <th>Статус</th>
-                                    <th>Удалить</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td class="first-column">1</td>
-                                    <td>Король Артур</td>
-                                    <td>Баттерфляй Космополит</td>
-                                    <td>10.11.17</td>
-                                    <td>10:00</td>
-                                    <td>120 грн</td>
-                                    <td>6</td>
-                                    <td>8</td>
-                                    <td>Забронировано</td>
-                                    <td><a class="btn btn-danger" id='delbtn'><em class="fa fa-trash"></em></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="first-column">1</td>
-                                    <td>Король Артур</td>
-                                    <td>Баттерфляй Космополит</td>
-                                    <td>10.11.17</td>
-                                    <td>10:00</td>
-                                    <td>120 грн</td>
-                                    <td>6</td>
-                                    <td>8</td>
-                                    <td>Забронировано</td>
-                                    <td><a class="btn btn-danger" id='delbtn'><em class="fa fa-trash"></em></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="first-column">1</td>
-                                    <td>Король Артур</td>
-                                    <td>Баттерфляй Космополит</td>
-                                    <td>10.11.17</td>
-                                    <td>10:00</td>
-                                    <td>120 грн</td>
-                                    <td>6</td>
-                                    <td>8</td>
-                                    <td>Забронировано</td>
-                                    <td><a class="btn btn-danger" id='delbtn'><em class="fa fa-trash"></em></a></td>
-                                </tr>
-
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    <div class="spinner" th:replace="fragments/spinner :: spinner"></div>
+                    <div class="ticket-block"></div>
                     <div class="panel-footer">
                         <div class="row">
                             <div class="col col-xs-7">Page 1 of 5</div>
@@ -149,7 +94,67 @@
 </div>
 
 <div class="footer" th:include="fragments/footer :: footer"></div>
+<script th:inline="javascript">
+    (function () {
+        var tickets = $(".ticket-block");
+        var spinner = $(".spinner");
+        var userId = /*[[ @{${user.id}} ]]*/undefined;
 
+        $(document).ready(function () {
+            $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="_csrf"]').attr('content') } });
+
+
+            $('#button-search').on('click', getTickets);
+            tickets.on('click', '.delete', deleteTicket);
+            hideSpinner();
+            getTickets();
+        });
+
+        function deleteTicket() {
+            var deletePath = /*[[@{@{/ticket/}} ]]*/undefined;
+            deletePath = deletePath + $(this).data('ticket-id');
+            $.ajax({
+                url: deletePath,
+                type: 'DELETE',
+                success: function() {
+                    getTickets();
+                }
+            });
+        }
+
+        function getTickets() {
+            var path = /*[[@{@{/admin/user/{id}/tickets(id=${user.id})}} ]]*/undefined;
+            var data = {};
+
+            var search = $('#search-filter').val();
+            if (search && search.length > 0) {
+                data.search = search;
+            }
+
+            showSpinner();
+            $.get(path, data)
+                .done(function (data) {
+                    tickets.html(data);
+                })
+                .fail(function () {
+                    tickets.html("<p class='bg-danger'>Something went wrong</p>");
+                })
+                .always(function () {
+                    hideSpinner();
+                });
+        }
+
+        function showSpinner() {
+            tickets.addClass("disabled-block");
+            spinner.show();
+        }
+
+        function hideSpinner() {
+            tickets.removeClass("disabled-block");
+            spinner.hide();
+        }
+    })();
+</script>
 </body>
 
 </html>

@@ -1,5 +1,6 @@
 package movietickets.ticket.web;
 
+import movietickets.ticket.Ticket;
 import movietickets.ticket.service.TicketService;
 import movietickets.user.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Ticket controller, responsible for giving pages
@@ -107,13 +111,52 @@ public class TicketController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/admin/user/{id}/tickets")
+    public ModelAndView showAdminUsers(@PathVariable("id")
+                                       final UUID userId,
+                                       @RequestParam(value = "search",
+                                               required = false)
+                                       final String search) {
+        ModelAndView modelAndView =
+                new ModelAndView("fragments/admin/ticket_block");
+        List<Ticket> tickets = ticketService.getAll(userId);
+
+        if (search != null) {
+            List<Ticket> result;
+            result = tickets.stream()
+                    .filter(t -> t.getSeat().getSession()
+                            .getMovie().getName().contains(search))
+                    .collect(Collectors.toList());
+
+            if (result.isEmpty()) {
+                result = tickets.stream()
+                        .filter(t -> t.getSeat().getSession().getHall()
+                                .getCinema().getName().contains(search))
+                        .collect(Collectors.toList());
+            }
+
+            if (result.isEmpty()) {
+                result = tickets.stream()
+                        .filter(t -> t.getSeat().getSession()
+                                .getSessionStart().toLocalDate()
+                                .toString().contains(search))
+                        .collect(Collectors.toList());
+            }
+
+            tickets = result;
+        }
+
+        modelAndView.addObject("tickets", tickets);
+        return modelAndView;
+    }
+
     /**
      * Deletes ticket with given id.
      *
      * @param id identifier of the ticket
      * @return response code
      */
-    @DeleteMapping("/tickets/{id}")
+    @DeleteMapping("/ticket/{id}")
     public ResponseEntity deleteTicket(@PathVariable("id") final String id) {
         ticketService.delete(UUID.fromString(id));
         return new ResponseEntity(HttpStatus.NO_CONTENT);

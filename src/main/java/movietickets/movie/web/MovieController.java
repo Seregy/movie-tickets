@@ -156,7 +156,8 @@ public class MovieController {
         movieService.changeCast(id, cast);
         movieService.changeDirector(id, director);
         movieService.changeScreeningDate(id, LocalDate.parse(screeningDate));
-        movieService.changePremiereEndDate(id, LocalDate.parse(premiereEndDate));
+        movieService.changePremiereEndDate(id,
+                LocalDate.parse(premiereEndDate));
         movieService.changeDuration(id, duration);
         movieService.changeContentRating(id, contentRating);
         return new ResponseEntity(HttpStatus.NO_CONTENT);

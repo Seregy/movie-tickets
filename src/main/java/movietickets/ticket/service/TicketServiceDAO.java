@@ -8,13 +8,13 @@ import movietickets.ticket.dao.TicketDAO;
 import movietickets.user.User;
 import movietickets.user.dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Session's service object, uses DAO.
@@ -65,7 +65,18 @@ public class TicketServiceDAO implements TicketService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_DELETE')")
+    @Transactional(propagation = Propagation.MANDATORY)
+    @Override
+    public List<Ticket> getAll(final UUID userId) {
+        return ticketDAO.findAll().stream()
+                .filter(ticket -> ticket.getUser()
+                        .getId().equals(userId))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Transactional(propagation = Propagation.MANDATORY)
     @Override
     public void delete(final Ticket ticket) {
@@ -75,7 +86,6 @@ public class TicketServiceDAO implements TicketService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_DELETE')")
     @Transactional
     @Override
     public void delete(final UUID id) {

@@ -1,6 +1,7 @@
 package movietickets.user.web;
 
 import movietickets.user.CustomUserDetails;
+import movietickets.user.User;
 import movietickets.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,9 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * User controller, responsible for giving pages and resources related to user.
@@ -101,13 +105,55 @@ public class UserController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/admin/users")
+    public ModelAndView showAdminUsers(@RequestParam(value = "search",
+                                                        required = false)
+                                            final String search) {
+        ModelAndView modelAndView =
+                new ModelAndView("fragments/admin/user_block");
+        List<User> users = userService.getAll();
+
+        if (search != null) {
+            List<User> result;
+            result = users.stream()
+                    .filter(u -> u.getName().contains(search))
+                    .collect(Collectors.toList());
+
+            if (result.isEmpty()) {
+                result = users.stream()
+                        .filter(u -> u.getEmail().contains(search))
+                        .collect(Collectors.toList());
+            }
+
+            users = result;
+        }
+
+        modelAndView.addObject("users", users);
+        return modelAndView;
+    }
+
+    @PostMapping("/user/{id}")
+    public ResponseEntity editUser(@PathVariable("id")
+                                  final UUID id,
+                                  @RequestParam("name")
+                                  final String name,
+                                  @RequestParam("password")final
+                                  String password,
+                                  @RequestParam("email")
+                                  final String email) {
+        userService.changeName(id, name);
+        userService.changePassword(id, password);
+        userService.changeEmail(id, email);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
     /**
      * Deletes user with given id.
      *
      * @param id identifier of the user
      * @return response code
      */
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/user/{id}")
     public ResponseEntity deleteUser(@PathVariable("id") final String id) {
         userService.delete(UUID.fromString(id));
         return new ResponseEntity(HttpStatus.NO_CONTENT);
