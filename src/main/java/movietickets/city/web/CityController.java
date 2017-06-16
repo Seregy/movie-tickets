@@ -3,12 +3,14 @@ package movietickets.city.web;
 import movietickets.city.City;
 import movietickets.city.service.CityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -39,11 +41,43 @@ public class CityController {
      * @param model spring's model
      * @return redirect to home page
      */
-    @RequestMapping("/city/{id}")
+    @GetMapping("/city/{id}")
     public String changeCity(@PathVariable("id") final String id,
                                 final Model model) {
         City city = cityService.get(UUID.fromString(id));
         model.addAttribute("currentCity", city);
         return "redirect:/";
+    }
+
+    @GetMapping("/admin/cities")
+    public ModelAndView showAdminMovies() {
+        ModelAndView modelAndView =
+                new ModelAndView("fragments/admin/city_block");
+        List<City> cities = cityService.getAll();
+        modelAndView.addObject("cities", cities);
+        return modelAndView;
+    }
+
+    @PostMapping("/city")
+    public ResponseEntity addCity(@RequestParam("name")
+                                   final String name) {
+        City city = new City(name);
+        cityService.add(city);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping("/city/{id}")
+    public ResponseEntity editCity(@PathVariable("id")
+                                      final UUID id,
+                                      @RequestParam("name")
+                                      final String name) {
+        cityService.changeName(id, name);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/city/{id}")
+    public ResponseEntity deleteCity(@PathVariable("id") final UUID id) {
+        cityService.delete(id);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

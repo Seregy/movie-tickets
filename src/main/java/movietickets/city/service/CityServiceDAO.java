@@ -32,7 +32,6 @@ public class CityServiceDAO implements CityService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_ADD_CITY')")
     @Transactional
     @Override
     public void add(final City city) {
@@ -60,7 +59,6 @@ public class CityServiceDAO implements CityService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_DELETE_CITY')")
     @Transactional
     @Override
     public void delete(final City city) {
@@ -70,7 +68,6 @@ public class CityServiceDAO implements CityService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_DELETE_CITY')")
     @Transactional
     @Override
     public void delete(final UUID id) {
@@ -80,7 +77,6 @@ public class CityServiceDAO implements CityService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_EDIT')")
     @Transactional
     @Override
     public void changeName(final UUID cityId,

@@ -126,6 +126,11 @@ public class AppController {
         return new ModelAndView("admin/user");
     }
 
+    @RequestMapping("/admin/city")
+    public ModelAndView showAdminCityPage() {
+        return new ModelAndView("admin/city");
+    }
+
     /**
      * Show admin page for session.
      *

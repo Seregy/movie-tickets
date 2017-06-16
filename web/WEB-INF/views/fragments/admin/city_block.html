@@ -1,0 +1,21 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="city_block">
+    <ul class="list-unstyled">
+        <li th:each="city : ${cities}">
+            <span th:text="${cityStat.count}">Number</span>
+            <a class="list-font city-name" th:text="${city.name}"
+               th:attr="data-value=${city.name}, data-pk=${city.id}">City</a>
+            <a class="btn btn-xs button-style button-edit">
+                <em class="fa fa-pencil"></em>
+            </a>
+            <a class="btn btn-xs button-style button-cancel" th:attr="data-city-id=${city.id}">
+                <em class="fa fa-times"></em>
+            </a>
+        </li>
+    </ul>
+</div>
+</body>
+</html>
