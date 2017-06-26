@@ -58,13 +58,70 @@ public class Layout {
                 array[i][j] = type;
             }
         }
-        setSeats(array);
+        setSeats(trimLayoutArray(array));
     }
 
     /**
      * Constructor for JPA.
      */
     protected Layout() { }
+
+    /**
+     * Trims layout array by removing empty rows and columns.
+     * at the beginning and at the end of the array.
+     *
+     * @param layout array to trim
+     * @return trimmed array
+     */
+    private SeatType[][] trimLayoutArray(final SeatType[][] layout) {
+        boolean[] rowFilled = new boolean[layout.length];
+        boolean[] colFilled = new boolean[layout[0].length];
+
+
+        for (int i = 0; i < layout.length; i++) {
+            for (int j = 0; j < layout[i].length; j++) {
+                if (layout[i][j] != SeatType.EMPTY) {
+                    rowFilled[i] = true;
+                    colFilled[j] = true;
+                }
+            }
+        }
+
+        int rowStartIndex = -1;
+        int rowEndIndex = -1;
+        for (int i = 0; i < rowFilled.length; i++) {
+            if (rowStartIndex == -1 && rowFilled[i]) {
+                rowStartIndex = i;
+            }
+
+            if (rowEndIndex < i && rowFilled[i]) {
+                rowEndIndex = i;
+            }
+        }
+
+        int colStartIndex = -1;
+        int colEndIndex = -1;
+        for (int i = 0; i < colFilled.length; i++) {
+            if (colStartIndex == -1 && colFilled[i]) {
+                colStartIndex = i;
+            }
+
+            if (colEndIndex < i && colFilled[i]) {
+                colEndIndex = i;
+            }
+        }
+
+        SeatType[][] result = new SeatType[rowEndIndex - rowStartIndex + 1]
+                        [colEndIndex - colStartIndex + 1];
+        for (int resultRowIndex = 0,
+             i = rowStartIndex; i < rowEndIndex + 1; i++) {
+            result[resultRowIndex++] = Arrays.copyOfRange(layout[i],
+                    colStartIndex,
+                    colEndIndex + 1);
+        }
+
+        return result;
+    }
 
     /**
      * Gets the amount of rows in the hall.
