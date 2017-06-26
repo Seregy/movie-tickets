@@ -4,7 +4,7 @@
 }
 
 .block-name {
-    color: white;
+    color: #F1F0E9;
     font-size: 20pt;
     font-family: 'Cormorant', serif;
     font-weight: bold;
@@ -16,10 +16,9 @@
 }
 
 .page-header {
-    color: white;
     border-radius: 5px;
     margin-top: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: #F1F0E9;
 }
 
 .page-header h1 {
