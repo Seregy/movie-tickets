@@ -76,11 +76,20 @@ public class MovieController {
     /**
      * Adds new movie with given name, duration and annotation.
      *
-     * @param name movie's title
+     * @param name movie's name
      * @param duration movie's duration in minutes
      * @param annotation movie's annotation
-     * @return response code
+     * @param year movie's release year
+     * @param country movie's country of creation
+     * @param genres movie's genres
+     * @param cast movie's cast
+     * @param director movie's director
+     * @param screeningDate movie's screening date
+     * @param premiereEndDate end date of the movie's premiere period
+     * @param contentRating movie's content rating
+     * @return response
      */
+    @SuppressWarnings("checkstyle:ParameterNumber")
     @PostMapping("/movie")
     public ResponseEntity addMovie(@RequestParam("name")
                                        final String name,
@@ -122,8 +131,20 @@ public class MovieController {
      * Edits existing movie.
      *
      * @param id movie's id
-     * @return response entity
+     * @param name movie's new name
+     * @param duration movie's new duration in minutes
+     * @param annotation movie's new annotation
+     * @param year movie's new release year
+     * @param country movie's new country of creation
+     * @param genres movie's new genres
+     * @param cast movie's new cast
+     * @param director movie's new director
+     * @param screeningDate movie's new screening date
+     * @param premiereEndDate new end date of the movie's premiere period
+     * @param contentRating movie's new content rating
+     * @return response
      */
+    @SuppressWarnings("checkstyle:ParameterNumber")
     @PostMapping("/movie/{id}")
     public ResponseEntity editMovie(@PathVariable("id")
                                         final UUID id,

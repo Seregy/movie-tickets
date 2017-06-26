@@ -26,6 +26,7 @@
 <div class="container">
     <div class="jumbotron">
         <!--/*@thymesVar id="currentCity" type="movietickets.city.City"*/-->
+        <!--/*@thymesVar id="name" type="java.lang.String"*/-->
         <h2 th:text="'Cinemas in ' + ${session.currentCity.name}">Cinemas in city</h2>
         <div class="row">
             <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">

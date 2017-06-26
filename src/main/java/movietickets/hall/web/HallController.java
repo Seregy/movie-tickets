@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,6 +33,13 @@ public class HallController {
         this.hallService = hallService;
     }
 
+    /**
+     * Shows list of all hall of the cinema
+     * for admin page.
+     *
+     * @param cinemaId cinema's id
+     * @return model and view
+     */
     @GetMapping("/admin/cinema/{id}/halls")
     public ModelAndView showAdminHalls(@PathVariable("id")
                                            final UUID cinemaId) {
@@ -46,10 +52,14 @@ public class HallController {
 
     /**
      * Adds new hall.
+     * Hall's new layout is an array with each element
+     * representing hall's row. Elements consists of comma-separated names
+     * of seat types.
      *
      * @param name hall name
      * @param cinemaId cinema identifier
-     * @return response code
+     * @param newLayout new hall layout
+     * @return response
      */
     @PostMapping("/hall")
     public ResponseEntity addHall(@RequestParam("name")
@@ -74,7 +84,7 @@ public class HallController {
      * Deletes hall with given id.
      *
      * @param id identifier of the hall
-     * @return response code
+     * @return response
      */
     @DeleteMapping("/hall/{id}")
     public ResponseEntity deleteHall(@PathVariable("id") final String id) {

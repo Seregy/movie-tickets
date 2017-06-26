@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -36,9 +35,10 @@ public class UserController {
     private final RoleService roleService;
 
     /**
-     * Constructs new user controller with given User Service.
+     * Constructs new user controller.
      *
      * @param userService user service
+     * @param roleService role service
      */
     @Autowired
     public UserController(final UserService userService,
@@ -63,11 +63,21 @@ public class UserController {
         }
     }
 
+    /**
+     * Shows login page.
+     *
+     * @return model and view
+     */
     @GetMapping("/login")
     public ModelAndView showLoginPage() {
         return new ModelAndView("login");
     }
 
+    /**
+     * Shows login page with error.
+     *
+     * @return model and view
+     */
     @GetMapping("/login-error")
     public ModelAndView showLoginError() {
         ModelAndView modelAndView = new ModelAndView("login");
@@ -75,6 +85,11 @@ public class UserController {
         return modelAndView;
     }
 
+    /**
+     * Shows registration page.
+     *
+     * @return model and view
+     */
     @GetMapping("/register")
     public ModelAndView showRegistrationPage() {
         return new ModelAndView("register");
@@ -104,7 +119,7 @@ public class UserController {
     }
 
     /**
-     * Shows profile web-page.
+     * Shows user's profile page.
      *
      * @return model and view
      */
@@ -125,7 +140,7 @@ public class UserController {
      *
      * @param userDetails current user's details
      * @param email new email
-     * @return http status
+     * @return response
      */
     @PostMapping("/change_email")
     public ResponseEntity changeEmail(@ModelAttribute("customUserDetails")
@@ -142,7 +157,7 @@ public class UserController {
      *
      * @param userDetails current user's details
      * @param password new password
-     * @return http status
+     * @return response
      */
     @PostMapping("/change_password")
     public ResponseEntity changePassword(@ModelAttribute("customUserDetails")
@@ -153,6 +168,13 @@ public class UserController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * Shows list of all users for admin page.
+     *
+     * @param search filter for searching users
+     *              by names or emails
+     * @return model and view
+     */
     @GetMapping("/admin/users")
     public ModelAndView showAdminUsers(@RequestParam(value = "search",
                                                         required = false)
@@ -180,6 +202,15 @@ public class UserController {
         return modelAndView;
     }
 
+    /**
+     * Edits existing user.
+     *
+     * @param id user's id
+     * @param name user's new name
+     * @param password user's new password
+     * @param email user's new email
+     * @return response
+     */
     @PostMapping("/user/{id}")
     public ResponseEntity editUser(@PathVariable("id")
                                   final UUID id,
@@ -196,10 +227,10 @@ public class UserController {
     }
 
     /**
-     * Deletes user with given id.
+     * Deletes user.
      *
-     * @param id identifier of the user
-     * @return response code
+     * @param id user's id
+     * @return response
      */
     @DeleteMapping("/user/{id}")
     public ResponseEntity deleteUser(@PathVariable("id") final String id) {

@@ -36,6 +36,13 @@ public class Layout {
         setSeats(array);
     }
 
+    /**
+     * Constructs new {@code Layout} from given layout.
+     * Elements must be string representations of SeatType values.
+     * If seat's type can't be found, the type will be considered to be empty.
+     *
+     * @param layout new layout
+     */
     public Layout(final String[][] layout) {
         this.rowsAmount = layout.length;
         this.seatsAmount = layout[0].length;

@@ -49,6 +49,11 @@ public class CityController {
         return "redirect:/";
     }
 
+    /**
+     * Shows list of all cities for admin page.
+     *
+     * @return model and view
+     */
     @GetMapping("/admin/cities")
     public ModelAndView showAdminCities() {
         ModelAndView modelAndView =
@@ -58,6 +63,12 @@ public class CityController {
         return modelAndView;
     }
 
+    /**
+     * Adds new city.
+     *
+     * @param name city name
+     * @return response
+     */
     @PostMapping("/city")
     public ResponseEntity addCity(@RequestParam("name")
                                    final String name) {
@@ -66,6 +77,13 @@ public class CityController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * Edits existing city.
+     *
+     * @param id city's id
+     * @param name new name
+     * @return response
+     */
     @PostMapping("/city/{id}")
     public ResponseEntity editCity(@PathVariable("id")
                                       final UUID id,
@@ -75,6 +93,12 @@ public class CityController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * Deletes city.
+     *
+     * @param id city's id
+     * @return response
+     */
     @DeleteMapping("/city/{id}")
     public ResponseEntity deleteCity(@PathVariable("id") final UUID id) {
         cityService.delete(id);

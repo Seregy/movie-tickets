@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -112,6 +111,14 @@ public class TicketController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
+    /**
+     * Shows list of all user's tickets for admin page.
+     *
+     * @param userId user's id
+     * @param search filter for searching tickets by
+     *              movies' names, cinemas' names or sessions' dates
+     * @return model and view
+     */
     @GetMapping("/admin/user/{id}/tickets")
     public ModelAndView showAdminUsers(@PathVariable("id")
                                        final UUID userId,

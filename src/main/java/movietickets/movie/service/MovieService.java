@@ -103,19 +103,67 @@ public interface MovieService {
      */
     void changeYear(UUID movieId, int newYear);
 
+    /**
+     * Changes movie's country of creation.
+     *
+     * @param movieId movie's id
+     * @param newCountry new country
+     */
     void changeCountry(UUID movieId, String newCountry);
 
+    /**
+     * Changes movie's genres.
+     *
+     * @param movieId movie's id
+     * @param newGenres new genres
+     */
     void changeGenres(UUID movieId, String newGenres);
 
+    /**
+     * Changes movie's cast.
+     *
+     * @param movieId movie's id
+     * @param newCast new cast
+     */
     void changeCast(UUID movieId, String newCast);
 
+    /**
+     * Changes movie's director.
+     *
+     * @param movieId movie's id
+     * @param newDirector new director
+     */
     void changeDirector(UUID movieId, String newDirector);
 
+    /**
+     * Changes movie's screening date.
+     *
+     * @param movieId movie's id
+     * @param newDate new screening date
+     */
     void changeScreeningDate(UUID movieId, LocalDate newDate);
 
+    /**
+     * Changes movie's end date of the movie's premiere period.
+     *
+     * @param movieId movie's id
+     * @param newDate new end date
+     */
     void changePremiereEndDate(UUID movieId, LocalDate newDate);
 
+    /**
+     * Changes movie's content rating.
+     *
+     * @param movieId movie's id
+     * @param newRating new content rating
+     */
     void changeContentRating(UUID movieId, String newRating);
 
+    /**
+     * Changes movie's poster path.
+     *
+     * @param movieId movie's id
+     * @param newPath new path
+     */
     void changePathToPoster(UUID movieId, String newPath);
 }

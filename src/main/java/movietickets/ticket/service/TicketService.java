@@ -27,6 +27,12 @@ public interface TicketService {
      */
     List<Ticket> getAll();
 
+    /**
+     * Gets all tickets of user as list.
+     *
+     * @param userId user's id
+     * @return list of tickets
+     */
     List<Ticket> getAll(UUID userId);
 
     /**

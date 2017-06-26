@@ -7,12 +7,9 @@ import movietickets.city.City;
 import movietickets.hall.service.HallService;
 import movietickets.movie.Movie;
 import movietickets.movie.service.MovieService;
-import movietickets.ticket.Ticket;
 import movietickets.ticket.service.TicketService;
-import movietickets.user.CustomUserDetails;
 import movietickets.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -48,6 +45,8 @@ public class AppController {
      * @param movieService movie service
      * @param userService user service
      * @param hallService hall service
+     * @param ticketService ticket service
+     * @param cinemaService cinema service
      */
     @Autowired
     public AppController(final MovieService movieService,
@@ -106,11 +105,21 @@ public class AppController {
         return new ModelAndView("admin/movie");
     }
 
+    /**
+     * Shows admin page for user.
+     *
+     * @return model and view
+     */
     @RequestMapping("/admin/user")
     public ModelAndView showAdminUserPage() {
         return new ModelAndView("admin/user");
     }
 
+    /**
+     * Shows admin page for city.
+     *
+     * @return model and view
+     */
     @RequestMapping("/admin/city")
     public ModelAndView showAdminCityPage() {
         return new ModelAndView("admin/city");
@@ -132,6 +141,12 @@ public class AppController {
         return modelAndView;
     }
 
+    /**
+     * Shows admin page for hall.
+     *
+     * @param cinemaId cinema's id
+     * @return model and view
+     */
     @RequestMapping("/admin/cinema/{id}/hall")
     public ModelAndView showAdminHallPage(@PathVariable("id")
                                              final UUID cinemaId) {
@@ -142,6 +157,12 @@ public class AppController {
         return modelAndView;
     }
 
+    /**
+     * Shows admin page for ticket.
+     *
+     * @param userId user's id
+     * @return model and view
+     */
     @RequestMapping("/admin/user/{id}/ticket")
     public ModelAndView showAdminTicketPage(@PathVariable("id")
                                              final UUID userId) {
