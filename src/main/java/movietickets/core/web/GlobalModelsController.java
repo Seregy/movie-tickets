@@ -45,8 +45,7 @@ public class GlobalModelsController {
     @ModelAttribute("currentCity")
     public City setCurrentCity() {
         return cityService.getAll().stream()
-                .filter(city -> city.getName().equals("Kyiv"))
-                .findAny()
-                .orElse(cityService.getAll().get(0));
+                .findFirst()
+                .orElse(null);
     }
 }

@@ -18,6 +18,7 @@ import java.util.logging.Logger;
  * @author Seregy
  */
 @Controller
+@SessionAttributes("currentCity")
 public class SeatController {
     private static Logger log =
             Logger.getLogger(SeatController.class.getName());

@@ -24,6 +24,7 @@ import java.util.stream.Collectors;
  * @author Seregy
  */
 @Controller
+@SessionAttributes("currentCity")
 public class TicketController {
     private static Logger log =
             Logger.getLogger(TicketController.class.getName());

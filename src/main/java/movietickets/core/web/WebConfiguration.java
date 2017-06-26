@@ -38,15 +38,6 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
     }
 
     /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void addViewControllers(final ViewControllerRegistry registry) {
-        registry.addViewController("/login").setViewName("login");
-        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
-    }
-
-    /**
      * Adds resource handlers.
      *
      * @param registry resource registry

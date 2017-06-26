@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
  * @author Seregy
  */
 @Controller
+@SessionAttributes("currentCity")
 public class SessionController {
     private final SessionService sessionService;
     private final HallService hallService;

@@ -1,5 +1,6 @@
 package movietickets.user.web;
 
+import movietickets.ticket.Ticket;
 import movietickets.user.CustomUserDetails;
 import movietickets.user.User;
 import movietickets.user.role.Role;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -24,7 +26,9 @@ import java.util.stream.Collectors;
  * @author Seregy
  */
 @Controller
+@SessionAttributes("currentCity")
 public class UserController {
+    private static final String DEFAULT_USER_ROLE = "User";
     private static Logger log =
             Logger.getLogger(UserController.class.getName());
 
@@ -59,6 +63,63 @@ public class UserController {
         }
     }
 
+    @GetMapping("/login")
+    public ModelAndView showLoginPage() {
+        return new ModelAndView("login");
+    }
+
+    @GetMapping("/login-error")
+    public ModelAndView showLoginError() {
+        ModelAndView modelAndView = new ModelAndView("login");
+        modelAndView.addObject("loginError", true);
+        return modelAndView;
+    }
+
+    @GetMapping("/register")
+    public ModelAndView showRegistrationPage() {
+        return new ModelAndView("register");
+    }
+
+    /**
+     * Registers new user.
+     *
+     * @param name user's name
+     * @param password user's password
+     * @param email user's email
+     * @return response code
+     */
+    @PostMapping("/register")
+    public String registerUser(@RequestParam("username")
+                                    final String name,
+                                  @RequestParam("password")final
+                                    String password,
+                                  @RequestParam("email")
+                                    final String email) {
+        Role role = roleService.getAll().stream()
+                .filter(r -> r.getName().contains(DEFAULT_USER_ROLE))
+                .findAny()
+                .orElse(null);
+        userService.register(name, password, role.getId(), email);
+        return "redirect:/profile";
+    }
+
+    /**
+     * Shows profile web-page.
+     *
+     * @return model and view
+     */
+    @RequestMapping("/profile")
+    public ModelAndView showProfilePage() {
+        ModelAndView modelAndView = new ModelAndView("profile");
+        CustomUserDetails userDetails =
+                (CustomUserDetails) SecurityContextHolder.getContext()
+                        .getAuthentication().getPrincipal();
+        modelAndView.addObject("user", userDetails);
+        List<Ticket> tickets = userService.getTickets(userDetails.getId());
+        modelAndView.addObject("tickets", tickets);
+        return modelAndView;
+    }
+
     /**
      * Changes user's email.
      *
@@ -90,28 +151,6 @@ public class UserController {
                                          final String password) {
         userService.changePassword(userDetails.getId(), password);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
-    }
-
-    /**
-     * Adds new user.
-     *
-     * @param name user's name
-     * @param password user's password
-     * @param email user's email
-     * @return response code
-     */
-    @PostMapping("/register")
-    public String addUser(@RequestParam("username")
-                                    final String name,
-                                  @RequestParam("password")final
-                                    String password,
-                                  @RequestParam("email")
-                                    final String email) {
-        Role role = roleService.getAll().stream()
-                .filter(r -> r.getName().equals("User"))
-                .findAny().get();
-        userService.register(name, password, role.getId(), email);
-        return "redirect:/";
     }
 
     @GetMapping("/admin/users")

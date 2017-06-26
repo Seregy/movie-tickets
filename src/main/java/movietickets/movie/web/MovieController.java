@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
  * @author Seregy
  */
 @Controller
+@SessionAttributes("currentCity")
 public class MovieController {
     private final MovieService movieService;
 

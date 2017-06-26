@@ -87,23 +87,6 @@ public class AppController {
     }
 
     /**
-     * Shows profile web-page.
-     *
-     * @return model and view
-     */
-    @RequestMapping("/profile")
-    public ModelAndView showProfilePage() {
-        ModelAndView modelAndView = new ModelAndView("profile");
-        CustomUserDetails userDetails =
-                (CustomUserDetails) SecurityContextHolder.getContext()
-                        .getAuthentication().getPrincipal();
-        modelAndView.addObject("user", userDetails);
-        List<Ticket> tickets = userService.getTickets(userDetails.getId());
-        modelAndView.addObject("tickets", tickets);
-        return modelAndView;
-    }
-
-    /**
      * Shows cinema page for admin.
      *
      * @return model and view
@@ -121,11 +104,6 @@ public class AppController {
     @RequestMapping("/admin/movie")
     public ModelAndView showAdminMoviePage() {
         return new ModelAndView("admin/movie");
-    }
-
-    @GetMapping("/register")
-    public ModelAndView showRegistrationPage() {
-        return new ModelAndView("register");
     }
 
     @RequestMapping("/admin/user")

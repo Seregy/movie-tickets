@@ -20,7 +20,7 @@ import java.util.UUID;
  * @author Seregy
  */
 @Controller
-@Transactional
+@SessionAttributes("currentCity")
 public class HallController {
     private final HallService hallService;
 
