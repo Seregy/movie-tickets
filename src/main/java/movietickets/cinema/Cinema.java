@@ -23,7 +23,6 @@ public class Cinema {
     private String address;
     private String phone;
     private String website;
-    private String pathToLogo;
 
     @ManyToOne
     private City city;
@@ -209,24 +208,6 @@ public class Cinema {
     }
 
     /**
-     * Gets path to cinema's logo.
-     *
-     * @return logo path
-     */
-    public String getPathToLogo() {
-        return pathToLogo;
-    }
-
-    /**
-     * Sets path to cinema's logo.
-     *
-     * @param pathToLogo path to logo
-     */
-    public void setPathToLogo(final String pathToLogo) {
-        this.pathToLogo = pathToLogo;
-    }
-
-    /**
      * Indicates whether some other object is "equal to" this one.
      * This method accepts subclasses as parameters to work with Proxy
      * objects.
@@ -271,7 +252,6 @@ public class Cinema {
                 + ", address='" + address + '\''
                 + ", phone='" + phone + '\''
                 + ", website='" + website + '\''
-                + ", pathToLogo='" + pathToLogo + '\''
                 + '}';
     }
 }
