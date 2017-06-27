@@ -76,10 +76,12 @@ public class SessionController {
 
     /**
      * Shows session, associated with specific movie.
-     * Also allows filtering sessions by cinema and starting date.
+     * Also allows filtering sessions by cinema, starting date and
+     * display technology.
      *
      * @param movieId movie's id
      * @param cinemaId movie's id
+     * @param displayTechnology session's display technology
      * @param date session's date
      * @return name of the view
      */
@@ -89,6 +91,9 @@ public class SessionController {
                                      @RequestParam(value = "cinema",
                                              required = false)
                                          final String cinemaId,
+                                     @RequestParam(value = "technology",
+                                             required = false)
+                                         final String displayTechnology,
                                      @RequestParam(value = "date",
                                              required = false)
                                      @DateTimeFormat(iso =
@@ -102,6 +107,13 @@ public class SessionController {
                     UUID.fromString(cinemaId));
         } else {
             sessions = sessionService.getAllFuture(UUID.fromString(movieId));
+        }
+
+        if (displayTechnology != null && !displayTechnology.isEmpty()) {
+            sessions = sessions.stream()
+                    .filter(session -> session
+                            .getTechnology().equals(displayTechnology))
+                    .collect(Collectors.toList());
         }
 
         if (date != null) {

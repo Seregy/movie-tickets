@@ -16,6 +16,9 @@
           href="../../resources/css/main.css" th:href="@{/resources/css/main.css}">
     <link rel="stylesheet" type="text/css"
           href="../../resources/css/cinema_list.css" th:href="@{/resources/css/movie.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../resources/css/bootstrap/bootstrap-select.min.css"
+          th:href="@{/resources/css/bootstrap/bootstrap-select.min.css}">
     <link href='https://fonts.googleapis.com/css?family=Cormorant' rel='stylesheet' type='text/css'>
     <script src="../../resources/scripts/jquery/jquery-3.2.1.js"
             th:src="@{/resources/scripts/jquery/jquery-3.2.1.js}"></script>
@@ -23,6 +26,9 @@
             th:src="@{/resources/scripts/bootstrap/bootstrap.js}"></script>
     <script src="../../resources/scripts/bootstrap/bootstrap-datepicker.js"
             th:src="@{/resources/scripts/bootstrap/bootstrap-datepicker.js}"></script>
+    <script src="../../resources/scripts/bootstrap/bootstrap-select.min.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap-select.min.js}"></script>
+
 </head>
 <body>
 <div class="container" th:include="fragments/navbar :: navbar"></div>
@@ -62,24 +68,29 @@
             <div class="thumbnail movie-details">
                 <h3 th:text="${movie.name}">Movie name</h3>
                 <p class='film-info' th:text="${movie.annotation}">Movie description</p>
-                <div class="input-group">
-                    <!--<span class="input-group-addon">Форматы:</span>-->
-                    <!--<div class="btn-group" data-toggle="buttons">-->
-                        <!--<label class="btn btn-primary active">-->
-                            <!--<input type="radio" name="options" id="option1" autocomplete="off" checked> Все-->
-                        <!--</label>-->
-                        <!--<label class="btn btn-primary">-->
-                            <!--<input type="radio" name="options" id="option2" autocomplete="off"> 2D-->
-                        <!--</label>-->
-                        <!--<label class="btn btn-primary">-->
-                            <!--<input type="radio" name="options" id="option3" autocomplete="off"> 3D-->
-                        <!--</label>-->
-                    <!--</div>-->
-                    <div class="input-group date pull-right" data-provide="datepicker">
-                        <label for="film-datepicker">Date</label>
-                        <input id="film-datepicker" type="text" class="form-control" title="">
-                        <div class="input-group-addon">
-                            <span class="glyphicon glyphicon-calendar"></span>
+                <div class="container">
+                    <div class="row form-inline">
+                        <div class="input-group">
+                            <span class="input-group-addon">Display technology:</span>
+                            <select id="display-technology" class="selectpicker"
+                                    title="Technology..."
+                                    data-live-search="true" data-width="auto">
+                                <option selected="selected">All</option>
+                                <option th:each="displayTechnology : ${displayTechnologies}"
+                                        th:text="${displayTechnology}">Technology option</option>
+                            </select>
+                        </div>
+                        <div class="input-group date">
+                            <span class="input-group-addon">Date:</span>
+                            <div class="input-group-btn ">
+                                <button id="button-all-dates" class="btn btn-default active"
+                                        type="button">All dates</button>
+                            </div>
+                            <input id="movie-datepicker" type="text" class="form-control" data-provide="datepicker"
+                                   title="Date">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -96,9 +107,10 @@
     (function () {
         var sessions = $(".session-block");
         var spinner = $(".spinner");
+        var allDates = $('#button-all-dates');
 
         $(document).ready(function () {
-            var picker = $('.input-group.date');
+            var picker = $('#movie-datepicker');
             picker.datepicker({
                 autoclose: true,
                 format: "d M D",
@@ -108,6 +120,12 @@
             picker.datepicker('setDate', new Date());
             spinner.hide();
             picker.on('changeDate', getSessions);
+            $('#display-technology').on('change', getSessions);
+            allDates.on('click', function () {
+                allDates.addClass('active');
+                getSessions();
+            });
+
             getSessions();
         });
 
@@ -120,11 +138,17 @@
                 params.cinema = cinema;
             }
 
+            var technology = $('#display-technology').val();
+            if (technology !== 'All') {
+                params.technology = technology;
+            }
+
             var date = event ? event.date : undefined;
             if (date) {
                 params.date = date.getFullYear() +
                     '-' + pad(date.getMonth() + 1) +
                     '-' + pad(date.getDate());
+                allDates.removeClass('active');
             }
 
             var path = /*[[@{@{/sessions}} ]]*/'/sessions';

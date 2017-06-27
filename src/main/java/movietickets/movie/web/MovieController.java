@@ -4,6 +4,7 @@ package movietickets.movie.web;
 import movietickets.core.service.StorageService;
 import movietickets.movie.Movie;
 import movietickets.movie.service.MovieService;
+import movietickets.session.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,18 +32,22 @@ public class MovieController {
 
     private final MovieService movieService;
     private final StorageService storageService;
+    private final SessionService sessionService;
 
     /**
      * Constructs new movie controller.
      *
      * @param movieService movie service
      * @param storageService storage service
+     * @param sessionService session service
      */
     @Autowired
     public MovieController(final MovieService movieService,
-                           final StorageService storageService) {
+                           final StorageService storageService,
+                           final SessionService sessionService) {
         this.movieService = movieService;
         this.storageService = storageService;
+        this.sessionService = sessionService;
     }
 
     /**
@@ -53,10 +58,14 @@ public class MovieController {
      */
     @GetMapping("/movie/{id}")
     public ModelAndView showMovie(@PathVariable("id")
-                                    final String id) {
+                                    final UUID id) {
         ModelAndView modelAndView = new ModelAndView("movie");
-        Movie movie = movieService.get(UUID.fromString(id));
+        Movie movie = movieService.get(id);
         modelAndView.addObject("movie", movie);
+        Set<String> technology = new HashSet<>();
+        sessionService.getAllFuture(id)
+                .forEach(session -> technology.add(session.getTechnology()));
+        modelAndView.addObject("displayTechnologies", technology);
         return modelAndView;
     }
 
