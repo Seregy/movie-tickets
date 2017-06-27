@@ -238,16 +238,4 @@ public class MovieServiceDAO implements MovieService {
         movie.setContentRating(newRating);
         movieDAO.update(movie);
     }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional
-    @Override
-    public void changePathToPoster(final UUID movieId,
-                                   final String newPath) {
-        Movie movie = movieDAO.find(movieId);
-        movie.setPathToPoster(newPath);
-        movieDAO.update(movie);
-    }
 }

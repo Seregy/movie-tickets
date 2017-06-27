@@ -1,6 +1,7 @@
 package movietickets.movie.web;
 
 
+import movietickets.core.service.StorageService;
 import movietickets.movie.Movie;
 import movietickets.movie.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,16 +26,23 @@ import java.util.stream.Collectors;
 @Controller
 @SessionAttributes("currentCity")
 public class MovieController {
+    private static final String POSTER_FOLDER_PATH = "images/movies/";
+    private static final String NO_POSTER_FILE = "no-image";
+
     private final MovieService movieService;
+    private final StorageService storageService;
 
     /**
      * Constructs new movie controller.
      *
      * @param movieService movie service
+     * @param storageService storage service
      */
     @Autowired
-    public MovieController(final MovieService movieService) {
+    public MovieController(final MovieService movieService,
+                           final StorageService storageService) {
         this.movieService = movieService;
+        this.storageService = storageService;
     }
 
     /**
@@ -87,10 +97,11 @@ public class MovieController {
      * @param screeningDate movie's screening date
      * @param premiereEndDate end date of the movie's premiere period
      * @param contentRating movie's content rating
+     * @param poster movie's poster image
      * @return response
      */
     @SuppressWarnings("checkstyle:ParameterNumber")
-    @PostMapping("/movie")
+    @PostMapping(value = "/movie")
     public ResponseEntity addMovie(@RequestParam("name")
                                        final String name,
                                    @RequestParam("annotation")
@@ -112,7 +123,9 @@ public class MovieController {
                                    @RequestParam("duration")
                                        final int duration,
                                    @RequestParam("contentRating")
-                                       final String contentRating) {
+                                       final String contentRating,
+                                   @RequestPart("poster")
+                                       final MultipartFile poster) {
         Movie movie = new Movie(name, duration, annotation);
         movie.setYear(year);
         movie.setCountry(country);
@@ -122,8 +135,17 @@ public class MovieController {
         movie.setScreeningDate(LocalDate.parse(screeningDate));
         movie.setPremiereEndDate(LocalDate.parse(premiereEndDate));
         movie.setContentRating(contentRating);
-        movie.setPathToPoster("no.png");
         movieService.add(movie);
+
+        String movieId = movie.getId().toString();
+        if (poster.isEmpty()) {
+            File file = storageService.loadAsFile(NO_POSTER_FILE,
+                    POSTER_FOLDER_PATH);
+            storageService.store(file, movieId, POSTER_FOLDER_PATH);
+        } else {
+            storageService.store(poster, movieId, POSTER_FOLDER_PATH);
+        }
+
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -186,14 +208,43 @@ public class MovieController {
     }
 
     /**
+     * Edits existing movie's poster.
+     *
+     * @param id movie's id
+     * @param poster movie's new poster
+     * @return response
+     */
+    @PostMapping("/movie/{id}/poster")
+    public ResponseEntity editMoviePoster(@PathVariable("id")
+                                              final UUID id,
+                                          @RequestPart("poster")
+                                              final MultipartFile poster) {
+        storageService.store(poster, id.toString(), POSTER_FOLDER_PATH);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    /**
      * Deletes movie with given id.
      *
      * @param id identifier of the movie
      * @return response code
      */
     @DeleteMapping("/movie/{id}")
-    public ResponseEntity deleteMovie(@PathVariable("id") final String id) {
-        movieService.delete(UUID.fromString(id));
+    public ResponseEntity deleteMovie(@PathVariable("id") final UUID id) {
+        movieService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    /**
+     * Gets movie poster.
+     *
+     * @param id movie's id
+     * @return poster as bytes
+     */
+    @GetMapping(value = "/movie/{id}/poster")
+    @ResponseBody
+    public byte[] getMoviePoster(@PathVariable final UUID id)  {
+        return storageService.loadAsByteArray(id.toString(),
+                POSTER_FOLDER_PATH);
     }
 }

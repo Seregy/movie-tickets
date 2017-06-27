@@ -159,8 +159,7 @@
             filterPicker.bootstrapDP({
                 format: "dd-mm-yyyy",
                 autoclose: true,
-                todayHighlight: true,
-                startDate: new Date()
+                todayHighlight: true
             });
             filterPicker.bootstrapDP('setDate', new Date());
             filterPicker.bootstrapDP().on('changeDate', getSessions);

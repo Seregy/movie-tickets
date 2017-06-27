@@ -66,21 +66,21 @@
             <div class="col-lg-6">
                 <div class="tab-content">
                     <div id="add-movie" class="collapse">
-                        <div class ="menu">
-                            <form role="form" action="" id="session-form" onsubmit="return false;">
-                                <input id="movie-name" type="text" class="form-control data-input"
+                        <div class="menu">
+                            <form role="form" action="" id="movie-form" onsubmit="return false;">
+                                <input name="name" id="movie-name" type="text" class="form-control data-input"
                                        placeholder="Movie name" maxlength="50" required>
-                                <textarea id="movie-description"
+                                <textarea name="annotation" id="movie-description"
                                           class="form-control data-input" rows="5"  placeholder="Description"></textarea>
-                                <input type="text" id="movie-year"
+                                <input name="year" type="text" id="movie-year"
                                        class="form-control data-input" pattern="^\d{4}$" placeholder="Year" maxlength="4">
-                                <input type="text" id="movie-country"
+                                <input name="country" type="text" id="movie-country"
                                        class="form-control data-input" placeholder="Country" maxlength="40">
-                                <input type="text" id="movie-genres"
+                                <input name="genres" type="text" id="movie-genres"
                                        class="form-control data-input" placeholder="Genres" maxlength="500">
-                                <input type="text" id="movie-cast"
+                                <input name="cast" type="text" id="movie-cast"
                                        class="form-control data-input" placeholder="Cast" maxlength="500">
-                                <input type="text" id="movie-director"
+                                <input name="director" type="text" id="movie-director"
                                        class="form-control data-input" placeholder="Director" maxlength="60">
 
                                 <div class="input-group data-input">
@@ -103,11 +103,14 @@
                                     </div>
                                 </div>
 
-                                <input id="movie-duration" type="text"
+                                <input name="duration" id="movie-duration" type="text"
                                        class="form-control data-input" placeholder="Duration (min.)" maxlength="5">
-                                <input id="movie-content" type="text"
+                                <input name="contentRating" id="movie-content" type="text"
                                        class="form-control data-input" placeholder="Content rating" maxlength="5">
-                                <span class="data-input">Poster:<input type="file" accept=".jpeg,.png,.jpg" class="data-input" /></span>
+                                <span class="data-input">Poster:
+                                    <input name="poster" id="movie-poster"
+                                           type="file" accept=".jpeg,.png,.jpg" class="data-input" />
+                                </span>
                                 <button id="save-movie" type="submit" class="btn btn-success">Save</button>
                             </form>
                         </div>
@@ -120,21 +123,25 @@
     </div>
 </div>
 
-<!-- Modal -->
-<div id="downloadWindow" class="modal fade" role="dialog">
+<div id="upload-modal" class="modal fade" role="dialog">
     <div class="modal-dialog">
-
-        <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Upload file</h4>
+                <button type="button" class="close" data-dismiss="modal">×</button>
+                <h4 class="modal-title">Upload poster</h4>
             </div>
             <div class="modal-body">
-                Change poster:<input type="file" accept=".jpeg,.gif,.jpg" class="data-input" />
+                <form id="change-poster-form">
+                    <div class="form-group">
+                        <label for="poster-input" class="control-label">New poster:</label>
+                        <input id="poster-input" name="poster" type="file" accept=".jpeg,.png,.jpg"
+                               class="data-input" />
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button id="save-poster" type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
             </div>
         </div>
 
@@ -176,6 +183,11 @@
             $('#save-movie').on('click', addMovie);
             movies.on('click', '.button-cancel', deleteMovie);
             $('#button-filter').on('click', getMovies);
+            $('#upload-modal').on('show.bs.modal', function (event) {
+                var movieId = $(event.relatedTarget).data('movie-id');
+                $('#save-poster').data('movie-id', movieId);
+            });
+            $('#save-poster').on('click', savePoster);
 
             hideSpinner();
             getMovies();
@@ -195,13 +207,6 @@
 
         function addMovie() {
             var addPath = /*[[@{@{/movie}} ]]*/'../movie';
-            var name = $('#movie-name').val();
-            var annotation = $('#movie-description').val();
-            var year = $('#movie-year').val();
-            var country = $('#movie-country').val();
-            var genres = $('#movie-genres').val();
-            var cast = $('#movie-cast').val();
-            var director = $('#movie-director').val();
 
             var date1 = screeningPicker.bootstrapDP('getDate');
             var screeningDate = date1.getFullYear() +
@@ -212,21 +217,19 @@
             var premiereEndDate = date2.getFullYear() +
                 '-' + pad(date2.getMonth() + 1) +
                 '-' + pad(date2.getDate());
-            var duration = $('#movie-duration').val();
-            var contentRating = $('#movie-content').val();
+            var form = document.getElementById('movie-form');
+            var formData = new FormData(form);
+            formData.append("screeningDate", screeningDate);
+            formData.append("premiereEndDate", premiereEndDate);
 
             $.ajax({
                 url: addPath,
                 type: 'POST',
-                data: {"name": name, "annotation": annotation,
-                    "year": year, "country": country,
-                    "genres": genres, "cast": cast,
-                    "director": director,
-                    "screeningDate": screeningDate,
-                    "premiereEndDate": premiereEndDate,
-                    "duration": duration,
-                    "contentRating": contentRating},
+                data: formData,
+                processData: false,
+                contentType: false,
                 success: function() {
+                    $('#add-movie').collapse('hide');
                     getMovies();
                 }
             });
@@ -271,6 +274,25 @@
                 },
                 error : function () {
                     data.promise.reject();
+                }
+            });
+        }
+
+        function savePoster(event) {
+            var editPath = /*[[@{@{/movie/}} ]]*/'../movie/';
+            var id = $(this).data('movie-id');
+            editPath = editPath + id + "/poster";
+            var form = document.getElementById('change-poster-form');
+            var formData = new FormData(form);
+            $.ajax({
+                url: editPath,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function() {
+                    $('#poster-input').val('');
+                    getMovies();
                 }
             });
         }

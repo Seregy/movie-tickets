@@ -192,7 +192,7 @@ public class AppConfiguration {
     }
 
     /**
-     * Gets an Instance of
+     * Gets an instance of
      * {@link PasswordEncoder} object.
      *
      * @return password encoder

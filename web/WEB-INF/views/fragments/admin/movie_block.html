@@ -14,17 +14,20 @@
             </li>
             <div class="row collapse menu white-bg" th:attr="id=${movie.id}">
                 <div class="col-xs-3">
-                    <div class="itemsContainer">
+                    <div class="items-container">
                         <div class="image">
-                            <a data-toggle="modal" data-target="#downloadWindow">
+                            <a class="poster" data-toggle="modal"
+                               data-target="#upload-modal" th:attr="data-movie-id=${movie.id}">
                                 <img class="img-thumbnail img-responsive"
-                                     th:src="@{/resources/images/movies/{poster}(poster=${movie.pathToPoster})}"
+                                     th:src="@{/movie/{id}/poster(id=${movie.id})}"
                                      th:attr="data-pk=${movie.id}, data-name='poster'"
                                      src="">
+                                <div class="upload-overlay">
+                                    <button type="button" class="btn btn-default btn-lg">
+                                        <span class="glyphicon glyphicon-upload" aria-hidden="true"></span> Upload
+                                    </button>
+                                </div>
                             </a>
-                        </div>
-                        <div class="play">
-                            <img th:src="@{/resources/images/download-icon.png}" src=""/>
                         </div>
                     </div>
                 </div>

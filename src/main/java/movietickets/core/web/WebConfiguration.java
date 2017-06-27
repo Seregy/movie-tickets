@@ -5,6 +5,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.format.datetime.DateFormatter;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
@@ -25,6 +26,8 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 @ComponentScan(basePackages = "movietickets")
 @EnableWebMvc
 public class WebConfiguration extends WebMvcConfigurerAdapter {
+    private static final int MAX_FILE_UPLOAD_SIZE = 5 * 1024 * 1024;
+
     /**
      * Enables default servlet handling.
      *
@@ -112,5 +115,18 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
         templateEngine.addDialect(new Java8TimeDialect());
         templateEngine.addDialect(new SpringSecurityDialect());
         return templateEngine;
+    }
+
+    /**
+     * Gets an instance of {@link CommonsMultipartResolver} object
+     * for handling web multipart content.
+     *
+     * @return multipart resolver.
+     */
+    @Bean("multipartResolver")
+    public CommonsMultipartResolver getCommonsMultipartResolver() {
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+        resolver.setMaxUploadSizePerFile(MAX_FILE_UPLOAD_SIZE);
+        return resolver;
     }
 }

@@ -31,7 +31,6 @@ public class Movie {
     private LocalDate premiereEndDate;
     private int duration;
     private String contentRating;
-    private String pathToPoster;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "movie")
     @OrderBy("sessionStart ASC")
@@ -264,24 +263,6 @@ public class Movie {
     }
 
     /**
-     * Gets path to movie's poster.
-     *
-     * @return path to poster
-     */
-    public String getPathToPoster() {
-        return pathToPoster;
-    }
-
-    /**
-     * Sets path to movie's poster.
-     *
-     * @param pathToPoster path to poster.
-     */
-    public void setPathToPoster(final String pathToPoster) {
-        this.pathToPoster = pathToPoster;
-    }
-
-    /**
      * Gets the list of session objects that belong to the movie.
      *
      * @return sessions {@link Session}
@@ -365,7 +346,6 @@ public class Movie {
                 + ", premiereEndDate=" + premiereEndDate
                 + ", duration=" + duration
                 + ", contentRating='" + contentRating + '\''
-                + ", pathToPoster='" + pathToPoster + '\''
                 + '}';
     }
 }

@@ -31,8 +31,7 @@
     <div class="row">
         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
             <div class="thumbnail">
-                <img src=""
-                     th:src="@{/resources/images/movies/{poster}(poster=${movie.pathToPoster})}">
+                <img src="" th:src="@{/movie/{id}/poster(id=${movie.id})}">
                 <div class="caption">
                     <p class='info-header'>Year</p>
                     <p class='film-info' th:text="${movie.year}">Movie year</p>

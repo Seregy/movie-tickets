@@ -158,12 +158,4 @@ public interface MovieService {
      * @param newRating new content rating
      */
     void changeContentRating(UUID movieId, String newRating);
-
-    /**
-     * Changes movie's poster path.
-     *
-     * @param movieId movie's id
-     * @param newPath new path
-     */
-    void changePathToPoster(UUID movieId, String newPath);
 }
