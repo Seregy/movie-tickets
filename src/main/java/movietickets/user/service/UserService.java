@@ -15,13 +15,6 @@ public interface UserService {
     /**
      * Registers new user.
      *
-     * @param user new user
-     */
-    void register(User user);
-
-    /**
-     * Registers new user.
-     *
      * @param name user's name
      * @param password user's password
      * @param roleId user's role identifier
@@ -61,13 +54,6 @@ public interface UserService {
      * @return list of tickets
      */
     List<Ticket> getTickets(UUID userId);
-
-    /**
-     * Deletes user.
-     *
-     * @param user user to delete
-     */
-    void delete(User user);
 
     /**
      * Deletes user.

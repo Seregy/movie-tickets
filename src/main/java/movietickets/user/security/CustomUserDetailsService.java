@@ -1,9 +1,9 @@
-package movietickets.user.service;
+package movietickets.user.security;
 
-import movietickets.user.CustomUserDetails;
 import movietickets.user.User;
 import movietickets.user.permission.Permission;
 import movietickets.user.role.Role;
+import movietickets.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

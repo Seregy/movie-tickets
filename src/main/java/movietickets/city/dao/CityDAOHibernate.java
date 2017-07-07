@@ -10,18 +10,27 @@ import org.springframework.stereotype.Repository;
  * @author Seregy
  */
 @Repository
-public final class CityDAOHibernate
+public class CityDAOHibernate
         extends AbstractDAOHibernate<City> implements CityDAO {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<City> getEntityClass() {
         return City.class;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getEntityName() {
         return "City";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getOrderColumn() {
         return "name";

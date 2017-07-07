@@ -56,6 +56,15 @@ public class Role implements GrantedAuthority {
     }
 
     /**
+     * Sets role's id.
+     *
+     * @param id unique identifier
+     */
+    public void setId(final UUID id) {
+        this.id = id;
+    }
+
+    /**
      * Gets role's name.
      *
      * @return name

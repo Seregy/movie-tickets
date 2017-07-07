@@ -1,7 +1,7 @@
 package movietickets.user.web;
 
 import movietickets.ticket.Ticket;
-import movietickets.user.CustomUserDetails;
+import movietickets.user.security.CustomUserDetails;
 import movietickets.user.User;
 import movietickets.user.role.Role;
 import movietickets.user.role.service.RoleService;

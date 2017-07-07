@@ -9,7 +9,6 @@ import movietickets.user.User;
 import movietickets.user.dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -65,7 +64,7 @@ public class TicketServiceDAO implements TicketService {
     /**
      * {@inheritDoc}
      */
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional
     @Override
     public List<Ticket> getAll(final UUID userId) {
         return ticketDAO.findAll().stream()
@@ -77,7 +76,7 @@ public class TicketServiceDAO implements TicketService {
     /**
      * {@inheritDoc}
      */
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional
     @Override
     public void delete(final Ticket ticket) {
         delete(ticket.getId());

@@ -6,6 +6,9 @@ import movietickets.user.dao.UserDAO;
 import movietickets.user.role.Role;
 import movietickets.user.role.dao.RoleDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,15 +42,6 @@ public class UserServiceDAO implements UserService {
         this.userDAO = userDAO;
         this.roleDAO = roleDAO;
         this.passwordEncoder = passwordEncoder;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional
-    @Override
-    public void register(final User user) {
-        userDAO.add(user);
     }
 
     /**
@@ -91,6 +85,7 @@ public class UserServiceDAO implements UserService {
     /**
      * {@inheritDoc}
      */
+    @PostFilter("hasPermission(filterObject, 'read')")
     @Transactional
     @Override
     public List<User> getAll() {
@@ -100,36 +95,31 @@ public class UserServiceDAO implements UserService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#userId, 'User', 'read')")
     @Transactional
     @Override
-    public List<Ticket> getTickets(final UUID userId) {
+    public List<Ticket> getTickets(@P("userId") final UUID userId) {
         return new ArrayList<>(userDAO.find(userId).getTickets());
     }
 
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#id, 'User', 'delete')")
     @Transactional
     @Override
-    public void delete(final User user) {
-        delete(user.getId());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional
-    @Override
-    public void delete(final UUID id) {
+    public void delete(@P("id") final UUID id) {
         userDAO.delete(id);
     }
 
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#userId, 'User', 'edit')")
     @Transactional
     @Override
-    public void changeName(final UUID userId, final String newName) {
+    public void changeName(@P("userId") final UUID userId,
+                           final String newName) {
         User user = userDAO.find(userId);
         user.setName(newName);
         userDAO.update(user);
@@ -138,9 +128,11 @@ public class UserServiceDAO implements UserService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#userId, 'User', 'edit')")
     @Transactional
     @Override
-    public void changePassword(final UUID userId, final String newPassword) {
+    public void changePassword(@P("userId") final UUID userId,
+                               final String newPassword) {
         User user = userDAO.find(userId);
         user.setPassword(passwordEncoder.encode(newPassword));
         userDAO.update(user);
@@ -149,9 +141,11 @@ public class UserServiceDAO implements UserService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#userId, 'User', 'edit')")
     @Transactional
     @Override
-    public void changeEmail(final UUID userId, final String newEmail) {
+    public void changeEmail(@P("userId") final UUID userId,
+                            final String newEmail) {
         User user = userDAO.find(userId);
         user.setEmail(newEmail);
         userDAO.update(user);

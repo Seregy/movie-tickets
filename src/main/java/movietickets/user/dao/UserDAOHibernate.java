@@ -10,18 +10,27 @@ import movietickets.user.User;
  * @author Seregy
  */
 @Repository
-public final class UserDAOHibernate
+public class UserDAOHibernate
         extends AbstractDAOHibernate<User> implements UserDAO {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<User> getEntityClass() {
         return User.class;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getEntityName() {
         return "User";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getOrderColumn() {
         return "name";

@@ -4,13 +4,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- * Configuration class for Spring's IoC.
- * Contains beans' definitions that are used
- * in the tests.
+ * Configuration class for testing
+ * DAO.
  *
  * @author Seregy
  */
 @Configuration
 @Import(AppConfiguration.class)
-public class TestConfiguration {
+public class DAOTestConfiguration {
 }

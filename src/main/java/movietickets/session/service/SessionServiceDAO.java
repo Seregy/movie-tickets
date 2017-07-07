@@ -12,7 +12,6 @@ import movietickets.session.Session;
 import movietickets.session.dao.SessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
@@ -157,7 +156,7 @@ public class SessionServiceDAO implements SessionService {
     /**
      * {@inheritDoc}
      */
-    @Transactional(propagation = Propagation.MANDATORY)
+    @Transactional
     @Override
     public void delete(final Session session) {
         delete(session.getId());

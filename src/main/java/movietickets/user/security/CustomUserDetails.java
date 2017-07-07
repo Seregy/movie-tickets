@@ -1,4 +1,4 @@
-package movietickets.user;
+package movietickets.user.security;
 
 import movietickets.user.role.Role;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.UUID;
 
 /**
- * Model that represents information about {@link User},
+ * Model that represents information about {@link movietickets.user.User},
  * retrieved by a {@link UserDetailsService}.
  *
  * @author Seregy

@@ -24,9 +24,8 @@ import static org.junit.Assert.*;
  * @author Seregy
  */
 @WebAppConfiguration
-@Component
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = movietickets.core.TestConfiguration.class)
+@ContextConfiguration(classes = movietickets.core.DAOTestConfiguration.class)
 @Transactional
 public class UserDAOTest {
     @Autowired

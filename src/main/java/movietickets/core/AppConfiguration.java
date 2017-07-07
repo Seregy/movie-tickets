@@ -1,17 +1,5 @@
 package movietickets.core;
 
-import movietickets.cinema.dao.CinemaDAO;
-import movietickets.cinema.dao.CinemaDAOHibernate;
-import movietickets.city.dao.CityDAO;
-import movietickets.city.dao.CityDAOHibernate;
-import movietickets.hall.dao.HallDAO;
-import movietickets.hall.dao.HallDAOHibernate;
-import movietickets.movie.dao.MovieDAO;
-import movietickets.movie.dao.MovieDAOHibernate;
-import movietickets.session.dao.SessionDAO;
-import movietickets.session.dao.SessionDAOHibernate;
-import movietickets.user.role.dao.RoleDAO;
-import movietickets.user.role.dao.RoleDAOHibernate;
 import org.springframework.context.annotation.*;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -19,12 +7,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import movietickets.seat.dao.SeatDAO;
-import movietickets.seat.dao.SeatDAOHibernate;
-import movietickets.ticket.dao.TicketDAO;
-import movietickets.ticket.dao.TicketDAOHibernate;
-import movietickets.user.dao.UserDAO;
-import movietickets.user.dao.UserDAOHibernate;
 
 import javax.persistence.EntityManagerFactory;
 import java.util.HashMap;
@@ -43,105 +25,6 @@ import java.util.Map;
 @EnableTransactionManagement
 public class AppConfiguration {
     /**
-     * Gets an instance of {@link CinemaDAOHibernate} object.
-     *
-     * @return cinema dao object
-     */
-    @Primary
-    @Bean
-    public CinemaDAO getHibernateCinemaDAO() {
-        return new CinemaDAOHibernate();
-    }
-
-    /**
-     * Gets an instance of {@link CityDAOHibernate} object.
-     *
-     * @return city dao object
-     */
-    @Primary
-    @Bean
-    public CityDAO getHibernateCityDAO() {
-        return new CityDAOHibernate();
-    }
-
-    /**
-     * Gets an instance of {@link HallDAOHibernate} object.
-     *
-     * @return hall dao object
-     */
-    @Primary
-    @Bean
-    public HallDAO getHibernateHallDAO() {
-        return new HallDAOHibernate();
-    }
-
-    /**
-     * Gets an instance of {@link movietickets.movie.Movie} object.
-     *
-     * @return movie dao object
-     */
-    @Primary
-    @Bean
-    public MovieDAO getHibernateMovieDAO() {
-        return new MovieDAOHibernate();
-    }
-
-    /**
-     * Gets an instance of {@link SeatDAOHibernate} object.
-     *
-     * @return layout dao object
-     */
-    @Primary
-    @Bean
-    public SeatDAO getHibernateSeatDAO() {
-        return new SeatDAOHibernate();
-    }
-
-    /**
-     * Gets an instance of {@link SessionDAOHibernate} object.
-     *
-     * @return layout dao object
-     */
-    @Primary
-    @Bean
-    public SessionDAO getHibernateSessionDAO() {
-        return new SessionDAOHibernate();
-    }
-
-    /**
-     * Gets an instance of {@link TicketDAOHibernate} object.
-     *
-     * @return ticket dao object
-     */
-    @Primary
-    @Bean
-    public TicketDAO getHibernateTicketDAO() {
-        return new TicketDAOHibernate();
-    }
-
-    /**
-     * Gets an instance of {@link UserDAOHibernate} object.
-     *
-     * @return user dao object
-     */
-    @Primary
-    @Bean
-    public UserDAO getHibernateUserDAO() {
-        return new UserDAOHibernate();
-    }
-
-    /**
-     * Gets an instance of {@link RoleDAOHibernate} object.
-     *
-     * @return role dao object
-     */
-    @Primary
-    @Bean
-    public RoleDAO getHibernateRoleDAO() {
-        return new RoleDAOHibernate();
-    }
-
-    /**
      * Gets an instance of
      * {@link LocalContainerEntityManagerFactoryBean} object,
      * created either from AWS persistence
@@ -150,7 +33,6 @@ public class AppConfiguration {
      *
      * @return entity manager factory
      */
-    @Primary
     @Bean
     public LocalContainerEntityManagerFactoryBean getEntityManagerFactory() {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean =
@@ -169,7 +51,6 @@ public class AppConfiguration {
             properties.put("javax.persistence.jdbc.password",
                     System.getProperty("RDS_PASSWORD"));
             properties.put("javax.persistence.jdbc.url", connection);
-
             entityManagerFactoryBean.setPersistenceUnitName("AWS");
             entityManagerFactoryBean.setJpaPropertyMap(properties);
         }

@@ -10,18 +10,27 @@ import org.springframework.stereotype.Repository;
  * @author Seregy
  */
 @Repository
-public final class PermissionDAOHibernate
+public class PermissionDAOHibernate
         extends AbstractDAOHibernate<Permission> implements PermissionDAO {
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Class<Permission> getEntityClass() {
         return Permission.class;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getEntityName() {
         return "Permission";
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String getOrderColumn() {
         return "name";
