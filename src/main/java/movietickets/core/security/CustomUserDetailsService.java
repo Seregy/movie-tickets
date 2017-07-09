@@ -1,4 +1,4 @@
-package movietickets.user.security;
+package movietickets.core.security;
 
 import movietickets.user.User;
 import movietickets.user.permission.Permission;

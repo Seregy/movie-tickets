@@ -1,8 +1,8 @@
-package movietickets.user;
+package movietickets.core;
 
 import movietickets.user.permission.Permission;
 import movietickets.user.role.Role;
-import movietickets.user.security.CustomUserDetails;
+import movietickets.core.security.CustomUserDetails;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

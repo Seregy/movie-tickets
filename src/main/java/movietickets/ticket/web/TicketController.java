@@ -2,7 +2,7 @@ package movietickets.ticket.web;
 
 import movietickets.ticket.Ticket;
 import movietickets.ticket.service.TicketService;
-import movietickets.user.security.CustomUserDetails;
+import movietickets.core.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

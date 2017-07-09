@@ -1,4 +1,4 @@
-package movietickets.user;
+package movietickets.core;
 
 import org.springframework.security.test.context.support.WithSecurityContext;
 

@@ -4,7 +4,7 @@ import movietickets.hall.layout.SeatType;
 import movietickets.seat.Seat;
 import movietickets.ticket.Ticket;
 import movietickets.user.User;
-import movietickets.user.WithMockCustomUser;
+import movietickets.core.WithMockCustomUser;
 import movietickets.user.dao.UserDAO;
 import movietickets.user.role.Role;
 import movietickets.user.role.dao.RoleDAO;
@@ -97,7 +97,7 @@ public class UserServiceDAOTest {
         assertTrue(users.get(0).getName().equals("user"));
     }
 
-    @WithMockCustomUser(authorities = "USER_READ")
+    @WithMockCustomUser(authorities = "USER_READ_ALL")
     @Test
     public void getAllUsersWithPermission() {
         Role role = addRole("user", UUID.fromString("00000000-0000-0000-0000-000000000001"));
@@ -140,7 +140,7 @@ public class UserServiceDAOTest {
         getUserTickets();
     }
 
-    @WithMockCustomUser(authorities = "USER_READ")
+    @WithMockCustomUser(authorities = "USER_READ_ALL")
     @Test
     public void getUserTicketsWithPermission() {
         getUserTickets();
@@ -173,7 +173,7 @@ public class UserServiceDAOTest {
         deleteUser();
     }
 
-    @WithMockCustomUser(authorities = {"USER_READ", "USER_DELETE"})
+    @WithMockCustomUser(authorities = {"USER_READ_ALL", "USER_DELETE_ALL"})
     @Test
     public void deleteUserWithPermission() {
         deleteUser();
@@ -206,7 +206,7 @@ public class UserServiceDAOTest {
         changeUserName();
     }
 
-    @WithMockCustomUser(authorities = {"USER_READ", "USER_EDIT"})
+    @WithMockCustomUser(authorities = {"USER_READ_ALL", "USER_EDIT_ALL"})
     @Test
     public void changeUserNameWithPermission() {
         changeUserName();
@@ -239,7 +239,7 @@ public class UserServiceDAOTest {
         changeUserPassword();
     }
 
-    @WithMockCustomUser(authorities = {"USER_READ", "USER_EDIT"})
+    @WithMockCustomUser(authorities = {"USER_READ_ALL", "USER_EDIT_ALL"})
     @Test
     public void changeUserPasswordWithPermission() {
         changeUserPassword();
@@ -272,7 +272,7 @@ public class UserServiceDAOTest {
         changeUserEmail();
     }
 
-    @WithMockCustomUser(authorities = {"USER_READ", "USER_EDIT"})
+    @WithMockCustomUser(authorities = {"USER_READ_ALL", "USER_EDIT_ALL"})
     @Test
     public void changeUserEmailWithPermission() {
         changeUserEmail();
