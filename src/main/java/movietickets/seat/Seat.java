@@ -1,5 +1,6 @@
 package movietickets.seat;
 
+import movietickets.core.EntityWithId;
 import movietickets.hall.layout.SeatType;
 import movietickets.session.Session;
 import movietickets.ticket.Ticket;
@@ -14,7 +15,7 @@ import java.util.UUID;
  * @author Seregy
  */
 @Entity
-public class Seat {
+public class Seat implements EntityWithId {
     @SuppressWarnings("checkstyle:MagicNumber")
     @Id
     @GeneratedValue
@@ -60,6 +61,7 @@ public class Seat {
      *
      * @return unique identifier
      */
+    @Override
     public UUID getId() {
         return id;
     }

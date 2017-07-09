@@ -1,5 +1,6 @@
 package movietickets.movie;
 
+import movietickets.core.EntityWithId;
 import movietickets.session.Session;
 
 import javax.persistence.*;
@@ -12,7 +13,7 @@ import java.util.*;
  * @author CatReeena
  */
 @Entity
-public class Movie {
+public class Movie implements EntityWithId {
     @SuppressWarnings("CheckStyle")
     @Id
     @GeneratedValue
@@ -60,6 +61,7 @@ public class Movie {
      *
      * @return unique identifier
      */
+    @Override
     public UUID getId() {
        return id;
     }

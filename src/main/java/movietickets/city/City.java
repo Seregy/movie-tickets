@@ -1,6 +1,7 @@
 package movietickets.city;
 
 import movietickets.cinema.Cinema;
+import movietickets.core.EntityWithId;
 
 import javax.persistence.*;
 import java.io.*;
@@ -17,7 +18,7 @@ import java.util.UUID;
  * @author Seregy
  */
 @Entity
-public class City implements Serializable {
+public class City implements Serializable, EntityWithId {
     @SuppressWarnings("checkstyle:MagicNumber")
     @Id
     @GeneratedValue
@@ -49,6 +50,7 @@ public class City implements Serializable {
      *
      * @return unique identifier
      */
+    @Override
     public UUID getId() {
         return id;
     }

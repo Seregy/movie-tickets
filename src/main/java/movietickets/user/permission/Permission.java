@@ -1,5 +1,6 @@
 package movietickets.user.permission;
 
+import movietickets.core.EntityWithId;
 import movietickets.user.role.Role;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -15,7 +16,7 @@ import java.util.UUID;
  * @author Seregy
  */
 @Entity
-public class Permission implements GrantedAuthority {
+public class Permission implements GrantedAuthority, EntityWithId {
     @SuppressWarnings("checkstyle:MagicNumber")
     @Id
     @GeneratedValue
@@ -44,10 +45,11 @@ public class Permission implements GrantedAuthority {
     }
 
     /**
-     * Gets permission's id.
+     * Gets unique identifier of the permission.
      *
      * @return unique identifier
      */
+    @Override
     public UUID getId() {
         return id;
     }

@@ -1,6 +1,7 @@
 package movietickets.hall;
 
 import movietickets.cinema.Cinema;
+import movietickets.core.EntityWithId;
 import movietickets.hall.layout.Layout;
 import movietickets.session.Session;
 
@@ -12,7 +13,7 @@ import java.util.*;
  * @author CatReeena
  */
 @Entity
-public class Hall {
+public class Hall implements EntityWithId {
     @SuppressWarnings("checkstyle:MagicNumber")
     @Id
     @GeneratedValue
@@ -47,6 +48,7 @@ public class Hall {
      *
      * @return unique identifier
      */
+    @Override
     public UUID getId() {
         return id;
     }
