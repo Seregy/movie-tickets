@@ -1,5 +1,6 @@
 package movietickets.core;
 
+import movietickets.core.dao.DAO;
 import movietickets.user.User;
 import movietickets.user.dao.UserDAO;
 import movietickets.user.dao.UserDAOHibernate;
@@ -25,87 +26,13 @@ public class ServiceTestConfiguration {
     @Bean
     @Primary
     public UserDAO getMockedUserDAO() {
-        UserDAO dao = Mockito.mock(UserDAOHibernate.class);
-
-        List<User> users = new ArrayList<>();
-
-        Mockito.when(dao.find(Mockito.any())).then(invocation -> {
-            UUID id = (UUID) invocation.getArguments()[0];
-            return users.stream()
-                    .filter(u -> u.getId().equals(id))
-                    .findFirst()
-                    .orElse(null);
-        });
-        Mockito.when(dao.findAll()).thenReturn(users);
-        Mockito.when(dao.add(Mockito.any())).then(invocation -> {
-            User user = (User) invocation.getArguments()[0];
-            return users.add(user);
-        });
-        Mockito.when(dao.update(Mockito.any())).then(invocation -> {
-            User updatedUser = (User) invocation.getArguments()[0];
-            User oldUser = users.stream()
-                    .filter(u -> u.getId().equals(updatedUser.getId()))
-                    .findAny()
-                    .orElse(null);
-            if (oldUser == null) {
-                return false;
-            }
-            users.set(users.indexOf(oldUser), updatedUser);
-            return true;
-        });
-        Mockito.when(dao.delete(Mockito.any())).then(invocation -> {
-            UUID id = (UUID) invocation.getArguments()[0];
-            User user = users.stream()
-                    .filter(u -> u.getId().equals(id))
-                    .findAny()
-                    .orElse(null);
-            return user != null && users.remove(user);
-        });
-
-        return dao;
+        return getMockedDAO(UserDAOHibernate.class);
     }
 
     @Bean
     @Primary
     public RoleDAO getMockedRoleDAO() {
-        RoleDAO dao = Mockito.mock(RoleDAOHibernate.class);
-
-        List<Role> roles = new ArrayList<>();
-
-        Mockito.when(dao.find(Mockito.any())).then(invocation -> {
-            UUID id = (UUID) invocation.getArguments()[0];
-            return roles.stream()
-                    .filter(r -> r.getId().equals(id))
-                    .findFirst()
-                    .orElse(null);
-        });
-        Mockito.when(dao.findAll()).thenReturn(roles);
-        Mockito.when(dao.add(Mockito.any())).then(invocation -> {
-            Role role = (Role) invocation.getArguments()[0];
-            return roles.add(role);
-        });
-        Mockito.when(dao.update(Mockito.any())).then(invocation -> {
-            Role updatedRole = (Role) invocation.getArguments()[0];
-            Role oldRole = roles.stream()
-                    .filter(r -> r.getId().equals(updatedRole.getId()))
-                    .findAny()
-                    .orElse(null);
-            if (oldRole == null) {
-                return false;
-            }
-            roles.set(roles.indexOf(oldRole), updatedRole);
-            return true;
-        });
-        Mockito.when(dao.delete(Mockito.any())).then(invocation -> {
-            UUID id = (UUID) invocation.getArguments()[0];
-            Role role = roles.stream()
-                    .filter(r -> r.getId().equals(id))
-                    .findAny()
-                    .orElse(null);
-            return role != null && roles.remove(role);
-        });
-
-        return dao;
+        return getMockedDAO(RoleDAOHibernate.class);
     }
 
     @Bean
@@ -122,5 +49,47 @@ public class ServiceTestConfiguration {
                 return rawPassword.equals(encodedPassword);
             }
         };
+    }
+
+    private <E extends EntityWithId, T extends DAO<E>> T getMockedDAO(Class<? extends T> daoClass) {
+        T mockedDAO = Mockito.mock(daoClass);
+        List<E> entities = new ArrayList<>();
+
+        Mockito.when(mockedDAO.find(Mockito.any())).then(invocation -> {
+            UUID id = (UUID) invocation.getArguments()[0];
+            return entities.stream()
+                    .filter(e -> e.getId().equals(id))
+                    .findFirst()
+                    .orElse(null);
+        });
+        Mockito.when(mockedDAO.findAll()).thenReturn(entities);
+        Mockito.when(mockedDAO.add(Mockito.any())).then(invocation -> {
+            @SuppressWarnings("unchecked")
+            E entity = (E) invocation.getArguments()[0];
+            return entities.add(entity);
+        });
+        Mockito.when(mockedDAO.update(Mockito.any())).then(invocation -> {
+            @SuppressWarnings("unchecked")
+            E updatedEntity = (E) invocation.getArguments()[0];
+            E oldEntity = entities.stream()
+                    .filter(e -> e.getId().equals(updatedEntity.getId()))
+                    .findAny()
+                    .orElse(null);
+            if (oldEntity == null) {
+                return false;
+            }
+            entities.set(entities.indexOf(oldEntity), updatedEntity);
+            return true;
+        });
+        Mockito.when(mockedDAO.delete(Mockito.any())).then(invocation -> {
+            UUID id = (UUID) invocation.getArguments()[0];
+            E entity = entities.stream()
+                    .filter(e -> e.getId().equals(id))
+                    .findAny()
+                    .orElse(null);
+            return entity != null && entities.remove(entity);
+        });
+
+        return mockedDAO;
     }
 }
