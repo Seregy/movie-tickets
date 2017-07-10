@@ -22,8 +22,8 @@ import java.util.UUID;
  * Allows access to the owner of the object(if target is
  * an instance of {@link User} or {@link Ticket}) and
  * to the user with necessary permission.
- * Permissions must start with the target's simple class name(e.g. User) and
- * contain either a String representation of the target's id(e.g.
+ * Permissions must contain target's simple class name(e.g. User) and
+ * either a String representation of the target's id(e.g.
  * 'cinema_edit_00000000-0000-0000-0000-000000000000') or 'all' keyword(e.g.
  * 'cinema_edit_all').
  *
@@ -124,7 +124,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
      * @param targetType a String representing the target's type (usually a Java
      * classname). Not null.
      * @param permission a String representation of the permission.
-     *                  Must start with the target's simple class
+     *                  Must contain target's simple class
      *                  name(e.g. User). Not null.
      * @param targetId a String representation of the identifier
      *                for the object instance. Can be null.
@@ -137,7 +137,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
         for (GrantedAuthority grantedAuthority
                 : authentication.getAuthorities()) {
             String authority = grantedAuthority.getAuthority();
-            if (StringUtils.startsWithIgnoreCase(authority, targetType)) {
+            if (StringUtils.containsIgnoreCase(authority, targetType)) {
                 if (StringUtils.containsIgnoreCase(authority, permission)) {
                     if (targetId != null) {
                         if (StringUtils.containsIgnoreCase(authority,
