@@ -36,20 +36,6 @@ public interface TicketService {
     List<Ticket> getAll(UUID userId);
 
     /**
-     * Deletes ticket.
-     *
-     * @param ticket ticket to delete
-     */
-    void delete(Ticket ticket);
-
-    /**
-     * Deletes ticket.
-     *
-     * @param id id of the ticket to delete
-     */
-    void delete(UUID id);
-
-    /**
      * Buys specified seat for specified user
      * and returns new ticket. Only available seats
      * can be bought.
@@ -78,7 +64,6 @@ public interface TicketService {
      * ticket.
      *
      * @param ticketId ticket's id
-     * @param userId user's id
      */
-    void cancel(UUID ticketId, UUID userId);
+    void cancel(UUID ticketId);
 }

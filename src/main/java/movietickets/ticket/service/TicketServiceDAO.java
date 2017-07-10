@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class TicketServiceDAO implements TicketService {
     private final TicketDAO ticketDAO;
-    private final SeatDAO seatDao;
+    private final SeatDAO seatDAO;
     private final UserDAO userDAO;
 
     /**
@@ -31,15 +31,15 @@ public class TicketServiceDAO implements TicketService {
      * and User DAO.
      *
      * @param ticketDAO ticket data access object
-     * @param seatDao seat data access object
+     * @param seatDAO seat data access object
      * @param userDAO user data access object
      */
     @Autowired
     public TicketServiceDAO(final TicketDAO ticketDAO,
-                            final SeatDAO seatDao,
+                            final SeatDAO seatDAO,
                             final UserDAO userDAO) {
         this.ticketDAO = ticketDAO;
-        this.seatDao = seatDao;
+        this.seatDAO = seatDAO;
         this.userDAO = userDAO;
     }
 
@@ -78,26 +78,8 @@ public class TicketServiceDAO implements TicketService {
      */
     @Transactional
     @Override
-    public void delete(final Ticket ticket) {
-        delete(ticket.getId());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional
-    @Override
-    public void delete(final UUID id) {
-        ticketDAO.delete(id);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional
-    @Override
     public Ticket buy(final UUID seatId, final UUID userId) {
-        Seat seat = seatDao.find(seatId);
+        Seat seat = seatDAO.find(seatId);
         User user = userDAO.find(userId);
 
         if (seat.getSeatStatus() == SeatStatus.AVAILABLE) {
@@ -108,7 +90,7 @@ public class TicketServiceDAO implements TicketService {
             user.addTicket(ticket);
             ticketDAO.add(ticket);
             userDAO.update(user);
-            seatDao.update(seat);
+            seatDAO.update(seat);
             return ticket;
         }
         return null;
@@ -120,7 +102,7 @@ public class TicketServiceDAO implements TicketService {
     @Transactional
     @Override
     public Ticket reserve(final UUID seatId, final UUID userId) {
-        Seat seat = seatDao.find(seatId);
+        Seat seat = seatDAO.find(seatId);
         User user = userDAO.find(userId);
 
         if (seat.getSeatStatus() == SeatStatus.AVAILABLE) {
@@ -131,7 +113,7 @@ public class TicketServiceDAO implements TicketService {
             user.addTicket(ticket);
             ticketDAO.add(ticket);
             userDAO.update(user);
-            seatDao.update(seat);
+            seatDAO.update(seat);
             return ticket;
         }
         return null;
@@ -142,17 +124,14 @@ public class TicketServiceDAO implements TicketService {
      */
     @Transactional
     @Override
-    public void cancel(final UUID ticketId,
-                       final UUID userId) {
+    public void cancel(final UUID ticketId) {
         Ticket ticket = ticketDAO.find(ticketId);
-        User user = userDAO.find(userId);
-        if (ticket.getUser().equals(user)) {
-            ticket.getSeat().setSeatStatus(SeatStatus.AVAILABLE);
-            ticketDAO.delete(ticket.getId());
-            ticket.getSeat().setTicket(null);
-            seatDao.update(ticket.getSeat());
-            user.removeTicket(ticket);
-            userDAO.update(user);
-        }
+        User user = userDAO.find(ticket.getUser().getId());
+        ticket.getSeat().setSeatStatus(SeatStatus.AVAILABLE);
+        ticketDAO.delete(ticket.getId());
+        ticket.getSeat().setTicket(null);
+        seatDAO.update(ticket.getSeat());
+        user.removeTicket(ticket);
+        userDAO.update(user);
     }
 }

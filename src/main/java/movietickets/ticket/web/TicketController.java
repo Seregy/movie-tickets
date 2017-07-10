@@ -91,7 +91,7 @@ public class TicketController {
         CustomUserDetails userDetails = (CustomUserDetails)
                 SecurityContextHolder.getContext()
                         .getAuthentication().getPrincipal();
-        ticketService.cancel(id, userDetails.getId());
+        ticketService.cancel(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
@@ -156,17 +156,5 @@ public class TicketController {
 
         modelAndView.addObject("tickets", tickets);
         return modelAndView;
-    }
-
-    /**
-     * Deletes ticket with given id.
-     *
-     * @param id identifier of the ticket
-     * @return response code
-     */
-    @DeleteMapping("/ticket/{id}")
-    public ResponseEntity deleteTicket(@PathVariable("id") final String id) {
-        ticketService.delete(UUID.fromString(id));
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
