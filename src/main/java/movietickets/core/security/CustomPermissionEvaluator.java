@@ -2,12 +2,14 @@ package movietickets.core.security;
 
 import movietickets.core.EntityWithId;
 import movietickets.ticket.Ticket;
-import movietickets.ticket.service.TicketService;
+import movietickets.ticket.dao.TicketDAO;
 import movietickets.user.User;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.Nullable;
 import java.io.Serializable;
@@ -27,18 +29,19 @@ import java.util.UUID;
  *
  * @author Seregy
  */
+@Component
 public class CustomPermissionEvaluator implements PermissionEvaluator {
     private static final String ALLOW_ACCESS_TO_ALL_ENTITIES_KEYWORD = "all";
-
-    private TicketService ticketService;
+    private TicketDAO ticketDAO;
 
     /**
      * Constructs new permission evaluator.
      *
-     * @param ticketService ticket service
+     * @param ticketDAO ticket DAO
      */
-    public CustomPermissionEvaluator(final TicketService ticketService) {
-        this.ticketService = ticketService;
+    @Autowired
+    public CustomPermissionEvaluator(final TicketDAO ticketDAO) {
+        this.ticketDAO = ticketDAO;
     }
 
 
@@ -64,7 +67,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
             }
         } else if (targetDomainObject instanceof Ticket) {
             Ticket ticket = (Ticket) targetDomainObject;
-            if (ticket.getId() != null) {
+            if (ticket.getUser() != null) {
                 allowed = principal.getId().equals(ticket.getUser().getId());
             }
         }
@@ -99,7 +102,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
             } else if (Objects.equals(targetType,
                     Ticket.class.getSimpleName())) {
                 UUID ticketId = UUID.fromString(targetId.toString());
-                Ticket ticket = ticketService.get(ticketId);
+                Ticket ticket = ticketDAO.find(ticketId);
                 allowed = Objects.equals(principal.getId(),
                         ticket.getUser().getId());
             }

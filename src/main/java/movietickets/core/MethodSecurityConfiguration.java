@@ -1,6 +1,5 @@
 package movietickets.core;
 
-import movietickets.ticket.service.TicketService;
 import movietickets.core.security.CustomPermissionEvaluator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -18,16 +17,17 @@ import org.springframework.security.config.annotation.method.configuration.Globa
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class MethodSecurityConfiguration
         extends GlobalMethodSecurityConfiguration {
-    private TicketService ticketService;
+    private CustomPermissionEvaluator permissionEvaluator;
 
     /**
      * Constructs new method security configuration.
      *
-     * @param ticketService ticket service
+     * @param permissionEvaluator permission evaluator
      */
     @Autowired
-    public MethodSecurityConfiguration(final TicketService ticketService) {
-        this.ticketService = ticketService;
+    public MethodSecurityConfiguration(
+            final CustomPermissionEvaluator permissionEvaluator) {
+        this.permissionEvaluator = permissionEvaluator;
     }
 
     /**
@@ -37,8 +37,7 @@ public class MethodSecurityConfiguration
     protected MethodSecurityExpressionHandler createExpressionHandler() {
         DefaultMethodSecurityExpressionHandler expressionHandler =
                 new DefaultMethodSecurityExpressionHandler();
-        expressionHandler.setPermissionEvaluator(
-                new CustomPermissionEvaluator(ticketService));
+        expressionHandler.setPermissionEvaluator(permissionEvaluator);
         return expressionHandler;
     }
 }
