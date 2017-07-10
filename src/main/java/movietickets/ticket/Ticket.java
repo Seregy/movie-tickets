@@ -141,8 +141,8 @@ public class Ticket implements EntityWithId {
     public String toString() {
         return "Ticket{"
                 + "id=" + id
-                + ", seat=" + seat
-                + ", user=" + user
+                + ", seatId=" + seat.getId()
+                + ", userId=" + user.getId()
                 + '}';
     }
 }

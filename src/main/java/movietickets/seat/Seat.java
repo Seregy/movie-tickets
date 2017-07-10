@@ -67,6 +67,15 @@ public class Seat implements EntityWithId {
     }
 
     /**
+     * Sets seat's unique identifier.
+     *
+     * @param id unique identifier
+     */
+    public void setId(final UUID id) {
+        this.id = id;
+    }
+
+    /**
      * Gets seat's row number.
      *
      * @return row number
