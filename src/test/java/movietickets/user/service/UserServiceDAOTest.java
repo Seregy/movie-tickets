@@ -52,16 +52,21 @@ public class UserServiceDAOTest {
 
     @Test
     public void registerUser() {
-        Role role = addRole("user", UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        assertEquals(0, userDAO.findAll().size());
+
+        Role role = addRole(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         userService.register("user",
                 "user",
                 role.getId(),
                 "user@mail.com");
+
+        assertEquals(1, userDAO.findAll().size());
+        assertEquals("user", userDAO.findAll().get(0).getName());
     }
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
     public void getAllUsersUnauthenticated() {
-        Role role = addRole("user", UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        Role role = addRole(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         addUser("user", "user", role, "user@mail.com",
                 UUID.fromString("10000000-0000-0000-0000-000000000000"));
         addUser("manager", "manager", role, "manager@mail.com",
@@ -73,7 +78,7 @@ public class UserServiceDAOTest {
     @WithMockCustomUser
     @Test
     public void getAllUsersWithoutPermission() {
-        Role role = addRole("user", UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        Role role = addRole(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         addUser("user", "user", role, "user@mail.com",
                 UUID.fromString("10000000-0000-0000-0000-000000000000"));
         addUser("manager", "manager", role, "manager@mail.com",
@@ -85,32 +90,32 @@ public class UserServiceDAOTest {
     @WithMockCustomUser(id = "10000000-0000-0000-0000-000000000000")
     @Test
     public void getAllUsersAsOneOfOwners() {
-        Role role = addRole("user", UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        Role role = addRole(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         addUser("user", "user", role, "user@mail.com",
                 UUID.fromString("10000000-0000-0000-0000-000000000000"));
         addUser("manager", "manager", role, "manager@mail.com",
                 UUID.fromString("20000000-0000-0000-0000-000000000000"));
 
         List<User> users = userService.getAll();
-        assertTrue(users.size() == 1);
-        assertTrue(users.get(0).getName().equals("user"));
+        assertEquals(1, users.size());
+        assertEquals("user", users.get(0).getName());
     }
 
     @WithMockCustomUser(authorities = "USER_READ_ALL")
     @Test
     public void getAllUsersWithPermission() {
-        Role role = addRole("user", UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        Role role = addRole(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         addUser("user", "user", role, "user@mail.com",
                 UUID.fromString("10000000-0000-0000-0000-000000000000"));
         addUser("manager", "manager", role, "manager@mail.com",
                 UUID.fromString("20000000-0000-0000-0000-000000000000"));
 
         List<User> users = userService.getAll();
-        assertTrue(users.size() == 2);
+        assertEquals(2, users.size());
     }
 
     private void getUserTickets() {
-        Role role = addRole("user", UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        Role role = addRole(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         User user = addUser("user", "user", role, "user@mail.com",
                 UUID.fromString("10000000-0000-0000-0000-000000000000"));
         user.addTicket(new Ticket(new Seat(1, 1, SeatType.REGULAR, 1), user));
@@ -118,8 +123,8 @@ public class UserServiceDAOTest {
         userDAO.update(user);
 
         List<Ticket> tickets = userService.getTickets(UUID.fromString("10000000-0000-0000-0000-000000000000"));
-        assertTrue(tickets.size() == 2);
-        assertTrue(tickets.get(0).getUser().getName().equals("user"));
+        assertEquals(2, tickets.size());
+        assertEquals("user", tickets.get(0).getUser().getName());
     }
 
     @Test(expected = AuthenticationCredentialsNotFoundException.class)
@@ -146,7 +151,7 @@ public class UserServiceDAOTest {
     }
 
     private void deleteUser() {
-        Role role = addRole("user", UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        Role role = addRole(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         UUID id = UUID.fromString("10000000-0000-0000-0000-000000000000");
         addUser("user", "user", role, "user@mail.com", id);
 
@@ -179,7 +184,7 @@ public class UserServiceDAOTest {
     }
 
     private void changeUserName() {
-        Role role = addRole("user", UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        Role role = addRole(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         UUID id = UUID.fromString("10000000-0000-0000-0000-000000000000");
         addUser("user", "user", role, "user@mail.com", id);
 
@@ -212,7 +217,7 @@ public class UserServiceDAOTest {
     }
 
     private void changeUserPassword() {
-        Role role = addRole("user", UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        Role role = addRole(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         UUID id = UUID.fromString("10000000-0000-0000-0000-000000000000");
         addUser("user", "user", role, "user@mail.com", id);
 
@@ -245,7 +250,7 @@ public class UserServiceDAOTest {
     }
 
     private void changeUserEmail() {
-        Role role = addRole("user", UUID.fromString("00000000-0000-0000-0000-000000000001"));
+        Role role = addRole(UUID.fromString("00000000-0000-0000-0000-000000000001"));
         UUID id = UUID.fromString("10000000-0000-0000-0000-000000000000");
         addUser("user", "user", role, "user@mail.com", id);
 
@@ -277,8 +282,8 @@ public class UserServiceDAOTest {
         changeUserEmail();
     }
 
-    private Role addRole(String name, UUID id) {
-        Role role = new Role(name);
+    private Role addRole(UUID id) {
+        Role role = new Role("user");
         role.setId(id);
         roleDAO.add(role);
         return role;
