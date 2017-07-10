@@ -17,11 +17,6 @@
         </RollingFile>
     </Appenders>
     <Loggers>
-        <!-- Log everything in hibernate -->
-        <Logger name="org.hibernate" level="info" additivity="false">
-            <AppenderRef ref="Console" />
-        </Logger>
-
         <!-- Log SQL statements -->
         <Logger name="org.hibernate.SQL" level="debug" additivity="false">
             <AppenderRef ref="Console" />
@@ -29,13 +24,13 @@
         </Logger>
 
         <!-- Log Spring web requests -->
-        <Logger name="org.springframework.web.filter" level="debug" additivity="false">
+        <Logger name="org.springframework" level="debug" additivity="false">
             <AppenderRef ref="Console" />
             <AppenderRef ref="RollingFile" />
         </Logger>
 
         <!-- Log JDBC bind parameters -->
-        <Logger name="org.hibernate.type.descriptor.sql" level="trace" additivity="false">
+        <Logger name="org.hibernate.type.descriptor.sql" level="debug" additivity="false">
             <AppenderRef ref="Console" />
             <AppenderRef ref="RollingFile" />
         </Logger>
