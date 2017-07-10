@@ -8,6 +8,10 @@ import movietickets.ticket.dao.TicketDAO;
 import movietickets.user.User;
 import movietickets.user.dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PostFilter;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,6 +50,7 @@ public class TicketServiceDAO implements TicketService {
     /**
      * {@inheritDoc}
      */
+    @PostAuthorize("hasPermission(returnObject, 'read')")
     @Transactional
     @Override
     public Ticket get(final UUID id) {
@@ -55,6 +60,7 @@ public class TicketServiceDAO implements TicketService {
     /**
      * {@inheritDoc}
      */
+    @PostFilter("hasPermission(filterObject, 'read')")
     @Transactional
     @Override
     public List<Ticket> getAll() {
@@ -64,6 +70,7 @@ public class TicketServiceDAO implements TicketService {
     /**
      * {@inheritDoc}
      */
+    @PostFilter("hasPermission(filterObject, 'read')")
     @Transactional
     @Override
     public List<Ticket> getAll(final UUID userId) {
@@ -122,9 +129,10 @@ public class TicketServiceDAO implements TicketService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#ticketId, 'Ticket', 'delete')")
     @Transactional
     @Override
-    public void cancel(final UUID ticketId) {
+    public void cancel(@P("ticketId") final UUID ticketId) {
         Ticket ticket = ticketDAO.find(ticketId);
         User user = userDAO.find(ticket.getUser().getId());
         ticket.getSeat().setSeatStatus(SeatStatus.AVAILABLE);

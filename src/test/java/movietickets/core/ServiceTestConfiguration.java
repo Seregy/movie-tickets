@@ -1,10 +1,12 @@
 package movietickets.core;
 
 import movietickets.core.dao.DAO;
-import movietickets.user.User;
+import movietickets.seat.dao.SeatDAO;
+import movietickets.seat.dao.SeatDAOHibernate;
+import movietickets.ticket.dao.TicketDAO;
+import movietickets.ticket.dao.TicketDAOHibernate;
 import movietickets.user.dao.UserDAO;
 import movietickets.user.dao.UserDAOHibernate;
-import movietickets.user.role.Role;
 import movietickets.user.role.dao.RoleDAO;
 import movietickets.user.role.dao.RoleDAOHibernate;
 import org.mockito.Mockito;
@@ -33,6 +35,18 @@ public class ServiceTestConfiguration {
     @Primary
     public RoleDAO getMockedRoleDAO() {
         return getMockedDAO(RoleDAOHibernate.class);
+    }
+
+    @Bean
+    @Primary
+    public TicketDAO getMockedTicketDAO() {
+        return getMockedDAO(TicketDAOHibernate.class);
+    }
+
+    @Bean
+    @Primary
+    public SeatDAO getMockedSeatDAO() {
+        return getMockedDAO(SeatDAOHibernate.class);
     }
 
     @Bean
