@@ -76,6 +76,15 @@ public class Cinema implements EntityWithId {
     }
 
     /**
+     * Sets unique identifier of the cinema.
+     *
+     * @param id unique identifier
+     */
+    public void setId(final UUID id) {
+        this.id = id;
+    }
+
+    /**
      * Gets full name of the cinema.
      *
      * @return full name

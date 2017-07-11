@@ -67,7 +67,7 @@ public class Seat implements EntityWithId {
     }
 
     /**
-     * Sets seat's unique identifier.
+     * Sets unique identifier of the seat.
      *
      * @param id unique identifier
      */

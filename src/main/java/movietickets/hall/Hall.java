@@ -54,6 +54,15 @@ public class Hall implements EntityWithId {
     }
 
     /**
+     * Sets unique identifier of the hall.
+     *
+     * @param id unique identifier
+     */
+    public void setId(final UUID id) {
+        this.id = id;
+    }
+
+    /**
      * Sets full name of the hall.
      *
      * @param name name of the hall

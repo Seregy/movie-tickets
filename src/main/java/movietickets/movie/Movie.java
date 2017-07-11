@@ -67,6 +67,15 @@ public class Movie implements EntityWithId {
     }
 
     /**
+     * Sets unique identifier of the movie.
+     *
+     * @param id unique identifier
+     */
+    public void setId(final UUID id) {
+        this.id = id;
+    }
+
+    /**
      * Sets full name of the movie.
      *
      * @param name name of the movie

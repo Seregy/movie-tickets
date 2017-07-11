@@ -56,6 +56,15 @@ public class City implements Serializable, EntityWithId {
     }
 
     /**
+     * Sets unique identifier of the city.
+     *
+     * @param id unique identifier
+     */
+    public void setId(final UUID id) {
+        this.id = id;
+    }
+
+    /**
      * Gets name of the city.
      *
      * @return name

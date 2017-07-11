@@ -79,6 +79,15 @@ public class Session implements EntityWithId {
     }
 
     /**
+     * Sets unique identifier of the session.
+     *
+     * @param id unique identifier
+     */
+    public void setId(final UUID id) {
+        this.id = id;
+    }
+
+    /**
      * Sets date-time of the session beginning.
      *
      * @param sessionStart {@link LocalDateTime} date-time of the session

@@ -55,6 +55,15 @@ public class Permission implements GrantedAuthority, EntityWithId {
     }
 
     /**
+     * Sets unique identifier of the permission.
+     *
+     * @param id unique identifier
+     */
+    public void setId(final UUID id) {
+        this.id = id;
+    }
+
+    /**
      * Gets user's role.
      *
      * @return role
