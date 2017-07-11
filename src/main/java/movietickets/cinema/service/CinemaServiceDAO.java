@@ -5,6 +5,7 @@ import movietickets.cinema.dao.CinemaDAO;
 import movietickets.city.City;
 import movietickets.city.dao.CityDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,10 +40,10 @@ public class CinemaServiceDAO implements CinemaService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_ADD_CINEMA')")
+    @PreAuthorize("hasPermission(#cinema, 'add')")
     @Transactional
     @Override
-    public void add(final Cinema cinema, final UUID cityId) {
+    public void add(@P("cinema") final Cinema cinema, final UUID cityId) {
         cinemaDAO.add(cinema);
         City city = cityDAO.find(cityId);
         city.addCinema(cinema);
@@ -82,20 +83,21 @@ public class CinemaServiceDAO implements CinemaService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_DELETE_CINEMA')")
+    @PreAuthorize("hasPermission(#id, 'Cinema', 'delete')")
     @Transactional
     @Override
-    public void delete(final UUID id) {
+    public void delete(@P("id") final UUID id) {
         cinemaDAO.delete(id);
     }
 
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_EDIT_CINEMA')")
+    @PreAuthorize("hasPermission(#cinemaId, 'Cinema', 'edit')")
     @Transactional
     @Override
-    public void changeName(final UUID cinemaId, final String newName) {
+    public void changeName(@P("cinemaId") final UUID cinemaId,
+                           final String newName) {
         Cinema cinema = cinemaDAO.find(cinemaId);
         cinema.setName(newName);
         cinemaDAO.update(cinema);
@@ -104,10 +106,10 @@ public class CinemaServiceDAO implements CinemaService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_EDIT_CINEMA')")
+    @PreAuthorize("hasPermission(#cinemaId, 'Cinema', 'edit')")
     @Transactional
     @Override
-    public void changeCity(final UUID cinemaId,
+    public void changeCity(@P("cinemaId") final UUID cinemaId,
                            final UUID newCityId) {
         Cinema cinema = cinemaDAO.find(cinemaId);
         City oldCity = cinema.getCity();
@@ -122,10 +124,11 @@ public class CinemaServiceDAO implements CinemaService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_EDIT_CINEMA')")
+    @PreAuthorize("hasPermission(#cinemaId, 'Cinema', 'edit')")
     @Transactional
     @Override
-    public void changeAddress(final UUID cinemaId, final String newAddress) {
+    public void changeAddress(@P("cinemaId") final UUID cinemaId,
+                              final String newAddress) {
         Cinema cinema = cinemaDAO.find(cinemaId);
         cinema.setAddress(newAddress);
         cinemaDAO.update(cinema);
@@ -134,10 +137,10 @@ public class CinemaServiceDAO implements CinemaService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_EDIT_CINEMA')")
+    @PreAuthorize("hasPermission(#cinemaId, 'Cinema', 'edit')")
     @Transactional
     @Override
-    public void changePhone(final UUID cinemaId,
+    public void changePhone(@P("cinemaId") final UUID cinemaId,
                             final String newPhone) {
         Cinema cinema = cinemaDAO.find(cinemaId);
         cinema.setPhone(newPhone);
@@ -147,10 +150,10 @@ public class CinemaServiceDAO implements CinemaService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_EDIT_CINEMA')")
+    @PreAuthorize("hasPermission(#cinemaId, 'Cinema', 'edit')")
     @Transactional
     @Override
-    public void changeWebsite(final UUID cinemaId,
+    public void changeWebsite(@P("cinemaId") final UUID cinemaId,
                               final String newWebsite) {
         Cinema cinema = cinemaDAO.find(cinemaId);
         cinema.setWebsite(newWebsite);

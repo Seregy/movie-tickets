@@ -1,5 +1,9 @@
 package movietickets.core;
 
+import movietickets.cinema.dao.CinemaDAO;
+import movietickets.cinema.dao.CinemaDAOHibernate;
+import movietickets.city.dao.CityDAO;
+import movietickets.city.dao.CityDAOHibernate;
 import movietickets.core.dao.DAO;
 import movietickets.seat.dao.SeatDAO;
 import movietickets.seat.dao.SeatDAOHibernate;
@@ -47,6 +51,18 @@ public class ServiceTestConfiguration {
     @Primary
     public SeatDAO getMockedSeatDAO() {
         return getMockedDAO(SeatDAOHibernate.class);
+    }
+
+    @Bean
+    @Primary
+    public CityDAO getMockedCityDAO() {
+        return getMockedDAO(CityDAOHibernate.class);
+    }
+
+    @Bean
+    @Primary
+    public CinemaDAO getMockedCinemaDAO() {
+        return getMockedDAO(CinemaDAOHibernate.class);
     }
 
     @Bean
