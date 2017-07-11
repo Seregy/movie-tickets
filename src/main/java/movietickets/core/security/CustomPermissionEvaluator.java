@@ -74,7 +74,10 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 
         String id = null;
         if (targetDomainObject instanceof EntityWithId) {
-            id = ((EntityWithId) targetDomainObject).getId().toString();
+            EntityWithId entity = (EntityWithId) targetDomainObject;
+            if (entity.getId() != null) {
+                id = entity.getId().toString();
+            }
         }
 
         return allowed || hasPrivilege(authentication,
