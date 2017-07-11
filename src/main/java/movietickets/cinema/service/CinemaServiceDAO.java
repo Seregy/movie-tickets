@@ -85,16 +85,6 @@ public class CinemaServiceDAO implements CinemaService {
     @PreAuthorize("hasAuthority('PM_DELETE_CINEMA')")
     @Transactional
     @Override
-    public void delete(final Cinema cinema) {
-        delete(cinema.getId());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @PreAuthorize("hasAuthority('PM_DELETE_CINEMA')")
-    @Transactional
-    @Override
     public void delete(final UUID id) {
         cinemaDAO.delete(id);
     }

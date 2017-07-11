@@ -47,13 +47,6 @@ public interface CinemaService {
     /**
      * Deletes cinema.
      *
-     * @param cinema cinema to delete
-     */
-    void delete(Cinema cinema);
-
-    /**
-     * Deletes cinema.
-     *
      * @param id id of the cinema to delete
      */
     void delete(UUID id);
