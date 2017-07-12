@@ -61,15 +61,6 @@ public class PermissionServiceDAO implements PermissionService {
      */
     @Transactional
     @Override
-    public void delete(final Permission permission) {
-        delete(permission.getId());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional
-    @Override
     public void delete(final UUID id) {
         permissionDAO.delete(id);
     }

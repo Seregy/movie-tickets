@@ -39,13 +39,6 @@ public interface PermissionService {
     /**
      * Deletes permission.
      *
-     * @param permission permission to delete
-     */
-    void delete(Permission permission);
-
-    /**
-     * Deletes permission.
-     *
      * @param id id of the permission to delete
      */
     void delete(UUID id);

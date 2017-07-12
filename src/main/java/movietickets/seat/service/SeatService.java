@@ -37,13 +37,6 @@ public interface SeatService {
     /**
      * Deletes seat.
      *
-     * @param seat seat to delete
-     */
-    void delete(Seat seat);
-
-    /**
-     * Deletes seat.
-     *
      * @param id id of the seat to delete
      */
     void delete(UUID id);

@@ -60,15 +60,6 @@ public class CityServiceDAO implements CityService {
      */
     @Transactional
     @Override
-    public void delete(final City city) {
-        delete(city.getId());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional
-    @Override
     public void delete(final UUID id) {
         cityDAO.delete(id);
     }

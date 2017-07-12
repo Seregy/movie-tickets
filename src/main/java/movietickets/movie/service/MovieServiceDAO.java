@@ -96,15 +96,6 @@ public class MovieServiceDAO implements MovieService {
      */
     @Transactional
     @Override
-    public void delete(final Movie movie) {
-        delete(movie.getId());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional
-    @Override
     public void delete(final UUID id) {
         movieDAO.delete(id);
     }

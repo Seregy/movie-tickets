@@ -48,13 +48,6 @@ public interface HallService {
     /**
      * Deletes hall.
      *
-     * @param hall hall to delete
-     */
-    void delete(Hall hall);
-
-    /**
-     * Deletes hall.
-     *
      * @param id id of the hall to delete
      */
     void delete(UUID id);

@@ -46,13 +46,6 @@ public interface RoleService {
     /**
      * Deletes role.
      *
-     * @param role role to delete
-     */
-    void delete(Role role);
-
-    /**
-     * Deletes role.
-     *
      * @param id id of the role to delete
      */
     void delete(UUID id);

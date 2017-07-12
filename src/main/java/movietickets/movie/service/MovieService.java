@@ -60,13 +60,6 @@ public interface MovieService {
     /**
      * Deletes movie.
      *
-     * @param movie movie to delete
-     */
-    void delete(Movie movie);
-
-    /**
-     * Deletes movie.
-     *
      * @param id id of the movie to delete
      */
     void delete(UUID id);

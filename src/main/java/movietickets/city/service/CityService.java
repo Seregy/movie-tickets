@@ -37,13 +37,6 @@ public interface CityService {
     /**
      * Deletes city.
      *
-     * @param city city to delete
-     */
-    void delete(City city);
-
-    /**
-     * Deletes city.
-     *
      * @param id id of the city to delete
      */
     void delete(UUID id);

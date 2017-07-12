@@ -85,15 +85,6 @@ public class HallServiceDAO implements HallService {
      */
     @Transactional
     @Override
-    public void delete(final Hall hall) {
-        delete(hall.getId());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional
-    @Override
     public void delete(final UUID id) {
         hallDAO.delete(id);
     }

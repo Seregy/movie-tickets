@@ -158,15 +158,6 @@ public class SessionServiceDAO implements SessionService {
      */
     @Transactional
     @Override
-    public void delete(final Session session) {
-        delete(session.getId());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional
-    @Override
     public void delete(final UUID id) {
         sessionDAO.delete(id);
     }

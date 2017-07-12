@@ -89,13 +89,6 @@ public interface SessionService {
     /**
      * Deletes session.
      *
-     * @param session session to delete
-     */
-    void delete(Session session);
-
-    /**
-     * Deletes session.
-     *
      * @param id id of the session to delete
      */
     void delete(UUID id);

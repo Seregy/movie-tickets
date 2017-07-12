@@ -80,15 +80,6 @@ public class RoleServiceDAO implements RoleService {
      */
     @Transactional
     @Override
-    public void delete(final Role role) {
-        delete(role.getId());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional
-    @Override
     public void delete(final UUID id) {
         roleDAO.delete(id);
     }

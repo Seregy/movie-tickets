@@ -63,16 +63,6 @@ public class SeatServiceDAO implements SeatService {
     @Transactional
     @Override
     @PreAuthorize("hasAuthority('PM_DELETE')")
-    public void delete(final Seat seat) {
-        delete(seat.getId());
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Transactional
-    @Override
-    @PreAuthorize("hasAuthority('PM_DELETE')")
     public void delete(final UUID id) {
         seatDAO.delete(id);
     }
