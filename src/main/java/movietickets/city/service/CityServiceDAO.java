@@ -3,6 +3,8 @@ package movietickets.city.service;
 import movietickets.city.City;
 import movietickets.city.dao.CityDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,9 +33,10 @@ public class CityServiceDAO implements CityService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#city, 'add')")
     @Transactional
     @Override
-    public void add(final City city) {
+    public void add(@P("city") final City city) {
         cityDAO.add(city);
     }
 
@@ -58,18 +61,20 @@ public class CityServiceDAO implements CityService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#id, 'City', 'delete')")
     @Transactional
     @Override
-    public void delete(final UUID id) {
+    public void delete(@P("id") final UUID id) {
         cityDAO.delete(id);
     }
 
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#cityId, 'City', 'edit')")
     @Transactional
     @Override
-    public void changeName(final UUID cityId,
+    public void changeName(@P("cityId") final UUID cityId,
                            final String newName) {
         City city = cityDAO.find(cityId);
         city.setName(newName);
