@@ -6,6 +6,8 @@ import movietickets.hall.Hall;
 import movietickets.hall.dao.HallDAO;
 import movietickets.hall.layout.Layout;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,9 +42,12 @@ public class HallServiceDAO implements HallService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#hall, 'add')")
     @Transactional
     @Override
-    public void add(final Hall hall, final Layout layout, final UUID cinemaId) {
+    public void add(@P("hall") final Hall hall,
+                    final Layout layout,
+                    final UUID cinemaId) {
         Cinema cinema = cinemaDAO.find(cinemaId);
         hall.setLayout(layout);
         cinema.addHall(hall);
@@ -83,18 +88,21 @@ public class HallServiceDAO implements HallService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#id, 'Hall', 'delete')")
     @Transactional
     @Override
-    public void delete(final UUID id) {
+    public void delete(@P("id") final UUID id) {
         hallDAO.delete(id);
     }
 
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#hallId, 'Hall', 'edit')")
     @Transactional
     @Override
-    public void changeName(final UUID hallId, final String newName) {
+    public void changeName(@P("hallId") final UUID hallId,
+                           final String newName) {
         Hall hall = hallDAO.find(hallId);
         hall.setName(newName);
         hallDAO.update(hall);
@@ -103,9 +111,11 @@ public class HallServiceDAO implements HallService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#hallId, 'Hall', 'edit')")
     @Transactional
     @Override
-    public void changeLayout(final UUID hallId, final Layout newLayout) {
+    public void changeLayout(@P("hallId") final UUID hallId,
+                             final Layout newLayout) {
         Hall hall = hallDAO.find(hallId);
         hall.setLayout(newLayout);
         hallDAO.update(hall);
