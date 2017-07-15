@@ -4,6 +4,8 @@ import movietickets.city.City;
 import movietickets.movie.Movie;
 import movietickets.movie.dao.MovieDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,9 +37,10 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#movie, 'add')")
     @Transactional
     @Override
-    public void add(final Movie movie) {
+    public void add(@P("movie") final Movie movie) {
         movieDAO.add(movie);
     }
 
@@ -94,18 +97,21 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#id, 'Movie', 'delete')")
     @Transactional
     @Override
-    public void delete(final UUID id) {
+    public void delete(@P("id") final UUID id) {
         movieDAO.delete(id);
     }
 
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#movieId, 'Movie', 'edit')")
     @Transactional
     @Override
-    public void changeName(final UUID movieId, final String newName) {
+    public void changeName(@P("movieId") final UUID movieId,
+                           final String newName) {
         Movie movie = movieDAO.find(movieId);
         movie.setName(newName);
         movieDAO.update(movie);
@@ -114,9 +120,11 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#movieId, 'Movie', 'edit')")
     @Transactional
     @Override
-    public void changeDuration(final UUID movieId, final int newDuration) {
+    public void changeDuration(@P("movieId") final UUID movieId,
+                               final int newDuration) {
         Movie movie = movieDAO.find(movieId);
         movie.setDuration(newDuration);
         movieDAO.update(movie);
@@ -125,9 +133,10 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#movieId, 'Movie', 'edit')")
     @Transactional
     @Override
-    public void changeAnnotation(final UUID movieId,
+    public void changeAnnotation(@P("movieId") final UUID movieId,
                                  final String newAnnotation) {
         Movie movie = movieDAO.find(movieId);
         movie.setAnnotation(newAnnotation);
@@ -137,9 +146,10 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#movieId, 'Movie', 'edit')")
     @Transactional
     @Override
-    public void changeYear(final UUID movieId,
+    public void changeYear(@P("movieId") final UUID movieId,
                            final int newYear) {
         Movie movie = movieDAO.find(movieId);
         movie.setYear(newYear);
@@ -149,9 +159,10 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#movieId, 'Movie', 'edit')")
     @Transactional
     @Override
-    public void changeCountry(final UUID movieId,
+    public void changeCountry(@P("movieId") final UUID movieId,
                               final String newCountry) {
         Movie movie = movieDAO.find(movieId);
         movie.setCountry(newCountry);
@@ -161,9 +172,10 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#movieId, 'Movie', 'edit')")
     @Transactional
     @Override
-    public void changeGenres(final UUID movieId,
+    public void changeGenres(@P("movieId") final UUID movieId,
                              final String newGenres) {
         Movie movie = movieDAO.find(movieId);
         movie.setGenres(newGenres);
@@ -173,9 +185,10 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#movieId, 'Movie', 'edit')")
     @Transactional
     @Override
-    public void changeCast(final UUID movieId,
+    public void changeCast(@P("movieId") final UUID movieId,
                            final String newCast) {
         Movie movie = movieDAO.find(movieId);
         movie.setCast(newCast);
@@ -185,9 +198,10 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#movieId, 'Movie', 'edit')")
     @Transactional
     @Override
-    public void changeDirector(final UUID movieId,
+    public void changeDirector(@P("movieId") final UUID movieId,
                                final String newDirector) {
         Movie movie = movieDAO.find(movieId);
         movie.setDirector(newDirector);
@@ -197,9 +211,10 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#movieId, 'Movie', 'edit')")
     @Transactional
     @Override
-    public void changeScreeningDate(final UUID movieId,
+    public void changeScreeningDate(@P("movieId") final UUID movieId,
                                     final LocalDate newDate) {
         Movie movie = movieDAO.find(movieId);
         movie.setScreeningDate(newDate);
@@ -209,9 +224,10 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#movieId, 'Movie', 'edit')")
     @Transactional
     @Override
-    public void changePremiereEndDate(final UUID movieId,
+    public void changePremiereEndDate(@P("movieId") final UUID movieId,
                                       final LocalDate newDate) {
         Movie movie = movieDAO.find(movieId);
         movie.setPremiereEndDate(newDate);
@@ -221,9 +237,10 @@ public class MovieServiceDAO implements MovieService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#movieId, 'Movie', 'edit')")
     @Transactional
     @Override
-    public void changeContentRating(final UUID movieId,
+    public void changeContentRating(@P("movieId") final UUID movieId,
                                     final String newRating) {
         Movie movie = movieDAO.find(movieId);
         movie.setContentRating(newRating);

@@ -7,8 +7,12 @@ import movietickets.city.dao.CityDAOHibernate;
 import movietickets.core.dao.DAO;
 import movietickets.hall.dao.HallDAO;
 import movietickets.hall.dao.HallDAOHibernate;
+import movietickets.movie.dao.MovieDAO;
+import movietickets.movie.dao.MovieDAOHibernate;
 import movietickets.seat.dao.SeatDAO;
 import movietickets.seat.dao.SeatDAOHibernate;
+import movietickets.session.dao.SessionDAO;
+import movietickets.session.dao.SessionDAOHibernate;
 import movietickets.ticket.dao.TicketDAO;
 import movietickets.ticket.dao.TicketDAOHibernate;
 import movietickets.user.dao.UserDAO;
@@ -71,6 +75,18 @@ public class ServiceTestConfiguration {
     @Primary
     public HallDAO getMockedHallDAO() {
         return getMockedDAO(HallDAOHibernate.class);
+    }
+
+    @Bean
+    @Primary
+    public MovieDAO getMockedMovieDAO() {
+        return getMockedDAO(MovieDAOHibernate.class);
+    }
+
+    @Bean
+    @Primary
+    public SessionDAO getMockedSessionDAO() {
+        return getMockedDAO(SessionDAOHibernate.class);
     }
 
     @Bean
