@@ -4,6 +4,8 @@ import movietickets.user.permission.dao.PermissionDAO;
 import movietickets.user.role.Role;
 import movietickets.user.role.dao.RoleDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +38,7 @@ public class RoleServiceDAO implements RoleService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(null, 'Role', 'add')")
     @Transactional
     @Override
     public void add(final String name) {
@@ -46,6 +49,7 @@ public class RoleServiceDAO implements RoleService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(null, 'Role', 'add')")
     @Transactional
     @Override
     public void add(final String name,
@@ -78,18 +82,21 @@ public class RoleServiceDAO implements RoleService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#id, 'Role', 'delete')")
     @Transactional
     @Override
-    public void delete(final UUID id) {
+    public void delete(@P("id") final UUID id) {
         roleDAO.delete(id);
     }
 
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#roleId, 'Role', 'edit')")
     @Transactional
     @Override
-    public void changeName(final UUID roleId, final String newName) {
+    public void changeName(@P("roleId") final UUID roleId,
+                           final String newName) {
         Role role = roleDAO.find(roleId);
         role.setName(newName);
         roleDAO.update(role);
