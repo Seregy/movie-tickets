@@ -11,6 +11,8 @@ import movietickets.seat.Seat;
 import movietickets.session.Session;
 import movietickets.session.dao.SessionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,9 +51,10 @@ public class SessionServiceDAO implements SessionService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#session, 'add')")
     @Transactional
     @Override
-    public void add(final Session session,
+    public void add(@P("session") final Session session,
                     final UUID hallId,
                     final UUID movieId) {
         Hall hall = hallDAO.find(hallId);
@@ -156,18 +159,21 @@ public class SessionServiceDAO implements SessionService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#id, 'Session', 'delete')")
     @Transactional
     @Override
-    public void delete(final UUID id) {
+    public void delete(@P("id") final UUID id) {
         sessionDAO.delete(id);
     }
 
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#sessionId, 'Session', 'edit')")
     @Transactional
     @Override
-    public void changeTime(final UUID sessionId, final LocalDateTime newTime) {
+    public void changeTime(@P("sessionId") final UUID sessionId,
+                           final LocalDateTime newTime) {
         Session session = sessionDAO.find(sessionId);
         session.setSessionStart(newTime);
         sessionDAO.update(session);
@@ -176,9 +182,11 @@ public class SessionServiceDAO implements SessionService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#sessionId, 'Session', 'edit')")
     @Transactional
     @Override
-    public void changeHall(final UUID sessionId, final UUID newHallId) {
+    public void changeHall(@P("sessionId") final UUID sessionId,
+                           final UUID newHallId) {
         Session session = sessionDAO.find(sessionId);
         Hall hall = hallDAO.find(newHallId);
         session.setHall(hall);
