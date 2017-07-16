@@ -3,6 +3,8 @@ package movietickets.user.permission.service;
 import movietickets.user.permission.Permission;
 import movietickets.user.permission.dao.PermissionDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +33,7 @@ public class PermissionServiceDAO implements PermissionService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(null, 'Permission', 'add')")
     @Transactional
     @Override
     public void add(final String name) {
@@ -59,9 +62,10 @@ public class PermissionServiceDAO implements PermissionService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#id, 'Permission', 'delete')")
     @Transactional
     @Override
-    public void delete(final UUID id) {
+    public void delete(@P("id") final UUID id) {
         permissionDAO.delete(id);
     }
 }

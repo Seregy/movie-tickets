@@ -17,6 +17,8 @@ import movietickets.ticket.dao.TicketDAO;
 import movietickets.ticket.dao.TicketDAOHibernate;
 import movietickets.user.dao.UserDAO;
 import movietickets.user.dao.UserDAOHibernate;
+import movietickets.user.permission.dao.PermissionDAO;
+import movietickets.user.permission.dao.PermissionDAOHibernate;
 import movietickets.user.role.dao.RoleDAO;
 import movietickets.user.role.dao.RoleDAOHibernate;
 import org.mockito.Mockito;
@@ -87,6 +89,12 @@ public class ServiceTestConfiguration {
     @Primary
     public SessionDAO getMockedSessionDAO() {
         return getMockedDAO(SessionDAOHibernate.class);
+    }
+
+    @Bean
+    @Primary
+    public PermissionDAO getMockedPermissionDAO() {
+        return getMockedDAO(PermissionDAOHibernate.class);
     }
 
     @Bean
