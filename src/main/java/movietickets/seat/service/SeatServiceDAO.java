@@ -3,6 +3,7 @@ package movietickets.seat.service;
 import movietickets.seat.Seat;
 import movietickets.seat.dao.SeatDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,10 +33,10 @@ public class SeatServiceDAO implements SeatService {
     /**
      * {@inheritDoc}
      */
-    @PreAuthorize("hasAuthority('PM_ADD')")
+    @PreAuthorize("hasPermission(#seat, 'add')")
     @Transactional
     @Override
-    public void add(final Seat seat) {
+    public void add(@P("seat") final Seat seat) {
         seatDAO.add(seat);
     }
 
@@ -60,20 +61,21 @@ public class SeatServiceDAO implements SeatService {
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#id, 'Seat', 'delete')")
     @Transactional
     @Override
-    @PreAuthorize("hasAuthority('PM_DELETE')")
-    public void delete(final UUID id) {
+    public void delete(@P("id") final UUID id) {
         seatDAO.delete(id);
     }
 
     /**
      * {@inheritDoc}
      */
+    @PreAuthorize("hasPermission(#seatId, 'Seat', 'edit')")
     @Transactional
     @Override
-    @PreAuthorize("hasAuthority('PM_EDIT_SEAT')")
-    public void changePrice(final UUID seatId, final int newPrice) {
+    public void changePrice(@P("seatId") final UUID seatId,
+                            final int newPrice) {
         Seat seat = seatDAO.find(seatId);
         seat.setPrice(newPrice);
         seatDAO.update(seat);
