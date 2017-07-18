@@ -42,9 +42,9 @@ public class CityController {
      * @return redirect to home page
      */
     @GetMapping("/city/{id}")
-    public String changeCity(@PathVariable("id") final String id,
+    public String changeCity(@PathVariable("id") final UUID id,
                                 final Model model) {
-        City city = cityService.get(UUID.fromString(id));
+        City city = cityService.get(id);
         model.addAttribute("currentCity", city);
         return "redirect:/";
     }

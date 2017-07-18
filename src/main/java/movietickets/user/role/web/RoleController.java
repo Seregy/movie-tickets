@@ -59,8 +59,8 @@ public class RoleController {
      * @return response code
      */
     @DeleteMapping("/roles/{id}")
-    public ResponseEntity deleteRole(@PathVariable("id") final String id) {
-        roleService.delete(UUID.fromString(id));
+    public ResponseEntity deleteRole(@PathVariable("id") final UUID id) {
+        roleService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

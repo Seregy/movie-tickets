@@ -62,10 +62,10 @@ public class CinemaController {
      * @return model and view
      */
     @GetMapping("/cinema/{id}")
-    public ModelAndView showCinemaPages(@PathVariable("id") final String id) {
+    public ModelAndView showCinemaPages(@PathVariable("id") final UUID id) {
         ModelAndView modelAndView = new ModelAndView("cinema");
         modelAndView.addObject("cinema",
-                cinemaService.get(UUID.fromString(id)));
+                cinemaService.get(id));
         List<Movie> movies = movieService.getAllAvailable();
         Map<Boolean, List<Movie>> partitioned = movies.stream()
                 .collect(Collectors.partitioningBy((movie) -> movie
@@ -192,8 +192,8 @@ public class CinemaController {
      * @return response code
      */
     @DeleteMapping("/cinema/{id}")
-    public ResponseEntity deleteCinema(@PathVariable("id") final String id) {
-        cinemaService.delete(UUID.fromString(id));
+    public ResponseEntity deleteCinema(@PathVariable("id") final UUID id) {
+        cinemaService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

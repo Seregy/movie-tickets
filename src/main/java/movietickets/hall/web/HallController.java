@@ -87,8 +87,8 @@ public class HallController {
      * @return response
      */
     @DeleteMapping("/hall/{id}")
-    public ResponseEntity deleteHall(@PathVariable("id") final String id) {
-        hallService.delete(UUID.fromString(id));
+    public ResponseEntity deleteHall(@PathVariable("id") final UUID id) {
+        hallService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

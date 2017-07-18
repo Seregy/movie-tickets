@@ -55,8 +55,8 @@ public class PermissionController {
      */
     @DeleteMapping("/permissions/{id}")
     public ResponseEntity deletePermission(@PathVariable("id")
-                                               final String id) {
-        permissionService.delete(UUID.fromString(id));
+                                               final UUID id) {
+        permissionService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

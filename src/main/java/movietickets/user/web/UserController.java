@@ -233,8 +233,8 @@ public class UserController {
      * @return response
      */
     @DeleteMapping("/user/{id}")
-    public ResponseEntity deleteUser(@PathVariable("id") final String id) {
-        userService.delete(UUID.fromString(id));
+    public ResponseEntity deleteUser(@PathVariable("id") final UUID id) {
+        userService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

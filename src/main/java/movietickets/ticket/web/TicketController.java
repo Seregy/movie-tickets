@@ -104,10 +104,10 @@ public class TicketController {
      */
     @PostMapping("/tickets")
     public ResponseEntity addTicket(@RequestParam("seat_id")
-                                        final String seatId,
+                                        final UUID seatId,
                                     @RequestParam("user_id")
-                                        final String userId) {
-        ticketService.buy(UUID.fromString(seatId), UUID.fromString(userId));
+                                        final UUID userId) {
+        ticketService.buy(seatId, userId);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 

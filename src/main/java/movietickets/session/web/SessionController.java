@@ -60,16 +60,15 @@ public class SessionController {
      * @return name of the view
      */
     @GetMapping("/session/{id}")
-    public ModelAndView selectSeats(@PathVariable("id") final String id) {
+    public ModelAndView selectSeats(@PathVariable("id") final UUID id) {
         ModelAndView modelAndView = new ModelAndView("session");
-        UUID sessionId = UUID.fromString(id);
         modelAndView.addObject("movieSession",
-                sessionService.get(sessionId));
+                sessionService.get(id));
         modelAndView.addObject("movie",
-                sessionService.get(sessionId).getMovie());
+                sessionService.get(id).getMovie());
         modelAndView.addObject("cinema",
-                sessionService.get(sessionId).getHall().getCinema());
-        Seat[][] seats = sessionService.getDisplayedSeats(sessionId);
+                sessionService.get(id).getHall().getCinema());
+        Seat[][] seats = sessionService.getDisplayedSeats(id);
         modelAndView.addObject("seats", seats);
         return modelAndView;
     }
@@ -87,10 +86,10 @@ public class SessionController {
      */
     @GetMapping("/sessions")
     public ModelAndView showSessions(@RequestParam(value = "movie")
-                                         final String movieId,
+                                         final UUID movieId,
                                      @RequestParam(value = "cinema",
                                              required = false)
-                                         final String cinemaId,
+                                         final UUID cinemaId,
                                      @RequestParam(value = "technology",
                                              required = false)
                                          final String displayTechnology,
@@ -103,10 +102,9 @@ public class SessionController {
 
         List<Session> sessions;
         if (cinemaId != null) {
-            sessions = sessionService.getAllFuture(UUID.fromString(movieId),
-                    UUID.fromString(cinemaId));
+            sessions = sessionService.getAllFuture(movieId, cinemaId);
         } else {
-            sessions = sessionService.getAllFuture(UUID.fromString(movieId));
+            sessions = sessionService.getAllFuture(movieId);
         }
 
         if (displayTechnology != null && !displayTechnology.isEmpty()) {
@@ -267,8 +265,8 @@ public class SessionController {
      * @return response code
      */
     @DeleteMapping("/session/{id}")
-    public ResponseEntity deleteSession(@PathVariable("id") final String id) {
-        sessionService.delete(UUID.fromString(id));
+    public ResponseEntity deleteSession(@PathVariable("id") final UUID id) {
+        sessionService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }

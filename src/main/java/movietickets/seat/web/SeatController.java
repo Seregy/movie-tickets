@@ -63,9 +63,9 @@ public class SeatController {
      */
     @GetMapping("/reserve")
     public ResponseEntity reserveSeats(@RequestParam("ids[]")
-                                           final String[] ids) {
-        for (String id : ids) {
-            ticketService.reserve(UUID.fromString(id), null);
+                                           final UUID[] ids) {
+        for (UUID id : ids) {
+            ticketService.reserve(id, null);
         }
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
@@ -77,8 +77,8 @@ public class SeatController {
      * @return response code
      */
     @DeleteMapping("/seats/{id}")
-    public ResponseEntity deleteSeat(@PathVariable("id") final String id) {
-        seatService.delete(UUID.fromString(id));
+    public ResponseEntity deleteSeat(@PathVariable("id") final UUID id) {
+        seatService.delete(id);
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 }
