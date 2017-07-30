@@ -13,12 +13,12 @@
                 <em class="fa fa-times"></em></a>
             </li>
             <div class="row">
-                <div class="col-lg-8">
+                <div class="col-lg-12">
                     <div class="tab-content">
                         <div th:attr="id=${hall.id}" class="collapse">
                             <div class="menu">
                                 <div class="row">
-                                    <div class="col-xs-8">
+                                    <div class="col-xs-9">
                                         <div class="seats-display-row" th:each="seatRow : ${hall.layout.seatsTypes}">
                                             <th:block th:each="seat : ${seatRow}">
                                                 <div th:if="${seat == T(movietickets.hall.layout.SeatType).UNAVAILABLE}"
@@ -31,8 +31,8 @@
                                         </div>
                                     </div>
                                     <div class="col-xs-3">
-                                        <li th:text="'Rows: ' + ${hall.layout.rowsAmount}">Rows</li>
-                                        <li th:text="'Seats: ' + ${hall.layout.seatsAmount}">Seats</li>
+                                        <p th:text="'Rows: ' + ${hall.layout.rowsAmount}">Rows</p>
+                                        <p th:text="'Seats: ' + ${hall.layout.seatsAmount}">Seats</p>
                                         <a th:attr="data-hall-id=${hall.id}"
                                            class="btn btn-sm btn-danger delete"><em class="fa fa-trash"> Delete</em></a>
                                     </div>

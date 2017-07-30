@@ -38,6 +38,7 @@
 
 .seats-display-row {
     display: block;
+    text-align: center;
 }
 
 .seat-display {
