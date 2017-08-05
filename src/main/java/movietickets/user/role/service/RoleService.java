@@ -1,5 +1,6 @@
 package movietickets.user.role.service;
 
+import movietickets.user.permission.Permission;
 import movietickets.user.role.Role;
 
 import java.util.List;
@@ -37,6 +38,14 @@ public interface RoleService {
     Role get(UUID id);
 
     /**
+     * Gets role's permissions.
+     *
+     * @param id role's id
+     * @return role's permissions
+     */
+    List<Permission> getPermissions(UUID id);
+
+    /**
      * Gets all existing roles.
      *
      * @return list of roles
@@ -57,4 +66,12 @@ public interface RoleService {
      * @param newName new name
      */
     void changeName(UUID roleId, String newName);
+
+    /**
+     * Changes permissions of the role.
+     *
+     * @param roleId role's id
+     * @param newPermissions new permissions
+     */
+    void changePermissions(UUID roleId, UUID... newPermissions);
 }

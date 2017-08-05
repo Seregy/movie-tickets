@@ -1,5 +1,6 @@
 package movietickets.user.role.service;
 
+import movietickets.user.permission.Permission;
 import movietickets.user.permission.dao.PermissionDAO;
 import movietickets.user.role.Role;
 import movietickets.user.role.dao.RoleDAO;
@@ -9,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -75,6 +77,15 @@ public class RoleServiceDAO implements RoleService {
      */
     @Transactional
     @Override
+    public List<Permission> getPermissions(final UUID id) {
+        return new ArrayList<>(roleDAO.find(id).getPermissions());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional
+    @Override
     public List<Role> getAll() {
         return roleDAO.findAll();
     }
@@ -99,6 +110,26 @@ public class RoleServiceDAO implements RoleService {
                            final String newName) {
         Role role = roleDAO.find(roleId);
         role.setName(newName);
+        roleDAO.update(role);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @PreAuthorize("hasPermission(#roleId, 'Role', 'edit')")
+    @Transactional
+    @Override
+    public void changePermissions(final UUID roleId,
+                                  final UUID... newPermissions) {
+        Role role = roleDAO.find(roleId);
+        List<Permission> permissions = new ArrayList<>(role.getPermissions());
+        for (Permission permission : permissions) {
+            role.removePermission(permission);
+        }
+        for (UUID permissionId : newPermissions) {
+            Permission permission = permissionDAO.find(permissionId);
+            role.addPermission(permission);
+        }
         roleDAO.update(role);
     }
 }

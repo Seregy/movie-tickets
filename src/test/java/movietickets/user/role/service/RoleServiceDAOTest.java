@@ -18,6 +18,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
@@ -102,6 +103,18 @@ public class RoleServiceDAOTest {
 
     @Test
     public void getRole() {
+        Permission permission1 = createPermission(UUID.randomUUID());
+        Permission permission2 = createPermission(UUID.randomUUID());
+        createRole(UUID.randomUUID(), permission1);
+        Role role2 = createRole(UUID.randomUUID(), permission2);
+
+        List<Permission> permissions = roleService.getPermissions(role2.getId());
+        assertEquals(1, permissions.size());
+        assertTrue(permissions.contains(permission2));
+    }
+
+    @Test
+    public void getPermissions() {
         createRole(UUID.randomUUID());
         Role role2 = createRole(UUID.randomUUID());
 
@@ -179,6 +192,45 @@ public class RoleServiceDAOTest {
         changeName();
     }
 
+    private void changePermissions() {
+        Role role = createRole(UUID.fromString("10000000-0000-0000-0000-000000000000"));
+
+        assertTrue(roleDAO.find(role.getId()).getPermissions().isEmpty());
+        Permission permission1 = createPermission(UUID.randomUUID());
+        Permission permission2 = createPermission(UUID.randomUUID());
+        roleService.changePermissions(role.getId(),
+                permission1.getId(),
+                permission2.getId());
+
+        Set<Permission> permissions = roleDAO.find(role.getId()).getPermissions();
+        assertEquals(2, permissions.size());
+        assertTrue(permissions.contains(permission1));
+        assertTrue(permissions.contains(permission2));
+    }
+
+    @Test(expected = AuthenticationCredentialsNotFoundException.class)
+    public void changePermissionsUnauthenticated() {
+        changePermissions();
+    }
+
+    @WithMockCustomUser
+    @Test(expected = AccessDeniedException.class)
+    public void changePermissionsWithoutPermission() {
+        changePermissions();
+    }
+
+    @WithMockCustomUser(authorities = {"ROLE_EDIT_10000000-0000-0000-0000-000000000000"})
+    @Test
+    public void changePermissionsWithSpecificPermission() {
+        changePermissions();
+    }
+
+    @WithMockCustomUser(authorities = {"ROLE_EDIT_ALL"})
+    @Test
+    public void changePermissionsWithGlobalPermission() {
+        changePermissions();
+    }
+
     private Permission createPermission(final UUID id) {
         Permission permission = new Permission("permission" + id.toString());
         permission.setId(id);
@@ -189,6 +241,18 @@ public class RoleServiceDAOTest {
     private Role createRole(final UUID id) {
         Role role = new Role("role" + id.toString());
         role.setId(id);
+        roleDAO.add(role);
+        return role;
+    }
+
+    private Role createRole(final UUID id,
+                            Permission... permissions) {
+        Role role = new Role("role" + id.toString());
+        role.setId(id);
+        for (Permission permission : permissions) {
+            role.addPermission(permission);
+            permissionDAO.update(permission);
+        }
         roleDAO.add(role);
         return role;
     }
