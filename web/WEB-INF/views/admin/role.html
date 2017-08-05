@@ -1,0 +1,222 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Admin Role</title>
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/bootstrap/bootstrap.css" th:href="@{/resources/css/bootstrap/bootstrap.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/font-awesome.css" th:href="@{/resources/css/font-awesome.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/bootstrap/bootstrap-select.min.css"
+          th:href="@{/resources/css/bootstrap/bootstrap-select.min.css}">
+    <link rel="stylesheet" type="text/css" href="../../../resources/css/select2.css"
+          th:href="@{/resources/css/select2.css}">
+    <link rel="stylesheet" type="text/css" href="../../../resources/css/select2-bootstrap.css"
+          th:href="@{/resources/css/select2-bootstrap.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/main.css" th:href="@{/resources/css/main.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/admin/role.css" th:href="@{/resources/css/admin/role.css}">
+          href="../../../resources/css/bootstrap/bootstrap-editable.css"
+          th:href="@{/resources/css/bootstrap/bootstrap-editable.css}">
+    <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Cormorant'>
+    <script src="../../../resources/scripts/jquery/jquery-3.2.1.js"
+            th:src="@{/resources/scripts/jquery/jquery-3.2.1.js}"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap.js}"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap-select.min.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap-select.min.js}"></script>
+    <script src="../../../resources/scripts/select2.js"
+            th:src="@{/resources/scripts/select2.js}"></script>
+    <script src="../../../resources/scripts/jquery/jquery.maskedinput.js"
+            th:src="@{/resources/scripts/jquery/jquery.maskedinput.js}"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap-editable.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap-editable.js}"></script>
+</head>
+<body>
+
+<div class="container" th:include="fragments/navbar :: navbar"></div>
+
+
+<div class="container">
+    <div class="jumbotron">
+        <h2>Roles</h2>
+        <div class="row">
+            <br>
+            <div class="col col-xs-6">
+                <a class="btn btn-sm btn-primary btn-create" data-toggle="collapse" href='#add-role'><i
+                        class="fa fa-plus" aria-hidden="true"></i> Add role</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="tab-content">
+                    <div id="add-role" class="collapse">
+                        <div class="menu">
+                            <form role="form" method="post" action="" id="request-form" onsubmit="return false;">
+                                <input id="role-name" type="text" class="form-control data-input" placeholder="Role name"
+                                       maxlength="50" required>
+                                <select id="role-permission" class="selectpicker data-input" title="Permission"
+                                        data-live-search="true"  data-width="auto" multiple>
+                                    <option th:each="permission : ${permissions}"
+                                            th:text="${permission.name}"
+                                            th:attr="value=${permission.id}">Permission</option>
+                                </select>
+                                <button id="save-role" type="submit" class="btn btn-success">Save</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <div class="spinner" th:replace="fragments/spinner :: spinner"></div>
+        <div class="role-block"></div>
+    </div>
+</div>
+
+<div class="footer" th:include="fragments/footer :: footer"></div>
+
+<script th:inline="javascript">
+    (function () {
+        var roles = $(".role-block");
+        var spinner = $(".spinner");
+
+        $(document).ready(function () {
+            $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="_csrf"]').attr('content') } });
+
+            $.fn.editable.defaults.mode = 'inline';
+
+            spinner.hide();
+            roles.on('click', '.button-cancel', deleteRole);
+            $('#save-role').on('click', addRole);
+            getRoles();
+        });
+
+        function getRoles() {
+            var path = /*[[ @{@{/admin/roles}} ]]*/undefined;
+
+            var permissions = [];
+            /*[# th:each="permission : ${permissions}"]*/
+            var permissionId = "[(${permission.id})]";
+            var permissionName = "[(${permission.authority})]";
+            permissions.push({id: permissionId, text: permissionName});
+            /*[/]*/
+
+            showSpinner();
+            $.get(path)
+                .done(function (data) {
+                    roles.html(data);
+                    $('.role-name').each(function () {
+                        $(this).editable({
+                            url: editableUrl
+                        });
+                    });
+                    $('.role-permission').each(function () {
+                        $(this).editable({
+                            placeholder: 'Select permissions',
+                            url: editableUrl,
+                            source: permissions,
+                            select2: {
+                                multiple: true,
+                                width: '100%',
+                                allowClear: true
+                            }
+                        });
+                    });
+                })
+                .fail(function () {
+                    roles.html("<p class='bg-danger'>Something went wrong</p>");
+                })
+                .always(function () {
+                    hideSpinner();
+                });
+        }
+
+        function editableUrl(params) {
+            var d = new $.Deferred();
+            params.promise = d;
+            params.root = $(this).parent().parent();
+            saveRole(params);
+            return d.promise();
+        }
+
+        function deleteRole() {
+            var deletePath = /*[[@{@{/role/}} ]]*/'../role/';
+            deletePath = deletePath + $(this).data('role-id');
+            $.ajax({
+                url: deletePath,
+                type: 'DELETE',
+                success: function() {
+                    getRoles();
+                }
+            });
+        }
+
+        function addRole() {
+            var addPath = /*[[@{@{/role}} ]]*/'../role';
+            var name = $('#role-name').val();
+            var permissions = $('#role-permission').val();
+            $.ajax({
+                url: addPath,
+                type: 'POST',
+                data: {
+                    "name": name,
+                    "permissions": permissions
+                },
+                success: function() {
+                    getRoles();
+                }
+            });
+        }
+
+        function saveRole(data) {
+            var id = data.pk;
+            var name;
+            var permissions;
+            if (data.name === "name") {
+                name = data.value;
+                permissions = data.root.find('.role-permission').data('value').split(',');
+            } else if (data.name === "permissions") {
+                name = data.root.find('.role-name').text();
+                permissions = data.value;
+            }
+
+            var editPath = /*[[@{@{/role/}} ]]*/'../role/';
+            editPath = editPath + id;
+            $.ajax({
+                url: editPath,
+                type: 'POST',
+                data: {
+                    "name": name,
+                    "permissions": permissions
+                },
+                success: function() {
+                    data.promise.resolve();
+                    getRoles();
+                },
+                error : function () {
+                    data.promise.reject();
+                }
+            });
+        }
+
+        function showSpinner() {
+            roles.addClass("disabled-block");
+            spinner.show();
+        }
+
+        function hideSpinner() {
+            roles.removeClass("disabled-block");
+            spinner.hide();
+        }
+    })();
+</script>
+</body>
+</html>

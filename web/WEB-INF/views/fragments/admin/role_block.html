@@ -1,0 +1,41 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="role_block">
+    <ul class="list-unstyled">
+        <th:block th:each="roleEntry : ${rolePermissionMap}">
+            <li class="list-font">
+                <a th:text="${roleEntryStat.count} + ' ' + ${roleEntry.key.name}" data-toggle="collapse"
+                   href='#' th:href="'#' + ${roleEntry.key.id}"># Role</a>
+                <a class="btn btn-xs button-style button-cancel" th:attr="data-role-id=${roleEntry.key.id}">
+                    <em class="fa fa-times"></em>
+                </a>
+            </li>
+            <div class="row collapse menu white-bg" th:attr="id=${roleEntry.key.id}">
+                <div class="col-xs-6">
+                    <ul class="list-unstyled">
+                        <li class='info-header'>Name</li>
+                        <li class='role-info'>
+                            <a href="#" th:attr="data-pk=${roleEntry.key.id}, data-name='name'"
+                               class="role-name" th:text="${roleEntry.key.name}">Role</a>
+                            <em class="fa fa-pencil"></em>
+                        </li>
+                        <li class='info-header'>Permissions</li>
+                        <li class='role-info'
+                            th:with="permissionData=${#strings.listJoin(roleEntry.value, ',')}">
+                            <a href="#" class="role-permission" title="Permission"
+                                    th:attr="data-pk=${roleEntry.key.id}, data-type='select2',
+                                    data-name='permissions', data-title='Select permission',
+                                    data-value=${permissionData}">
+                            </a>
+                            <em class="fa fa-pencil"></em>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </th:block>
+    </ul>
+</div>
+</body>
+</html>

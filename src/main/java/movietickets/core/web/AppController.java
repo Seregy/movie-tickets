@@ -8,6 +8,7 @@ import movietickets.hall.service.HallService;
 import movietickets.movie.Movie;
 import movietickets.movie.service.MovieService;
 import movietickets.ticket.service.TicketService;
+import movietickets.user.permission.service.PermissionService;
 import movietickets.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -38,6 +39,7 @@ public class AppController {
     private final HallService hallService;
     private final TicketService ticketService;
     private final CinemaService cinemaService;
+    private final PermissionService permissionService;
 
     /**
      * Constructs new app controller.
@@ -47,18 +49,21 @@ public class AppController {
      * @param hallService hall service
      * @param ticketService ticket service
      * @param cinemaService cinema service
+     * @param permissionService permission service
      */
     @Autowired
     public AppController(final MovieService movieService,
                          final UserService userService,
                          final HallService hallService,
                          final TicketService ticketService,
-                         final CinemaService cinemaService) {
+                         final CinemaService cinemaService,
+                         final PermissionService permissionService) {
         this.movieService = movieService;
         this.userService = userService;
         this.hallService = hallService;
         this.ticketService = ticketService;
         this.cinemaService = cinemaService;
+        this.permissionService = permissionService;
     }
 
     /**
@@ -123,6 +128,18 @@ public class AppController {
     @RequestMapping("/admin/city")
     public ModelAndView showAdminCityPage() {
         return new ModelAndView("admin/city");
+    }
+
+    /**
+     * Shows admin page for role.
+     *
+     * @return model and view
+     */
+    @RequestMapping("/admin/role")
+    public ModelAndView showAdminRolePage() {
+        ModelAndView modelAndView = new ModelAndView("admin/role");
+        modelAndView.addObject("permissions", permissionService.getAll());
+        return modelAndView;
     }
 
     /**

@@ -1,0 +1,57 @@
+.role-info {
+    font-size: 10pt;
+    margin-bottom: 2pt;
+}
+
+
+.info-header {
+    font-size: 10pt;
+    margin-bottom: 0pt;
+}
+
+.button-cancel {
+    color: #9c5454
+}
+
+.menu {
+    border: 1px solid #ddd;
+    border-radius: 0px 0px 5px 5px;
+    padding: 10px;
+    margin-bottom: 15pt;
+    background-color: white;
+}
+
+.list-font {
+    font-size: 12pt;
+}
+
+
+.white-bg {
+    background-color: white;
+}
+
+.list-font {
+    font-size: 12pt;
+}
+
+.data-input {
+    margin-bottom: 10px;
+}
+
+.items-container:hover .upload-overlay {
+    display: inline-block;
+}
+
+.items-container:hover .img-thumbnail {
+    opacity: 0.5;
+}
+
+.upload-overlay {
+    display: none;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    left: 0;
+    right: 0;
+    z-index: 10;
+}
