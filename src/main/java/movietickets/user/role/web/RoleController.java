@@ -77,7 +77,7 @@ public class RoleController {
     }
 
     /**
-     * Edits existing city.
+     * Edits existing role.
      *
      * @param id role's id
      * @param name new name
