@@ -40,12 +40,14 @@ public class GlobalModelsController {
     /**
      * Sets currentCity attribute.
      *
+     * @param mockCity mock city to be used instead of the real one
      * @return new currentCity
      */
+    @Autowired
     @ModelAttribute("currentCity")
-    public City setCurrentCity() {
+    public City setCurrentCity(final City mockCity) {
         return cityService.getAll().stream()
                 .findFirst()
-                .orElse(null);
+                .orElse(mockCity);
     }
 }

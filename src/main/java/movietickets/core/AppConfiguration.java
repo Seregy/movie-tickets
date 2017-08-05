@@ -1,5 +1,6 @@
 package movietickets.core;
 
+import movietickets.city.City;
 import org.springframework.context.annotation.*;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -81,5 +82,16 @@ public class AppConfiguration {
     @Bean
     public PasswordEncoder getBCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * Gets a mock city.
+     * Used when no actual city can be found.
+     *
+     * @return mock city
+     */
+    @Bean("mockCity")
+    public City getEmptyCity() {
+        return new City("Mock city");
     }
 }
