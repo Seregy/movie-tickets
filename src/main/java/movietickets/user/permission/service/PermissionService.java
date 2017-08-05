@@ -42,4 +42,12 @@ public interface PermissionService {
      * @param id id of the permission to delete
      */
     void delete(UUID id);
+
+    /**
+     * Changes the name of the permission.
+     *
+     * @param permissionId permission's id
+     * @param newName new name
+     */
+    void changeName(UUID permissionId, String newName);
 }

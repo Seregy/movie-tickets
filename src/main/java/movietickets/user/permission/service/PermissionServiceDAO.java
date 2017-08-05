@@ -68,4 +68,17 @@ public class PermissionServiceDAO implements PermissionService {
     public void delete(@P("id") final UUID id) {
         permissionDAO.delete(id);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    @PreAuthorize("hasPermission(#permissionId, 'Permission', 'edit')")
+    @Transactional
+    @Override
+    public void changeName(@P("permissionId") final UUID permissionId,
+                           final String newName) {
+        Permission permission = permissionDAO.find(permissionId);
+        permission.setName(newName);
+        permissionDAO.update(permission);
+    }
 }

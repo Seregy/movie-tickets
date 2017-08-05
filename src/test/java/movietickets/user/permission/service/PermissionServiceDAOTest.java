@@ -111,6 +111,37 @@ public class PermissionServiceDAOTest {
         deletePermission();
     }
 
+    private void changeName() {
+        Permission permission = createPermission(UUID.fromString("10000000-0000-0000-0000-000000000000"));
+
+        assertEquals("permission" + permission.getId(), permissionDAO.find(permission.getId()).getName());
+        permissionService.changeName(permission.getId(), "newName");
+        assertEquals("newName", permissionDAO.find(permission.getId()).getName());
+    }
+
+    @Test(expected = AuthenticationCredentialsNotFoundException.class)
+    public void changeNameUnauthenticated() {
+        changeName();
+    }
+
+    @WithMockCustomUser
+    @Test(expected = AccessDeniedException.class)
+    public void changeNameWithoutPermission() {
+        changeName();
+    }
+
+    @WithMockCustomUser(authorities = {"PERMISSION_EDIT_10000000-0000-0000-0000-000000000000"})
+    @Test
+    public void changeNameWithSpecificPermission() {
+        changeName();
+    }
+
+    @WithMockCustomUser(authorities = {"PERMISSION_EDIT_ALL"})
+    @Test
+    public void changeNameWithGlobalPermission() {
+        changeName();
+    }
+
     private Permission createPermission(final UUID id) {
         Permission permission = new Permission("permission" + id.toString());
         permission.setId(id);
