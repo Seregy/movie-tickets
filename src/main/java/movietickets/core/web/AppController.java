@@ -143,6 +143,16 @@ public class AppController {
     }
 
     /**
+     * Shows admin page for permission.
+     *
+     * @return model and view
+     */
+    @RequestMapping("/admin/permission")
+    public ModelAndView showAdminPermissionPage() {
+        return new ModelAndView("admin/permission");
+    }
+
+    /**
      * Show admin page for session.
      *
      * @param cinemaId id of the cinema

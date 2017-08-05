@@ -1,0 +1,186 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width = device-width, initial-scale = 1">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title>Admin Permission</title>
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/bootstrap/bootstrap.css" th:href="@{/resources/css/bootstrap/bootstrap.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/font-awesome.css" th:href="@{/resources/css/font-awesome.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/bootstrap/bootstrap-select.min.css"
+          th:href="@{/resources/css/bootstrap/bootstrap-select.min.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/main.css" th:href="@{/resources/css/main.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/admin/hall.css" th:href="@{/resources/css/admin/hall.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/admin/permission.css" th:href="@{/resources/css/admin/permission.css}">
+    <link rel="stylesheet" type="text/css"
+          href="../../../resources/css/bootstrap/bootstrap-editable.css"
+          th:href="@{/resources/css/bootstrap/bootstrap-editable.css}">
+    <link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Cormorant'>
+    <script src="../../../resources/scripts/jquery/jquery-3.2.1.js"
+            th:src="@{/resources/scripts/jquery/jquery-3.2.1.js}"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap.js}"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap-select.min.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap-select.min.js}"></script>
+    <script src="../../../resources/scripts/jquery/jquery.maskedinput.js"
+            th:src="@{/resources/scripts/jquery/jquery.maskedinput.js}"></script>
+    <script src="../../../resources/scripts/bootstrap/bootstrap-editable.js"
+            th:src="@{/resources/scripts/bootstrap/bootstrap-editable.js}"></script>
+</head>
+<body>
+
+<div class="container" th:include="fragments/navbar :: navbar"></div>
+
+
+<div class="container">
+    <div class="jumbotron">
+        <h2>Permissions</h2>
+        <div class="row">
+            <br>
+            <div class="col col-xs-6">
+                <a class="btn btn-sm btn-primary btn-create" data-toggle="collapse" href='#addPermission'><i
+                        class="fa fa-plus" aria-hidden="true"></i> Add permission</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="tab-content">
+                    <div id="addPermission" class="collapse">
+                        <form role="form" method="post" action="" id="request-form" onsubmit="return false;">
+                            <div class="menu">
+                                <input id="permission-name" type="text" class="form-control data-input"
+                                       placeholder="Permission name" maxlength="50" required>
+                                <button id="save-permission" type="submit" class="btn btn-success">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <div class="spinner" th:replace="fragments/spinner :: spinner"></div>
+        <div class="permission-block"></div>
+    </div>
+</div>
+
+<div class="footer" th:include="fragments/footer :: footer"></div>
+
+<script th:inline="javascript">
+    (function () {
+        var permissions = $(".permission-block");
+        var spinner = $(".spinner");
+
+        $(document).ready(function () {
+            $.ajaxSetup({ headers: { 'X-CSRF-TOKEN': $('meta[name="_csrf"]').attr('content') } });
+
+            $.fn.editable.defaults.mode = 'inline';
+            permissions.on('click', '.button-edit', editPermission);
+
+            spinner.hide();
+            permissions.on('click', '.button-cancel', deletePermission);
+            $('#save-permission').on('click', addPermission);
+            getPermissions();
+        });
+
+        function getPermissions() {
+            var path = /*[[ @{@{/admin/permissions}} ]]*/undefined;
+
+            showSpinner();
+            $.get(path)
+                .done(function (data) {
+                    permissions.html(data);
+                    $('.permission-name').each(function () {
+                        $(this).editable({
+                            url: editableUrl
+                        });
+                    });
+                })
+                .fail(function () {
+                    permissions.html("<p class='bg-danger'>Something went wrong</p>");
+                })
+                .always(function () {
+                    hideSpinner();
+                });
+        }
+
+        function editableUrl(params) {
+            var d = new $.Deferred();
+            params.promise = d;
+            params.root = $(this).parent().parent();
+            savePermission(params);
+            return d.promise();
+        }
+
+        function deletePermission() {
+            var deletePath = /*[[@{@{/permission/}} ]]*/'../permission/';
+            deletePath = deletePath + $(this).data('permission-id');
+            $.ajax({
+                url: deletePath,
+                type: 'DELETE',
+                success: function() {
+                    getPermissions();
+                }
+            });
+        }
+
+        function addPermission() {
+            var addPath = /*[[@{@{/permission}} ]]*/'../permission';
+            var name = $('#permission-name').val();
+            $.ajax({
+                url: addPath,
+                type: 'POST',
+                data: {"name": name},
+                success: function() {
+                    getPermissions();
+                }
+            });
+        }
+
+        function editPermission(event) {
+            var parent = $(event.currentTarget).parent();
+            var permissionEdit = parent.children('.permission-name');
+            permissionEdit.editable('toggle');
+            event.stopPropagation();
+        }
+
+        function savePermission(data) {
+            var id = data.pk;
+            var name = data.value;
+            var editPath = /*[[@{@{/permission/}} ]]*/'../permission/';
+            editPath = editPath + id;
+            $.ajax({
+                url: editPath,
+                type: 'POST',
+                data: {"name": name},
+                success: function() {
+                    data.promise.resolve();
+                    getPermissions();
+                },
+                error : function () {
+                    data.promise.reject();
+                }
+            });
+        }
+
+        function showSpinner() {
+            permissions.addClass("disabled-block");
+            spinner.show();
+        }
+
+        function hideSpinner() {
+            permissions.removeClass("disabled-block");
+            spinner.hide();
+        }
+    })();
+</script>
+</body>
+</html>
