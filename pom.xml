@@ -35,6 +35,7 @@
     </profiles>
 
     <build>
+        <finalName>movie-tickets</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>

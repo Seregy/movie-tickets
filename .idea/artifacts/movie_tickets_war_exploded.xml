@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" build-on-make="true" name="movie-tickets:war exploded">
-    <output-path>$PROJECT_DIR$/target/movie-tickets-1.1.0</output-path>
+    <output-path>$PROJECT_DIR$/target/movie-tickets</output-path>
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
@@ -61,7 +61,7 @@
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/target/movie-tickets-1.1.0/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/target/movie-tickets/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="movie-tickets/web/Web" />
     </root>
