@@ -1,0 +1,26 @@
+version: "3"
+services:
+  database:
+    build:
+      context: ./database
+    image: movie-tickets-database
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "3306:3306" 
+    restart: always
+
+  webserver:
+    build: 
+      context: ./webserver
+    image: movie-tickets-webserver
+    # mount point for application in tomcat
+    volumes:
+      - ./target/movie-tickets:/usr/local/tomcat/webapps/ROOT/
+    links:
+      - database:movie-tickets-database
+    ports:
+      - "8080:8080" 
+    restart: always
+    environment:
+      - CATALINA_OPTS=-DRDS_USERNAME=user -DRDS_PASSWORD=password -DRDS_HOSTNAME=movie-tickets-database -DRDS_PORT=3306 -DRDS_DB_NAME=movietickets -DFILE_UPLOAD_LOCATION='/usr/local/movie-tickets/files'
